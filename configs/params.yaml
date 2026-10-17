@@ -21,10 +21,11 @@ data:
   end_date: "2025-11-24"   # Observasi akhir jendela
   days_per_year: 252
 
-  # KEPUTUSAN TERBUKA D1:
-  # Opsi (A) "intersection": buang 163 baris hilang EUR_10Y (total 2.028 baris)
-  # Opsi (B) "spline": interpolasi natural cubic spline untuk EUR_10Y (total 2.191 baris)
-  window_mode: null
+  # D1 DIPUTUSKAN (2026-10-18): Opsi A "intersection"
+  # Gunakan 2.028 baris data riil lengkap (buang 163 baris gap EUR_10Y).
+  # Log-change yang melintasi celah 163 hari dikeluarkan (bukan dihitung sebagai perubahan harian).
+  # Catatan keputusan: docs/decisions/0001-window-mode-intersection.md
+  window_mode: "intersection"
 
 # ------------------------------------------------------------------------------
 # 2. Instrumen Utang & Batas Proporsi (Tabel 2.1, 2.2, Spesifikasi §2)
