@@ -126,9 +126,14 @@ scenarios:
   simulation_path_mode: "terminal_1step"
   historical_cost_x0: "window_end"
 
-  # KEPUTUSAN TERBUKA D3:
-  # Ukuran bank skenario validasi independen (misal 20.000 skenario)
-  validation_scenarios: null
+  train_seed: 42          # Seed generator acak bank latih utama N=5.000
+
+  # D3 DIPUTUSKAN (2026-10-18):
+  # Ukuran bank validasi independen: N_valid = 20.000 skenario
+  # Seed generator acak bank validasi: validation_seed = 2026
+  # Catatan keputusan: docs/decisions/0003-validation-bank-specification.md
+  validation_scenarios: 20000
+  validation_seed: 2026
 
 # ------------------------------------------------------------------------------
 # 4. Ukuran Risiko & Biaya Portofolio (Persamaan 2.13–2.20, Spesifikasi §5)
