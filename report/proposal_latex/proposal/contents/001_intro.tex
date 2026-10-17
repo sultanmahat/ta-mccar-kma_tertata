@@ -1,0 +1,86 @@
+\chapter{Pendahuluan}\label{ch:introduction}
+
+%============================================================
+
+\section{Latar Belakang}
+\label{sec:latar-belakang}
+% 1) KONTEKS UMUM DAN FENOMENA GLOBAL/NASIONAL
+Utang merupakan salah satu instrumen pembiayaan yang menempati posisi sentral dalam kebijakan fiskal suatu negara. Tujuan utama pengelolaan utang negara (\textit{sovereign debt management}) adalah memenuhi kebutuhan pembiayaan pemerintah dengan biaya seminimal mungkin dalam jangka panjang sembari menjaga tingkat risiko pada batas yang dapat ditoleransi \shortcite{imf2014}. Dalam praktik pembiayaan modern, pemerintah banyak menerbitkan utang berdenominasi mata uang asing untuk mendiversifikasi sumber dana sekaligus memanfaatkan tingkat suku bunga internasional yang relatif lebih rendah dibandingkan instrumen domestik \shortcite{eichengreen1999,panzer2015}.
+
+Indonesia menempuh strategi pembiayaan yang serupa. Bank Indonesia mencatat posisi Utang Luar Negeri (ULN) Indonesia pada triwulan II~2025 sebesar USD 433,3 miliar, dengan porsi ULN pemerintah mencapai USD 210,1 miliar atau tumbuh 10,0\% secara tahunan \shortcite{bi2025}. Sepanjang satu dekade terakhir, komposisi utang pemerintah bergeser ke arah denominasi domestik: proporsi utang Rupiah meningkat dari 57\% pada 2014 menjadi lebih dari 70\% pada 2024, sementara porsi utang valuta asing (valas) menurun dari 43\% menjadi sekitar 29\% pada periode yang sama \shortcite{djppr2025}. Meskipun proporsinya menyusut, nilai nominal utang valas tetap besar dan komposisinya didominasi oleh tiga mata uang keras (\textit{hard currency}) [TT], yaitu Dolar Amerika Serikat (USD), Euro (EUR), dan Yen Jepang (JPY) \shortcite{djppr2025}. Dengan demikian, eksposur terhadap pergerakan nilai tukar dan suku bunga global tetap menjadi komponen risiko yang melekat pada struktur portofolio utang pemerintah.
+
+% 2) KONTEKS KHUSUS DAN PERMASALAHAN UTAMA
+Pemanfaatan utang valas menghadirkan dilema yang tidak dapat dihindari. Di satu sisi, instrumen valas menawarkan diversifikasi sumber pembiayaan dan biaya bunga nominal yang lebih murah sehingga mengurangi tekanan \textit{crowding out} [TT] di pasar domestik \shortcite{djppr2025}. Di sisi lain, utang valas mengandung dua sumber risiko pasar utama, yakni risiko nilai tukar (\textit{currency risk}) [TT] dan risiko suku bunga (\textit{interest rate risk}) [TT]. Depresiasi Rupiah terhadap USD, EUR, atau JPY meningkatkan nilai kewajiban dalam Rupiah meskipun pokok utang dalam mata uang asing tidak berubah, sedangkan kenaikan suku bunga global menaikkan biaya layanan utang (\textit{debt servicing cost}) [TT] secara langsung \shortcite{djppr2025}. Kombinasi kedua faktor tersebut membuat biaya utang valas bersifat volatil dan berpotensi membebani Anggaran Pendapatan dan Belanja Negara (APBN) ketika kondisi pasar global bergejolak.
+
+Permasalahan menjadi semakin kompleks karena keputusan komposisi utang valas bukan sekadar memilih mata uang termurah. Setiap instrumen, yangdibedakan menurut mata uang dan tenor, memiliki profil biaya dan risiko yang berbeda serta saling berkorelasi. Pemilihan satu instrumen memengaruhi eksposur risiko keseluruhan portofolio melalui struktur kovarians antar instrumen. Oleh sebab itu, penentuan komposisi utang valas yang optimal menuntut pendekatan kuantitatif yang mampu menyeimbangkan biaya pembiayaan dengan risiko pasar secara sistematis, terukur, dan adaptif terhadap ketidakpastian.
+
+% 3) TINJAUAN PENELITIAN TERDAHULU
+Pendekatan kuantitatif yang menjadi rujukan klasik dalam penyusunan portofolio optimal adalah \textit{Mean-Variance Optimization} (MVO) [TT] yang diperkenalkan oleh\shortciteA{markowitz1952}. Kerangka MVO merepresentasikan risiko melalui variansi imbal hasil dan menetapkan komposisi optimal sebagai titik pada \textit{efficient frontier} [TT], yaitu himpunan portofolio dengan risiko minimum pada tingkat biaya tertentu. Direktorat Jenderal Pengelolaan Pembiayaan dan Risiko (DJPPR) Kementerian Keuangan mengadaptasi kerangka Markowitz untuk konteks utang valas Indonesia dengan mempertimbangkan dua parameter, yaitu biaya berbasis rata-rata suku bunga historis dan risiko berbasis kovarians suku bunga serta \textit{Average Time to Maturity} (ATM) \shortcite{djppr2025}.
+
+Sejalan dengan perkembangan metode, sejumlah peneliti mengeksplorasi keterbatasan asumsi MVO. \shortciteA{consiglio2015} mengembangkan kerangka optimasi berbasis skenario untuk restrukturisasi utang negara dengan ukuran risiko ekor (\textit{tail risk}) [TT] yang disebut \textit{conditional Debt-at-Risk}, diselesaikan melalui pemrograman stokastik multiperiode. \shortciteA{athanasopoulou2023} memperluas pendekatan tersebut melalui \textit{conditional Flow-at-Risk} untuk menyeimbangkan biaya pinjaman dengan risiko pembiayaan ulang (\textit{refinancing risk}) [TT]. Pada ranah praktik manajemen utang, Turki mengembangkan metode \textit{Marginal Conditional Cost-at-Risk} (MCCaR) [TT] yang menggabungkan simulasi stokastik dengan analisis \textit{Conditional Cost-at-Risk} (CCaR) untuk mengukur tambahan risiko ekor yang ditimbulkan oleh penerbitan satu unit instrumen utang, kemudian membandingkannya dengan biaya marginal instrumen tersebut guna memperoleh komposisi yang paling efisien \shortcite{yavuz2019,djppr2025}.
+
+Pada sisi metode penyelesaian, algoritma metaheuristik semakin banyak diterapkan untuk optimasi portofolio karena keluwesannya menangani ruang solusi yang kompleks. \shortciteA{abolmaali2018} menerapkan \textit{Ant Colony Optimization} (ACO) pada portofolio Mean-Variance dengan kendala kardinalitas dan memperoleh \textit{efficient frontier} yang mendekati solusi Markowitz. Salah satu algoritma metaheuristik terkini adalah \textit{Komodo Mlipir Algorithm} (KMA) [TT] yang diperkenalkan oleh \shortciteA{suyanto2022}. KMA membagi populasi solusi menjadi tiga kelompok, yaitu \textit{big males}, \textit{female}, dan \textit{small males}, yang masing-masing menjalankan strategi eksploitasi dan eksplorasi berbeda sehingga keseimbangan pencarian global dan lokal lebih terjaga. \shortciteA{kusuma2022} menunjukkan bahwa KMA memiliki kinerja kompetitif terhadap algoritma metaheuristik mapan pada masalah optimasi numerik umum, dan beberapa studi lanjutan menerapkannya pada penyetelan hiperparameter jaringan saraf serta deteksi citra.
+
+
+% 4) IDENTIFIKASI KESENJANGAN (RESEARCH GAP)
+% \subsection*{Keterbatasan Penelitian Sebelumnya}
+%\addcontentsline{toc}{subsection}{Keterbatasan Penelitian Sebelumnya}
+
+Penelusuran literatur memperlihatkan dua celah yang belum terjembatani. Pertama, dari sisi model risiko, kajian DJPPR \shortcite{djppr2025} telah membandingkan MCCaR dengan Markowitz dan menyimpulkan bahwa MCCaR lebihresponsif terhadap skenario krisis karena berfokus pada risiko ekor, sedangkan Markowitz hanya menangkap risiko total melalui variansi. Akan tetapi, kajian tersebut menyelesaikan pemilihan komposisi melalui penyaringan (\textit{filtering}) terhadap 1.000 kombinasi proporsi yang dibangkitkan secara acak, bukan melalui prosedur optimasi yang menjamin pencarian solusi terbaik pada seluruh ruang kelayakan. Pendekatan berbasis penyaringan rentan melewatkan komposisi optimal yang berada di antara titik-titik sampel.
+
+Kedua, dari sisi metode penyelesaian, Tugas Akhir \shortciteA{fauzan2025} berhasil menerapkan KMA untuk optimasi portofolio utang negara multivaluta, tetapi model risiko yang digunakan masih berbasis variansi dalam kerangka MVO. Model berbasis variansi mengasumsikan distribusi yang simetris dan tidak menangkap perilaku biaya pada kondisi pasar ekstrem, padahal justru pada kondisi ekstrem itulah beban utang valas paling membahayakan kesinambungan fiskal. Selain itu, kajian KMA terdahulu pada ranah keuangan masih terbatas; penerapan KMA pada model risiko berbasis \textit{tail risk} untuk portofolio utang negara belum ditemukan dalam literatur yang tersedia.
+
+% \subsection*{Kontribusi Penelitian}
+%\addcontentsline{toc}{subsection}{Kontribusi Penelitian}
+
+Penelitian ini menjembatani kedua celah tersebut dengan menempatkan MCCaR sebagai model risiko dan KMA sebagai metode penyelesaian secara seimbang. MCCaR menyediakan ukuran risiko ekor yang lebih realistis bagi pengelola utang dibandingkan variansi, sedangkan KMA menggantikan prosedur penyaringan acak dengan pencarian metaheuristik yang terarah. Dengan demikian, kontribusi penelitian ini bersifat ganda. Secara model, penelitian ini merumuskan optimasi komposisi utang valas berbasis MCCaR yang dapat diselesaikan sebagai persoalan optimasi berkendala, bukan sekadar penyaringan kombinasi. Secara metodologis, penelitian ini memperluas cakupan penerapan KMA ke ranah optimasi portofolio utang negara dengan fungsi objektif berbasis risiko ekor, sekaligus menyediakan tolok ukur kinerja KMA terhadap metode acuan pada kelas masalah yang belum pernah diujikan sebelumnya.
+
+%============================================================
+
+\section{Rumusan Masalah}
+\label{sec:rumusan-masalah}
+Pengelolaan utang valas pemerintah menuntut komposisi yang mampu menekan biaya pembiayaan sekaligus mengendalikan risiko ekor pada kondisi pasar ekstrem. Model MCCaR menyediakan ukuran risiko ekor yang sesuai dengan karakter tersebut, sementara KMA menawarkan prosedur pencarian solusi yang terarah pada ruang kelayakan yang kompleks. Penggabungan keduanya belum dikaji dalam literatur, baik dari sisi perumusan model maupun dari sisi evaluasi kinerja metode. Berdasarkan uraian tersebut, rumusan masalah penelitian ini adalah sebagai berikut.
+\begin{enumerate}
+  \item Bagaimana memodelkan permasalahan optimasi komposisi utang negara multivaluta (USD, EUR, JPY) menggunakan pendekatan \textit{Marginal Conditional Cost at Risk} (MCCaR) ke dalam bentuk persoalan optimasi berkendala?
+  \item Bagaimana mengimplementasikan \textit{Komodo Mlipir Algorithm} (KMA) untuk menyelesaikan model optimasi komposisi utang valas berbasis MCCaR dengan kendala anggaran dan batasan proporsi instrumen?
+  \item Bagaimana perbandingan hasil optimasi yang diperoleh KMA terhadap metode acuan ditinjau dari komposisi proporsi, nilai biaya, tingkat risiko, pemenuhan kendala, dan efisiensi komputasi?
+\end{enumerate}
+
+%============================================================
+
+\section{Batasan Masalah}
+\label{sec:batasan-masalah}
+Agar penelitian terfokus dan dapat memberikan hasil yang terukur, ditetapkan batasan masalah yang membatasi cakupan instrumen, sumber dan periode data, ukuran risiko, serta metode penyelesaian. Batasan ini disusun mengikuti ketersediaan data DJPPR dan praktik penyusunan strategi pembiayaan utang valas agar model tetap realistis namun tetap dapat diselesaikan dalam lingkup Tugas Akhir.
+\begin{enumerate}
+  \item Penelitian dibatasi pada portofolio utang negara dalam tiga mata uang keras, yaitu USD, EUR, dan JPY, yang terbagi menjadi tujuh instrumen bersuku bunga tetap: USD~5Y, USD~10Y, USD~30Y, EUR~8Y, EUR~10Y, JPY~5Y, dan JPY~10Y. Instrumen bersuku bunga mengambang (\textit{floating rate}) tidak disertakan.
+  \item Data yang digunakan meliputi data historis suku bunga (\textit{yield}), nilai tukar EUR terhadap USD dan JPY terhadap USD, komposisi utang valas eksisting tahun 2024, serta batas bawah dan batas atas proporsi setiap instrumen, yang seluruhnya bersumber dari DJPPR.
+  \item Risiko portofolio dihitung menggunakan ukuran \textit{Conditional Cost-at-Risk} (CCaR) dan turunannya, \textit{Marginal Conditional Cost-at-Risk} (MCCaR), berdasarkan hasil simulasi proyeksi \textit{market rate}. Konversi instrumen EUR dan JPY ke dalam USD mengikuti asumsi posisi kas USD sebagaimana digunakan DJPPR.
+  \item Penyelesaian model dibatasi pada dua pendekatan, yaitu metode acuan (\textit{benchmark}) sebagai pembanding dan KMA sebagai metode metaheuristik yang menjadi fokus penelitian.
+  \item Faktor eksternal di luar model, seperti perubahan kebijakan fiskal, kondisi makroekonomi agregat, biaya transaksi, dan risiko likuiditas, tidak dimodelkan secara eksplisit.
+\end{enumerate}
+
+%============================================================
+
+\section{Tujuan}
+\label{sec:tujuan}
+
+Berdasarkan rumusan masalah yang diajukan, penelitian ini bertujuan untuk hal-hal berikut.
+\begin{enumerate}
+  \item Memodelkan permasalahan optimasi komposisi utang negara multivaluta (USD, EUR, JPY) menggunakan pendekatan \textit{Marginal Conditional Cost at Risk} (MCCaR) ke dalam bentuk persoalan optimasi berkendala.
+  \item Mengimplementasikan \textit{Komodo Mlipir Algorithm} (KMA) untuk menyelesaikan model optimasi komposisi utang valas berbasis MCCaR dengan kendala anggaran dan batasan proporsi instrumen.
+  \item Menganalisis dan membandingkan hasil optimasi yang diperoleh KMA terhadap metode acuan ditinjau dari komposisi proporsi, nilai biaya, tingkat risiko, pemenuhan kendala, dan efisiensi komputasi.
+\end{enumerate}
+
+%============================================================
+
+\section{Manfaat}
+\label{sec:manfaat}
+
+Penelitian ini diharapkan memberikan manfaat secara teoritis maupun praktis. Secara teoritis, penelitian ini memperkaya khazanah optimasi portofolio utang negara dengan memadukan ukuran risiko ekor MCCaR dan metode metaheuristik KMA dalam satu kerangka penyelesaian. Pemaduan ini melengkapi literatur yang selama ini memisahkan kajian model risiko ekor pada manajemen utang dari kajian penerapan KMA, sekaligus memperluas ranah penerapan KMA dari masalah numerik umum menuju persoalan keuangan publik berbasis risiko ekstrem. Hasil penelitian juga menyediakan landasan konseptual bagi pengembangan model optimasi utang valas yang lebih kompleks pada studi lanjutan.
+
+Secara praktis, penelitian ini diharapkan memberikan manfaat sebagaiberikut.
+\begin{enumerate}
+  \item Memberikan alternatif metode kuantitatif bagi pengelola utang negara dalam menentukan komposisi utang valas yang mempertimbangkan keseimbangan biaya dan risiko ekstrem secara terukur.
+  \item Menyediakan gambaran kelayakan KMA sebagai metode penyelesaian optimasi komposisi utang valas dibandingkan metode acuan, sehingga dapat menjadi pertimbangan dalam pemilihan alat analisis pengelolaan utang.
+  \item Menjadi rujukan bagi peneliti selanjutnya yang menekuni optimasi portofolio, manajemen risiko utang negara, dan penerapan algoritma metaheuristik pada bidang keuangan publik.
+\end{enumerate}

@@ -1,0 +1,170 @@
+status,asal (folder lama),tujuan (folder baru),catatan
+dipindah,DATASET/Dataset Utama Optimum Utang Valas.xlsx,data/raw/Dataset_Utama_Optimum_Utang_Valas.xlsx,
+dipindah,DATASET/processed/ir_data_clean.csv,legacy/data_v0/ir_data_clean.csv,data olahan versi lama (2.028 baris); dipakai sebagai pembanding Tahap 2
+dipindah,DATASET/processed/fx_data_clean.csv,legacy/data_v0/fx_data_clean.csv,data olahan versi lama (2.028 baris); dipakai sebagai pembanding Tahap 2
+dipindah,DATASET/processed/portfolio_data.csv,legacy/data_v0/portfolio_data.csv,data olahan versi lama (2.028 baris); dipakai sebagai pembanding Tahap 2
+dipindah,FILE PROPOSAL UTAMA/Revisi (After Sempro)_Proposal Tugas Akhir_Sultan Bakri Baihaqi Mahat_5002221016.pdf,docs/proposal/proposal_ta_sultan_revisi_after_sempro.pdf,
+dipindah,DAFTAR PUSTAKA/0. JURNAL UTAMA KEMENKEU_Optimalisasi Komposisi Utang Valuta Asing dengan Model Marginal Conditional Cost at Risk (MCCaR).pdf,docs/references/core/djppr_2025_optimalisasi_komposisi_utang_valas_mccar.pdf,
+dipindah,DAFTAR PUSTAKA/0. JURNAL UTAMA KEMENKEU_Optimalisasi Komposisi Utang Valuta Asing dengan Model Marginal Conditional Cost at Risk (MCCaR).md,docs/references/core/djppr_2025_optimalisasi_komposisi_utang_valas_mccar.md,"versi teks, lebih mudah dibaca agen"
+dipindah,DAFTAR PUSTAKA/4. Jurnal Lengkap Utama_Optimal Composition of Sovereign Debt_An Adaptation from.pdf,docs/references/core/yavuz_golbasi_2019_optimal_composition_sovereign_debt_proceedings.pdf,prosiding penuh (238 hlm)
+dipindah,"DAFTAR PUSTAKA/4. PDF Yavuz, H., & Golbasi, U. (2019). Optimal Composition of Sovereign Debt_ An Adaptation from Modern Portfolio Theory. Proceedings of the First Public Debt Management Network Conference, Paris.pdf",docs/references/core/yavuz_golbasi_2019_optimal_composition_sovereign_debt_paper.pdf,
+dipindah,"DAFTAR PUSTAKA/4. PPT Yavuz, H., & Golbasi, U. (2019). Optimal Composition of Sovereign Debt_ An Adaptation from Modern Portfolio Theory. Proceedings of the First Public Debt Management Network Conference, Paris.pdf",docs/references/core/yavuz_golbasi_2019_optimal_composition_sovereign_debt_slides.pdf,
+dipindah,"DAFTAR PUSTAKA/7. Suyanto, S., Ariyanto, A. A., & Ariyanto, A. F. (2022). Komodo Mlipir Algorithm. Applied Soft Computing, 114,108043.pdf",docs/references/core/suyanto_2022_komodo_mlipir_algorithm.pdf,
+dipindah,"DAFTAR PUSTAKA/2. Consiglio, A., & Zenios, S. A. (2015). Risk Management Optimization for Sovereign Debt Restructuring. Journal of Globalization and Development, 6(2), 181–213..pdf",docs/references/debt_management/consiglio_zenios_2015_risk_management_sovereign_debt_restructuring.pdf,
+dipindah,"DAFTAR PUSTAKA/3. Athanasopoulou, M., Consiglio, A., Erce, A., Gavilan, A., Moshammer, E., & Zenios, S. A. (2019_2023). Risk Management for Sovereign Financing within a Debt Sustainability Framework..pdf",docs/references/debt_management/athanasopoulou_2019_risk_management_sovereign_financing.pdf,proposal mengutip tahun 2018 (WP 31); label asli '2019_2023' - cek tahun
+dipindah,"DAFTAR PUSTAKA/10. International Monetary Fund. (2014). Revised Guidelines for Public Debt Management. Washington, D.C._IMF..pdf",docs/references/debt_management/imf_wb_2014_revised_guidelines_public_debt_management.pdf,
+dipindah,"DAFTAR PUSTAKA/11. Eichengreen, B., & Hausmann, R. (1999). Exchange Rates and Financial Fragility. NBER Working Paper No.7418.pdf",docs/references/debt_management/eichengreen_hausmann_1999_exchange_rates_financial_fragility.pdf,
+dipindah,"DAFTAR PUSTAKA/12. Panzer, J., dkk. (2015). Debt Management Performance Assessment (DeMPA) Methodology. Washington, D.C._World Bank.pdf",docs/references/debt_management/panzer_2015_dempa_methodology.pdf,
+dipindah,DAFTAR PUSTAKA/18. Bank Indonesia. (Ags 2025). Statistik Utang Luar Negeri Indonesia (SULNI)_Siaran Pers Triwulan II 2025.-compressed_compressed_compressed.pdf,docs/references/debt_management/bank_indonesia_2025_sulni_tw2_compressed.pdf,
+dipindah,DAFTAR PUSTAKA/18. Bank Indonesia. (Ags 2025). Statistik Utang Luar Negeri Indonesia (SULNI)_Siaran Pers Triwulan II 2025..pdf,docs/references/debt_management/bank_indonesia_2025_sulni_tw2.pdf,versi asli (20 MB)
+dipindah,DAFTAR PUSTAKA/19. SEKNAS FITRA (2019)_Kajian Tata Kelola Utang Negara untuk Pembangunan Nasional.pdf,docs/references/debt_management/seknas_fitra_2019_kajian_tata_kelola_utang.pdf,
+dipindah,DAFTAR PUSTAKA/20. FIA UB (2015)_Pengaruh Utang Luar Negeri dan Fluktuasi Nilai Tukar Rupiah Terhadap.pdf,docs/references/debt_management/fia_ub_2015_utang_luar_negeri_dan_nilai_tukar.pdf,
+dipindah,"DAFTAR PUSTAKA/1. Markowitz, H. (1952). Portfolio Selection. The Journal of Finance, 7(1), 77–91..pdf",docs/references/optimization/markowitz_1952_portfolio_selection.pdf,
+dipindah,"DAFTAR PUSTAKA/9. Abolmaali, S., & Roodposhti, F. R. (2018). Portfolio Optimization Using Ant Colony Method A Case Study on Tehran Stock Exchange. Journal of Accounting, 8(1), 96–108..pdf",docs/references/optimization/abolmaali_roodposhti_2018_portfolio_ant_colony.pdf,
+dipindah,"DAFTAR PUSTAKA/13. Nocedal, J., & Wright, S. J. (2006). Numerical Optimization (2nd ed.). Springer..pdf",docs/references/optimization/nocedal_wright_2006_numerical_optimization.pdf,
+dipindah,"DAFTAR PUSTAKA/14. Talbi, E.-G. (2009). Metaheuristics From Design to Implementation. Wiley..pdf",docs/references/optimization/talbi_2009_metaheuristics.pdf,
+dipindah,"DAFTAR PUSTAKA/15. Márová, K. (2016). Optimization Using Derivative-Free and Metaheuristic Methods. Brno University of Technology..pdf",docs/references/optimization/marova_2016_derivative_free_and_metaheuristic_methods.pdf,
+dipindah,"DAFTAR PUSTAKA/16. Scherzer, O. (1995). Convergence Criteria of Iterative Methods Based on Landweber Iteration for Solving Nonlinear Problems. Journal of Mathematical Analysis and Applications, 194(3), 911–933..pdf",docs/references/optimization/scherzer_1995_landweber_convergence_criteria.pdf,
+dipindah,"DAFTAR PUSTAKA/17. Brezonnik, L., Fister, I., Podgorelec, V. (2018). Swarm Intelligence Algorithms for Feature Selection A Review. Applied Sciences, 8(9), 1521..pdf",docs/references/optimization/brezocnik_2018_swarm_intelligence_feature_selection.pdf,label asli 'Brezonnik' salah eja; nama penulis: Brezočnik
+dipindah,DAFTAR PUSTAKA/MCCaR/1. George State Univ (2013) - The Marginal Cost of Risk in a Multi-Period Risk Model.pdf,docs/references/risk_measures/bauer_zanjani_2013_marginal_cost_of_risk_multiperiod.pdf,"penulis: Bauer & Zanjani (Georgia State Univ., Nov 2013)"
+dipindah,"DAFTAR PUSTAKA/MCCaR/2. Paul Glasserman, Columbia Business School (2005) - Measuring Marginal Risk Contributions in Credit Portfolios.pdf",docs/references/risk_measures/glasserman_2004_marginal_risk_contributions_credit_portfolios.pdf,"FDIC CFR Working Paper 2005-01 (Dec 2004), penulis Glasserman"
+dipindah,"DAFTAR PUSTAKA/MCCaR/3. Chiu, M. C., & Wong, H. Y. (2011). Mean–CVaR Portfolio Optimization_A Dynamic Programming Approach. Journal of Economic Dynamics and Control, 35(1), 37–53..pdf",docs/references/risk_measures/chiu_wong_2011_mean_cvar_dynamic_programming.pdf,
+dipindah,"DAFTAR PUSTAKA/MCCaR/Acerbi, C., & Tasche, D. (2002). Expected Shortfall as a Tool for Financial Risk Management. Journal of Banking & Finance, 26, 1505–1518. (dasar teori CVaR dan marginal contribution)..pdf",docs/references/risk_measures/acerbi_tasche_2002_expected_shortfall.pdf,
+dipindah,"DAFTAR PUSTAKA/MCCaR/Kalkbrener, M. (2005). An Axiomatic Approach to Capital Allocation. [marginal contribution to risk untuk capital allocation].pdf",docs/references/risk_measures/kalkbrener_2005_axiomatic_capital_allocation.pdf,
+dipindah,"DAFTAR PUSTAKA/MCCaR/Kochetov, Y., et al. (2021). Risk Based Loan Pricing_Portfolio Optimization Approach with Marginal Risk Contribution.pdf",docs/references/risk_measures/kochetov_2021_risk_based_loan_pricing.pdf,
+dipindah,DAFTAR PUSTAKA/MCCaR/Modeling_Measuring_and_Managing_Risk.pdf,docs/references/risk_measures/hochrainer_stigler_2019_systemic_risk_human_agency.pdf,"isinya risiko sistemik (J. Risk Research 2019), tampaknya tidak terkait MCCaR - cek relevansi"
+dipindah,"DAFTAR PUSTAKA/MCCaR/Tasche, D. (2007). Capital Allocation to Business Units and Sub-Portfolios_.pdf",docs/references/risk_measures/tasche_2007_capital_allocation_business_units.pdf,
+dipindah,DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/MACAM MACAM KMA/Binary Komodo Mlipir Algorithm for Feature.pdf,docs/references/kma/variants/binary_kma_feature_selection.pdf,
+dipindah,DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/MACAM MACAM KMA/Discrete komodo algorithm for traveling salesman problem.pdf,docs/references/kma/variants/discrete_komodo_traveling_salesman.pdf,
+dipindah,DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/MACAM MACAM KMA/Hybrid Pelican Komodo Algorithm (HPKA).pdf,docs/references/kma/variants/kusuma_dinimaharawati_2022_hybrid_pelican_komodo.pdf,
+dipindah,DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/MACAM MACAM KMA/Improved Adaptive Komodo Mlipir Algorithm.pdf,docs/references/kma/variants/improved_adaptive_kma.pdf,
+dipindah,"DAFTAR PUSTAKA/8. Kusuma, P. D., & Kallista, M. (2022). Stochastic Komodo Algorithm. International Journal of Intelligent Engineering and Systems, 15(4)..pdf",docs/references/kma/variants/kusuma_kallista_2022_stochastic_komodo_algorithm.pdf,
+dipindah,DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/REFERENSI/Buku Utama - Optimasi Prediksi Arus Lalu Lintas Perkotaan MEnggunakan Model LSTM - KMA.pdf,docs/references/kma/applications/lstm_kma_prediksi_lalu_lintas_perkotaan.pdf,
+dipindah,DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/REFERENSI/compress_UGM__Optimisasi_Portofolio_Saham_Menggunakan_Komodo_Mlipir_Algorithm_Berdasarkan_Klaster_K-Means__compressed__1_.pdf,docs/references/kma/applications/ugm_portofolio_saham_kma_kmeans_compressed.pdf,
+dipindah,DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/REFERENSI/UGM_“Optimisasi Portofolio Saham Menggunakan Komodo Mlipir Algorithm Berdasarkan Klaster K-Means”.pdf,docs/references/kma/applications/ugm_portofolio_saham_kma_kmeans.pdf,
+dipindah,DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/REFERENSI/UGM_“Optimisasi Portofolio Saham Menggunakan Komodo Mlipir Algorithm Berdasarkan Klaster K-Means”.md,docs/references/kma/applications/ugm_portofolio_saham_kma_kmeans.md,versi teks
+dipindah,DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/REFERENSI/ITS_OPTIMASI PORTOFOLIO SAHAM DENGAN BATASAN KARDINALITAS MENGGUNAKAN KOMODO MLIPIR ALGORITHM STUDI KASUS IDXESGL.pdf,docs/references/kma/applications/its_portofolio_saham_kardinalitas_kma_idxesgl.pdf,
+dipindah,"DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/REFERENSI/KMA pada permasalahan deteksi partikel udara PM2.5 (Li dan Zhao, 2022),.pdf",docs/references/kma/applications/li_zhao_2022_kma_deteksi_partikel_pm25.pdf,
+dipindah,"DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/REFERENSI/KMA untuk efisiensi energi pada jaringan radio kognitif (Dharmapuri dan Reddy, 2024).pdf",docs/references/kma/applications/dharmapuri_reddy_2024_kma_cognitive_radio.pdf,
+dipindah,"DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/REFERENSI/KMA untuk penentuan mekanisme rute optimal (Soundarayaa dan Balasubramanian, 2024).pdf",docs/references/kma/applications/soundarayaa_balasubramanian_2024_kma_rute_optimal.pdf,
+dipindah,"DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/REFERENSI/KMA untuk penjadwalan generator listrik (Aditya dkk., 2022),.pdf",docs/references/kma/applications/aditya_2022_kma_penjadwalan_generator.pdf,
+dipindah,DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/REFERENSI/Kontrol Pembangkit Otomatis pada Dua Area Pembangkit Listrik Multi Sumber Energi Terbarukan dengan menggunakan Algoritma Komodo Mlipir Automatic Generation Control.pdf,docs/references/kma/applications/kma_automatic_generation_control_dua_area.pdf,
+dipindah,"DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/REFERENSI/Optimasi KMA dalam Penggunaan LSTM Predikso Rute Perjalanan untuk Multi Target Vehicle Detection (Ashari,dkk 2025).pdf",docs/references/kma/applications/ashari_2025_kma_lstm_multi_target_vehicle_detection.pdf,
+dipindah,DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/Diagram Alur Komodo Mlipir Algorithm.png,docs/references/kma/diagrams/diagram_alur_kma.png,
+dipindah,DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/Diagram Alur Genetic Algorithm.png,docs/references/kma/diagrams/diagram_alur_ga.png,
+dipindah,DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/Diagram Alur Analisis Klaster K-Means.png,docs/references/kma/diagrams/diagram_alur_kmeans.png,
+dipindah,DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/Diagram Alur Penyelesaian Fungsi Pengali Lagrange Termodifikasi untuk CMVP.png,docs/references/kma/diagrams/diagram_alur_lagrange_cmvp.png,
+dipindah,DAFTAR PUSTAKA/Daftar_Tautan_Rujukan_TA_Sultan.pdf,docs/references/daftar_tautan_rujukan.pdf,
+dipindah,DAFTAR PUSTAKA/TA UTANG VALAS/1A. PROPOSAL IRFAN.pdf,docs/references/prior_theses/irfan_proposal.pdf,
+dipindah,DAFTAR PUSTAKA/TA UTANG VALAS/1B. LAPORAN FINAL TA IRFAN.pdf,docs/references/prior_theses/irfan_laporan_final.pdf,
+dipindah,DAFTAR PUSTAKA/TA UTANG VALAS/1B. LAPORAN FINAL TA IRFAN.md,docs/references/prior_theses/irfan_laporan_final.md,versi teks
+dipindah,DAFTAR PUSTAKA/TA UTANG VALAS/2A. PROPOSAL IDA.pdf,docs/references/prior_theses/ida_proposal.pdf,
+dipindah,DAFTAR PUSTAKA/TA UTANG VALAS/2B. LAPORAN FINAL TA IDA.pdf,docs/references/prior_theses/ida_laporan_final.pdf,
+dipindah,DAFTAR PUSTAKA/TA UTANG VALAS/2B. LAPORAN FINAL TA IDA.md,docs/references/prior_theses/ida_laporan_final.md,versi teks
+dipindah,DAFTAR PUSTAKA/TA UTANG VALAS/3A. PROPOSAL RICO.pdf,docs/references/prior_theses/rico_proposal.pdf,
+dipindah,DAFTAR PUSTAKA/TA UTANG VALAS/3B. LAPORAN FINAL TA RICO.pdf,docs/references/prior_theses/rico_laporan_final.pdf,
+dipindah,DAFTAR PUSTAKA/TA UTANG VALAS/3B. LAPORAN FINAL TA RICO.md,docs/references/prior_theses/rico_laporan_final.md,versi teks
+dipindah,AGENTS/execution/data_loader.py,legacy/execution_v0/data_loader.py,draf kode sebelum revisi proposal; hanya referensi
+dipindah,AGENTS/execution/gbm_simulation.py,legacy/execution_v0/gbm_simulation.py,draf kode sebelum revisi proposal; hanya referensi
+dipindah,AGENTS/execution/kma_algorithm.py,legacy/execution_v0/kma_algorithm.py,draf kode sebelum revisi proposal; hanya referensi
+dipindah,AGENTS/execution/optimizer_filtering.py,legacy/execution_v0/optimizer_filtering.py,draf kode sebelum revisi proposal; hanya referensi
+dipindah,AGENTS/execution/optimizer_numerical.py,legacy/execution_v0/optimizer_numerical.py,draf kode sebelum revisi proposal; hanya referensi
+dipindah,AGENTS/execution/risk_metrics.py,legacy/execution_v0/risk_metrics.py,draf kode sebelum revisi proposal; hanya referensi
+dipindah,AGENTS/AGENTS.md,legacy/agent_template_v0/AGENTS_3layer_template.md,aturan agen lama (template umum 3-layer)
+dipindah,TEMPLATE PROPOSAL/README_Proposal_Sultan.md,report/proposal_latex/README_Proposal_Sultan.md,
+dipindah,TEMPLATE PROPOSAL/TA-ITS.cls,report/proposal_latex/TA-ITS.cls,
+dipindah,TEMPLATE PROPOSAL/proposal/assets/pustaka.bib,report/proposal_latex/proposal/assets/pustaka.bib,
+dipindah,TEMPLATE PROPOSAL/proposal/assets/images/Skema_dan_Posisi_Penelitian.png,report/proposal_latex/proposal/assets/images/Skema_dan_Posisi_Penelitian.png,
+dipindah,TEMPLATE PROPOSAL/proposal/assets/images/WM Lembar Pengesahan.jpg,report/proposal_latex/proposal/assets/images/WM Lembar Pengesahan.jpg,
+dipindah,TEMPLATE PROPOSAL/proposal/assets/images/its blue.png,report/proposal_latex/proposal/assets/images/its blue.png,
+dipindah,TEMPLATE PROPOSAL/proposal/assets/images/its.png,report/proposal_latex/proposal/assets/images/its.png,
+dipindah,TEMPLATE PROPOSAL/proposal/assets/images/Diagram_Alir_Penelitian.png,report/proposal_latex/proposal/assets/images/Diagram_Alir_Penelitian.png,
+dipindah,TEMPLATE PROPOSAL/proposal/compile-here/proposal-main.tex,report/proposal_latex/proposal/compile-here/proposal-main.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/front-matter/lembar-orisinalitas.tex,report/proposal_latex/proposal/front-matter/lembar-orisinalitas.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/front-matter/inner-cover-id.tex,report/proposal_latex/proposal/front-matter/inner-cover-id.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/front-matter/inner-cover-en.tex,report/proposal_latex/proposal/front-matter/inner-cover-en.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/front-matter/front-cover.tex,report/proposal_latex/proposal/front-matter/front-cover.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/front-matter/000_front-matter.tex,report/proposal_latex/proposal/front-matter/000_front-matter.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/front-matter/lembar-pengesahan.tex,report/proposal_latex/proposal/front-matter/lembar-pengesahan.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/back-matter/999_back-matter.tex,report/proposal_latex/proposal/back-matter/999_back-matter.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/back-matter/credits.tex,report/proposal_latex/proposal/back-matter/credits.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/back-matter/about.tex,report/proposal_latex/proposal/back-matter/about.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/contents/fig_skema.tex,report/proposal_latex/proposal/contents/fig_skema.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/contents/004_schedule.tex,report/proposal_latex/proposal/contents/004_schedule.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/contents/005_appendix.tex,report/proposal_latex/proposal/contents/005_appendix.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/contents/001_intro.tex,report/proposal_latex/proposal/contents/001_intro.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/contents/000_metadata.tex,report/proposal_latex/proposal/contents/000_metadata.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/contents/100_symbols.tex,report/proposal_latex/proposal/contents/100_symbols.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/contents/002_literature.tex,report/proposal_latex/proposal/contents/002_literature.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/contents/XXX_abstrak.tex,report/proposal_latex/proposal/contents/XXX_abstrak.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/contents/fig_flowchart.tex,report/proposal_latex/proposal/contents/fig_flowchart.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/contents/XXX_preface.tex,report/proposal_latex/proposal/contents/XXX_preface.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/contents/003_method.tex,report/proposal_latex/proposal/contents/003_method.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/contents/XXX_abstract.tex,report/proposal_latex/proposal/contents/XXX_abstract.tex,
+dipindah,TEMPLATE PROPOSAL/proposal/contents/006_bibliography.tex,report/proposal_latex/proposal/contents/006_bibliography.tex,
+dipindah,TEMPLATE TUGAS AKHIR/TA-ITS.cls,report/skripsi_latex/TA-ITS.cls,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/assets/pustaka.bib,report/skripsi_latex/tugas-akhir/assets/pustaka.bib,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/assets/images/WM Lembar Pengesahan.jpg,report/skripsi_latex/tugas-akhir/assets/images/WM Lembar Pengesahan.jpg,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/assets/images/its blue.png,report/skripsi_latex/tugas-akhir/assets/images/its blue.png,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/assets/images/its.png,report/skripsi_latex/tugas-akhir/assets/images/its.png,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/compile-here/skripsi-main.tex,report/skripsi_latex/tugas-akhir/compile-here/skripsi-main.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/front-matter/lembar-orisinalitas.tex,report/skripsi_latex/tugas-akhir/front-matter/lembar-orisinalitas.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/front-matter/inner-cover-id.tex,report/skripsi_latex/tugas-akhir/front-matter/inner-cover-id.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/front-matter/inner-cover-en.tex,report/skripsi_latex/tugas-akhir/front-matter/inner-cover-en.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/front-matter/front-cover.tex,report/skripsi_latex/tugas-akhir/front-matter/front-cover.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/front-matter/000_front-matter.tex,report/skripsi_latex/tugas-akhir/front-matter/000_front-matter.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/front-matter/lembar-pengesahan.tex,report/skripsi_latex/tugas-akhir/front-matter/lembar-pengesahan.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/back-matter/999_back-matter.tex,report/skripsi_latex/tugas-akhir/back-matter/999_back-matter.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/back-matter/credits.tex,report/skripsi_latex/tugas-akhir/back-matter/credits.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/back-matter/about.tex,report/skripsi_latex/tugas-akhir/back-matter/about.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/contents/004_result.tex,report/skripsi_latex/tugas-akhir/contents/004_result.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/contents/005_summary.tex,report/skripsi_latex/tugas-akhir/contents/005_summary.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/contents/001_intro.tex,report/skripsi_latex/tugas-akhir/contents/001_intro.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/contents/006_appendix.tex,report/skripsi_latex/tugas-akhir/contents/006_appendix.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/contents/000_metadata.tex,report/skripsi_latex/tugas-akhir/contents/000_metadata.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/contents/100_symbols.tex,report/skripsi_latex/tugas-akhir/contents/100_symbols.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/contents/002_literature.tex,report/skripsi_latex/tugas-akhir/contents/002_literature.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/contents/XXX_abstrak.tex,report/skripsi_latex/tugas-akhir/contents/XXX_abstrak.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/contents/007_bibliography.tex,report/skripsi_latex/tugas-akhir/contents/007_bibliography.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/contents/XXX_preface.tex,report/skripsi_latex/tugas-akhir/contents/XXX_preface.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/contents/003_method.tex,report/skripsi_latex/tugas-akhir/contents/003_method.tex,
+dipindah,TEMPLATE TUGAS AKHIR/tugas-akhir/contents/XXX_abstract.tex,report/skripsi_latex/tugas-akhir/contents/XXX_abstract.tex,
+tidak dibawa,DATASET/raw/SUMBER_DATA.md,,ditulis ulang (data/raw/SUMBER_DATA.md): path dan perintah di dalamnya sudah tidak berlaku
+tidak dibawa,DAFTAR PUSTAKA/5. Direktorat Jenderal Pengelolaan Pembiayaan dan Risiko (DJPPR). (2025). Optimalisasi Komposisi Utang Valuta Asing dengan Model Marginal Conditional Cost at Risk (MCCaR). Kementerian Keuangan Republik.pdf,,duplikat persis (SHA-256 sama) dari 0. JURNAL UTAMA KEMENKEU
+tidak dibawa,DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/MACAM MACAM KMA/MAIN KMA.pdf,,duplikat persis dari 7. Suyanto (2022)
+tidak dibawa,"DAFTAR PUSTAKA/MCCaR/Bauer, D., & Zanjani, G. (2015). [digunakan dalam diskusi marginal cost of risk].pdf",,"duplikat persis dari 1. George State; label 'Bauer & Zanjani (2015)' keliru, dokumennya laporan Nov 2013"
+tidak dibawa,"DAFTAR PUSTAKA/MCCaR/Gorton, G., & Rosen, R. (1995). Measuring Marginal Risk Contributions in Credit Portfolios. FDIC Working Paper 2005-01..pdf",,duplikat persis dari 2. Glasserman; label 'Gorton & Rosen (1995)' KELIRU - penulisnya Paul Glasserman
+tidak dibawa,DAFTAR PUSTAKA/KOMODO MLIPIR ALGORITHM/MACAM MACAM KMA/Stochastic Komodo Algorithm.pdf,,duplikat persis dari 8. Kusuma & Kallista (2022)
+tidak dibawa,"DAFTAR PUSTAKA/6. Fauzan, R. I. A. (2025). Optimasi Portofolio Utang Negara Multivaluta Menggunakan Algoritma Komodo MLIPIR. Tugas Akhir, Departemen Matematika, Institut Teknologi Sepuluh Nopember..pdf",,duplikat persis dari 1B. LAPORAN FINAL TA IRFAN (Fauzan = Irfan)
+tidak dibawa,TEMPLATE PROPOSAL.zip,,arsip zip berisi file yang sama dengan folder TEMPLATE PROPOSAL (31 entri)
+tidak dibawa,TEMPLATE TUGAS AKHIR.zip,,arsip zip berisi file yang sama dengan folder TEMPLATE TUGAS AKHIR (27 entri)
+tidak dibawa,AGENTS/brand-guidelines/SKILL_brandguidelines.md,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/brand-guidelines/LICENSE.txt,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/brand-scraper/SKILL.md,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/brand-scraper/references/api_errors.md,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/brand-scraper/scripts/scrape_brand.py,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/frontend-design/SKILL.md,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/frontend-design/LICENSE.txt,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/skill-creator/LICENSE.txt,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/skill-creator/SKILL_skillcreatormd,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/skill-creator/references/schemas.md,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/skill-creator/agents/comparator.md,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/skill-creator/agents/grader.md,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/skill-creator/agents/analyzer.md,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/skill-creator/assets/eval_review.html,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/skill-creator/scripts/run_loop.py,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/skill-creator/scripts/improve_description.py,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/skill-creator/scripts/__init__.py,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/skill-creator/scripts/package_skill.py,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/skill-creator/scripts/aggregate_benchmark.py,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/skill-creator/scripts/run_eval.py,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/skill-creator/scripts/generate_report.py,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/skill-creator/scripts/quick_validate.py,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/skill-creator/scripts/utils.py,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/skill-creator/eval-viewer/generate_review.py,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/skill-creator/eval-viewer/viewer.html,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/.tmp/.gitkeep,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/directives/.gitkeep,,"skill/template agen umum, tidak terkait skripsi (tetap ada di folder lama)"
+tidak dibawa,AGENTS/.env,,".env kosong (hanya komentar), .gitignore/.gitkeep digantikan yang baru"
+tidak dibawa,AGENTS/.gitignore,,".env kosong (hanya komentar), .gitignore/.gitkeep digantikan yang baru"
+tidak dibawa,AGENTS/execution/.gitkeep,,penanda folder kosong

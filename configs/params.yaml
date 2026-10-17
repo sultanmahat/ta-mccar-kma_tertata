@@ -1,0 +1,247 @@
+# ==============================================================================
+# Parameter Konfigurasi Proyek MCCaR-KMA
+# Sumber Kebenaran: docs/context/spesifikasi_model.md & Proposal Pasca-Sempro
+# Nomor persamaan mengacu pada proposal.
+# Parameter yang belum ditentukan diisi null dengan komentar "KEPUTUSAN TERBUKA Dx"
+# ==============================================================================
+
+project:
+  name: "mccar_kma"
+  title: "Optimasi Portofolio Utang Negara Multivaluta (MCCaR + KMA)"
+  author: "Sultan Bakri Baihaqi Mahat"
+  nrp: "5002221016"
+  advisor: "Prof. Dr. Mohammad Isa Irawan, MT"
+
+# ------------------------------------------------------------------------------
+# 1. Konfigurasi Data & Jendela Analisis (Spesifikasi §2, §4, §12)
+# ------------------------------------------------------------------------------
+data:
+  raw_file: "data/raw/Dataset_Utama_Optimum_Utang_Valas.xlsx"
+  start_date: "2017-07-03" # Tanggal awal ketersediaan IR_JPY_5Y
+  end_date: "2025-11-24"   # Observasi akhir jendela
+  days_per_year: 252
+
+  # KEPUTUSAN TERBUKA D1:
+  # Opsi (A) "intersection": buang 163 baris hilang EUR_10Y (total 2.028 baris)
+  # Opsi (B) "spline": interpolasi natural cubic spline untuk EUR_10Y (total 2.191 baris)
+  window_mode: null
+
+# ------------------------------------------------------------------------------
+# 2. Instrumen Utang & Batas Proporsi (Tabel 2.1, 2.2, Spesifikasi §2)
+# ------------------------------------------------------------------------------
+instruments:
+  dimension: 7
+  items:
+    - id: 1
+      name: "USD_Fixed_5Y"
+      currency: "USD"
+      tenor: 5
+      yield_col: "IR_USD_5Y"
+      w0: 0.459485835
+      lb: 0.425
+      ub: 0.490
+
+    - id: 2
+      name: "USD_Fixed_10Y"
+      currency: "USD"
+      tenor: 10
+      yield_col: "IR_USD_10Y"
+      w0: 0.113620854
+      lb: 0.100
+      ub: 0.125
+
+    - id: 3
+      name: "USD_Fixed_30Y"
+      currency: "USD"
+      tenor: 30
+      yield_col: "IR_USD_30Y"
+      w0: 0.147798763
+      lb: 0.130
+      ub: 0.165
+
+    - id: 4
+      name: "EUR_Fixed_7Y"
+      currency: "EUR"
+      tenor: 8
+      yield_col: "IR_EUR_7Y"
+      w0: 0.143927407
+      lb: 0.130
+      ub: 0.155
+
+    - id: 5
+      name: "EUR_Fixed_10Y"
+      currency: "EUR"
+      tenor: 10
+      yield_col: "IR_EUR_10Y"
+      w0: 0.024401992
+      lb: 0.015
+      ub: 0.030
+
+    - id: 6
+      name: "JPY_Fixed_5Y"
+      currency: "JPY"
+      tenor: 5
+      yield_col: "IR_JPY_5Y"
+      w0: 0.066688212
+      lb: 0.050
+      ub: 0.085
+
+    - id: 7
+      name: "JPY_Fixed_10Y"
+      currency: "JPY"
+      tenor: 10
+      yield_col: "IR_JPY_10Y"
+      w0: 0.044076937
+      lb: 0.030
+      ub: 0.055
+
+currencies:
+  usd:
+    quote_format: "base" # USD = USD
+  eur:
+    fx_col: "FX_USD/EUR" # Unit EUR per 1 USD
+  jpy:
+    fx_col: "FX_USD/JPY" # Unit JPY per 1 USD
+
+# Skenario batas proporsi: 'free' (0 <= w_i <= 1) atau 'djppr' (lb <= w_i <= ub)
+boundary_scenarios:
+  - "free"
+  - "djppr"
+
+# ------------------------------------------------------------------------------
+# 3. Pembangkitan Skenario GBM (Persamaan 2.11–2.12, Spesifikasi §4)
+# ------------------------------------------------------------------------------
+scenarios:
+  n_scenarios: 5000       # N = 5.000 skenario
+  horizon_days: 252       # Horizon 1 tahun (252 hari kerja)
+  dt: 0.003968253968253968 # 1 / 252
+
+  # KEPUTUSAN TERBUKA D2:
+  # Kalibrasi drift (mu = 252*m + sigma^2/2 vs alternatif)
+  # Simulasi terminal 1-step vs simulasi jalur 252-step
+  # Definisi C_{i,t} historis (nilai X_0) untuk statistik Persamaan 2.7–2.10
+  drift_calibration: null
+  simulation_path_mode: null
+
+  # KEPUTUSAN TERBUKA D3:
+  # Ukuran bank skenario validasi independen (misal 20.000 skenario)
+  validation_scenarios: null
+
+# ------------------------------------------------------------------------------
+# 4. Ukuran Risiko & Biaya Portofolio (Persamaan 2.13–2.20, Spesifikasi §5)
+# ------------------------------------------------------------------------------
+risk:
+  alpha: 0.95            # Tingkat kepercayaan 95% (Persamaan 2.13)
+  m_tail: 250            # m = ceil((1 - alpha) * N) = 250 untuk N = 5000
+  delta: 0.01            # Tambahan penerbitan delta = 1% (Persamaan 2.14)
+
+  # KEPUTUSAN TERBUKA D5:
+  # Toleransi pembagian bila MC_i mendekati nol pada theta_i (Persamaan 2.18)
+  zero_tolerance_mc: null
+
+# Definisi biaya portofolio:
+# 'gross': Persamaan 2.2 (C_{i,s} = q_{c(i),s} * (1 + y_{i,s}/100))
+# 'interest': Persamaan 2.3 (C^I_{i,s} = q_{c(i),s} * (y_{i,s}/100))
+cost_definitions:
+  - "gross"
+  - "interest"
+
+# ------------------------------------------------------------------------------
+# 5. Model Optimasi & Penalti Kendala (Persamaan 2.21–2.24, Spesifikasi §6)
+# ------------------------------------------------------------------------------
+optimization:
+  penalty_rho_J: 1.0e+6   # rho_J = 1e6 (Persamaan 2.24)
+  penalty_rho_R: 1.0e+6   # rho_R = 1e6 (Persamaan 2.24)
+  eps_tol: 1.0e-8         # Toleransi kelayakan numerik epsilon_tol = 1e-8
+  projection_max_iter: 1000 # Iterasi maksimum proyeksi kendala sum(w)=1 dan batas proporsi
+
+# ------------------------------------------------------------------------------
+# 6. Desain Eksperimen (Tabel 3.1, Spesifikasi §8)
+# ------------------------------------------------------------------------------
+experiments:
+  budget_evaluations: 25000 # Anggaran evaluasi fungsi per run/replikasi
+  replications: 30         # 30 replikasi per konfigurasi per algoritma
+  algorithms:
+    - "kma"
+    - "ga"
+    - "pso"
+  configurations:
+    - "gross_free"
+    - "gross_djppr"
+    - "interest_free"
+    - "interest_djppr"
+
+  # KEPUTUSAN TERBUKA D8:
+  # Prosedur pembangkitan 1.000 kombinasi bobot acak DJPPR (acuan historis)
+  random_benchmark_count: 1000
+  random_benchmark_method: null
+
+# ------------------------------------------------------------------------------
+# 7. Parameter Metaheuristik (Spesifikasi §7)
+# ------------------------------------------------------------------------------
+algorithms:
+  # 7.1 Komodo Mlipir Algorithm (KMA) - Subbab 2.8, Algoritma 1
+  kma:
+    phase_1:
+      n_pop: 5             # Ukuran populasi fase 1
+      mlipir_rate: 0.8571428571428571 # d = (D - 1) / D = 6 / 7
+      budget: 5000         # 5.000 evaluasi
+    phase_2:
+      n_pop_init: 200      # Ukuran populasi awal fase 2
+      n_pop_min: 20        # Batas bawah ukuran populasi
+      n_pop_max: 200       # Batas atas ukuran populasi
+      budget: 20000        # Sisa anggaran 20.000 evaluasi
+
+    # KEPUTUSAN TERBUKA D4:
+    # Parameter KMA yang belum ditentukan: p_bm, gamma, q (jumlah big male interaksi),
+    # probabilitas kawin vs partenogenesis, definisi kriteria stagnasi, dan delta_n
+    p_bm: null
+    gamma: null
+    q_interactions: null
+    p_mating: null
+    stagnation_patience: null
+    delta_n: null
+    phase_transition_strategy: null
+
+  # 7.2 Genetic Algorithm (GA) - Subbab 2.9.1
+  ga:
+    n_pop: 50              # Ukuran populasi GA
+    tournament_size: 2    # Seleksi turnamen ukuran 2
+    p_crossover: 0.9      # Peluang persilangan aritmetika
+    p_mutation: 0.14285714285714285 # Peluang mutasi per dimensi (1 / D = 1 / 7)
+    sigma_m_factor: 0.1   # Standar deviasi mutasi Gaussian = 0.1 * rentang
+
+    # KEPUTUSAN TERBUKA D6 (bagian GA):
+    # Jumlah/mekanisme elitisme pada GA
+    elitism_count: null
+
+  # 7.3 Particle Swarm Optimization (PSO) - Subbab 2.9.2
+  pso:
+    n_pop: 50              # Ukuran kawanan partikel PSO
+    w_start: 0.9          # Bobot inersia awal
+    w_end: 0.4            # Bobot inersia akhir (turun linear)
+    c1: 1.49618           # Koefisien akselerasi kognitif
+    c2: 1.49618           # Koefisien akselerasi sosial
+    v_max_factor: 0.2     # v_max_i = 0.2 * (ub_i - lb_i)
+
+    # KEPUTUSAN TERBUKA D6 (bagian PSO & bersama):
+    # Perlakuan kecepatan v ketika posisi terpotong proyeksi
+    # Strategi inisialisasi populasi awal bersama (apakah identik di 3 algo)
+    velocity_clamp_strategy: null
+    shared_init_strategy: null
+
+# ------------------------------------------------------------------------------
+# 8. Analisis Statistik (Spesifikasi §9, §12)
+# ------------------------------------------------------------------------------
+analysis:
+  significance_level: 0.05
+  tests:
+    - "shapiro_wilk"
+    - "levene"
+    - "kruskal_wallis"
+    - "dunn_holm"
+    - "rank_biserial"
+
+  # KEPUTUSAN TERBUKA D7:
+  # Penanganan ties pada uji Dunn (dengan atau tanpa koreksi ties)
+  dunn_ties_correction: null

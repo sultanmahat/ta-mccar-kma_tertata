@@ -1,0 +1,423 @@
+\chapter{Tinjauan Pustaka}\label{ch:literature}
+
+%============================================================
+
+\section{Penelitian Terdahulu}\label{sec:past-research} Kajian mengenai penentuan komposisi utang negara yang optimal berkembang dari kerangka teori portofolio klasik menuju pendekatan berbasis risiko ekor dan metode optimasi modern. Landasan utamanya adalah model \textit{Mean-Variance Optimization} (MVO) yang diperkenalkan oleh \shortciteA{markowitz1952} melalui tulisan \textit{Portfolio Selection}. Model ini merepresentasikan risiko melalui variansi dan menetapkan himpunan portofolio dengan risiko minimum pada tingkat biaya tertentu. Meskipun dirancang untuk portofolio aset, kerangka MVO banyak diadaptasi untuk konteks portofolio kewajiban, termasuk utang negara multivaluta.
+
+Penerapan MVO pada manajemen utang menghadapi keterbatasan mendasar. \shortciteA{consiglio2015} menunjukkan bahwa ukuran risiko berbasis variansi kurang memadai untuk menangkap perilaku biaya utang pada kondisi pasar ekstrem. Peneliti tersebut mengembangkan kerangka optimasi berbasis skenario untuk restrukturisasi utang negara dengan memperkenalkan ukuran risiko ekor (\textit{tail risk}) yang disebut \textit{conditional Debt-at-Risk}, lalu menyelesaikannya melalui pemrograman stokastik multiperiode. Kerangka ini diterapkan pada kasus krisis utang Yunani dan mampu mengevaluasi keberlanjutan utang pada tingkat kepercayaan tertentu. \shortciteA{athanasopoulou2023} memperluas pendekatan tersebut melalui ukuran \textit{conditional Flow-at-Risk} untuk menyeimbangkan biaya pinjaman dengan risiko pembiayaan ulang (\textit{refinancing risk}) dalam kerangka analisis keberlanjutan utang. Kedua penelitian tersebut menegaskan bahwa ukuran risiko ekor memberikan gambaran yang lebih realistis bagi pengelola utang dibandingkan variansi, tetapi keduanya bersandar pada metode optimasi deterministik berbasis pemrograman stokastik.
+
+Pada ranah praktik manajemen utang negara, Turki mengembangkan metode \textit{Marginal Conditional Cost-at-Risk} (MCCaR) yang memadukan simulasi stokastik dengan analisis \textit{Conditional Cost-at-Risk} (CCaR) \shortcite{yavuz2019}. Metode ini mengukur tambahan risiko ekor yang ditimbulkan oleh penerbitan satu unit instrumen utang, kemudian membandingkannya dengan biaya marginal instrumen tersebut guna memperoleh komposisi yang paling efisien. Direktorat Jenderal Pengelolaan Pembiayaan dan Risiko (DJPPR) Kementerian Keuangan mengadaptasi metode MCCaR untuk portofolio utang valas Indonesia dan membandingkannya dengan model Markowitz \shortcite{djppr2025}. Hasil kajian DJPPR menunjukkan bahwa MCCaR lebih responsif terhadap skenario krisis karena berfokus pada risiko ekor, sedangkan Markowitz lebih stabil untuk analisis rata-rata jangka panjang. Akan tetapi, pemilihan komposisi pada kajian tersebut dilakukan melalui penyaringan terhadap seribu kombinasi proporsi yang dibangkitkan secara acak, bukan melalui prosedur optimasi yang menjamin pencarian solusi terbaik pada seluruh ruang kelayakan.
+
+Pada sisi metode penyelesaian, algoritma metaheuristik banyak diterapkan untuk optimasi portofolio karena keluwesannya menangani ruang solusi yang kompleks. \shortciteA{abolmaali2018} menerapkan \textit{Ant Colony Optimization} pada portofolio Mean-Variance dengan kendala kardinalitas dan memperoleh \textit{efficient frontier} yang mendekati solusi Markowitz pada data Tehran Stock Exchange. Salah satu algoritma metaheuristik terkini adalah \textit{Komodo Mlipir Algorithm} (KMA) yang diperkenalkan oleh \shortciteA{suyanto2022}. \shortciteA{kusuma2022} menunjukkan bahwa KMA memiliki kinerja kompetitif terhadap algoritma metaheuristik mapan pada masalah optimasi numerik umum. Penelitian \shortciteA{fauzan2025} menerapkan KMA untuk optimasi portofolio utang negara multivaluta, tetapi model risiko yang digunakan masih berbasis variansi dalam kerangka MVO, sehingga belum menangkap perilaku biaya pada kondisi pasar ekstrem. Penelusuran literatur memperlihatkan bahwa penerapan KMA pada model risiko berbasis MCCaR untuk portofolio utang negara belum dikaji. Penelitian ini menempati celah tersebut dengan memadukan MCCaR sebagai model risiko dan KMA sebagai metode penyelesaian.
+
+Sebagai rangkuman dari berbagai penelitian terdahulu yang telah dibahas, Gambar ~\ref{fig:skema-posisi} menyajikan kerangka alur tinjauan pustaka yang menunjukkan hubungan antar metodologi, metrik evaluasi, serta konteks penelitian yang menjadi dasar penyusunan studi ini.
+
+\input{proposal/contents/fig_skema}
+    
+Urgensi penelitian ini berakar pada karakter risiko utang valas yang tidak linear terhadap guncangan pasar. Pelemahan Rupiah dan kenaikan suku bunga global tidak menimbulkan kerugian yang sebanding pada kondisi normal, melainkan melonjak tajam pada skenario terburuk. Ukuran risiko berbasis variansi cenderung meremehkan potensi kerugian semacam itu,sehingga komposisi portofolio yang dihasilkan berisiko kurang konservatif ketika krisis terjadi. Model MCCaR yang berfokus pada rata-rata biaya tertinggi pada skenario di luar tingkat kepercayaan tertentu memberikan gambaran yang lebih sesuai dengan tujuan pengelola utang dalam menjaga kesinambungan fiskal. Pada saat yang sama, pengembangan model utang valas ke depan akan melibatkan kendala yang lebih rumit, seperti kendala kardinalitas, instrumen bersuku bunga mengambang, dan lindung nilai (\textit{hedging}) [TT], yang tidak selalu mudah diselesaikan dengan metode deterministik konvensional \shortcite{djppr2025}. Ketersediaan metode metaheuristik yang teruji, seperti KMA, menjadi penting sebagai fondasi bagi pengembangan model tersebut. Atas dasar itu, penelitian mengenai optimasi portofolio utang negara multivaluta berbasis MCCaR menggunakan KMA layak dan perlu untuk dilakukan.
+
+%============================================================
+
+\section{Pengelolaan Utang Negara Multivaluta}\label{sec:utang}
+
+Pengelolaan utang negara (\textit{sovereign debt management}) merupakan proses penyusunan strategi pemenuhan kebutuhan pembiayaan pemerintah dengan biaya seminimal mungkin dalam jangka panjang, sembari menjaga risiko pada tingkat yang dapat ditoleransi \shortcite{imf2014}. Dalam praktik pembiayaan modern, pemerintah menerbitkan utang dalam berbagai mata uang asing untuk mendiversifikasi sumber dana sekaligus memanfaatkan suku bunga internasional yang relatif lebih rendah dibandingkan instrumen domestik \shortcite{eichengreen1999}. Strategi ini menempatkan utang valas sebagai bagian dari portofolio kewajiban yang harus dikelola secara terukur.
+
+Pemanfaatan utang valas menghadirkan dua sumber risiko pasar utama. Yang pertama adalah risiko nilai tukar (\textit{currency risk}), yaitu potensi kenaikan nilai kewajiban dalam mata uang domestik akibat depresiasi terhadap mata uang asing meskipun pokok utang tidak berubah. Yang kedua adalah risiko suku bunga (\textit{interest rate risk}), yaitu potensi kenaikan biaya layanan utang (\textit{debt servicing cost}) akibat pergerakan suku bunga global \shortcite{djppr2025}. Kedua risiko tersebut membuat biaya utang valas bersifat volatil, terutama pada kondisi pasar yang penuh ketidakpastian. Oleh karena itu, penentuan komposisi utang valas yang optimal menuntut pendekatan kuantitatif yang mampu menyeimbangkan biaya pembiayaan dengan risiko pasar secara sistematis.
+
+%============================================================
+
+\section{Optimasi Portofolio dan Teori Portofolio Modern} \label{sec:optimasi-portofolio}
+
+Optimasi portofolio merupakan pendekatan kuantitatif untuk menyusun kombinasi aset atau kewajiban sedemikian rupa sehingga tujuan tertentu dapat dicapai pada tingkat risiko yang masih dapat diterima \shortcite{markowitz1952}. Landasan teoritisnya adalah Teori Portofolio Modern (\textit{Modern Portfolio Theory}) yang menekankan diversifikasi sebagai strategi utama pengelolaan risiko: penggabungan beberapa instrumen dengan karakteristik biaya dan risiko berbeda dapat menurunkan risiko keseluruhan tanpa harus menaikkan biaya secara proporsional. Dalam konteks penelitian ini, instrumen yang dianalisis bukan dipandang sebagai aset yang memberikan imbal hasil, melainkan sebagai instrumen utang yang menimbulkan biaya, sehingga besaran yang digunakan adalah perubahan relatif biaya antar periode.
+
+%============================================================
+
+    \subsection{Perubahan Biaya}\label{sub:perubahan-biaya}
+    Perubahan biaya instrumen ke-$i$ pada waktu ke-$t$ didefinisikan dalam bentuk logaritmik sebagai berikut.
+
+    \begin{equation}
+        \label{eq:perubahan-cost}
+        \Delta c_{i,t} = \ln\!\left(\frac{C_{i,t}}{C_{i,t-1}}\right).
+    \end{equation}
+
+    dengan keterangan:
+    \begin{itemize}
+        \item $\Delta c_{i,t}$ : perubahan biaya logaritmik instrumen ke-$i$ pada periode ke-$t$,
+        \item $C_{i,t}$ : nilai biaya instrumen ke-$i$ setelah penyesuaian nilai tukar dan suku bunga pada periode ke-$t$,
+        \item $C_{i,t-1}$ : nilai biaya instrumen ke-$i$ pada periode sebelumnya.
+    \end{itemize}
+
+    Rata-rata perubahan biaya instrumen ke-$i$ selama periode pengamatandihitung sebagai berikut.
+    \begin{equation}
+        \label{eq:rata-cost}
+        \overline{\Delta c}_i = \frac{1}{T}\sum_{t=1}^{T} \Delta c_{i,t}.
+    \end{equation}
+
+    dengan keterangan:
+    \begin{itemize}
+        \item $\overline{\Delta c}_i$ : rata-rata perubahan biaya instrumen ke-$i$,
+        \item $T$ : jumlah periode pengamatan.
+    \end{itemize}
+
+    Nilai rata-rata perubahan biaya tersebut digunakan untuk membentuk vektorbiaya ekspektasi $\boldsymbol{\mu}$ yang menjadi salah satu masukan dalam model optimasi.
+
+%============================================================
+
+    \subsection{Risiko Portofolio}\label{sub:risiko}
+    Risiko portofolio diukur menggunakan variansi perubahan biaya. Variansi perubahan biaya instrumen ke-$i$ dirumuskan sebagai berikut.
+
+    \begin{equation}
+        \label{eq:varians-instrumen}
+        \sigma_i^2 = \frac{1}{T-1}\sum_{t=1}^{T}\left(\Delta c_{i,t} - \overline{\Delta c}_i\right)^2.
+    \end{equation}
+
+    dengan keterangan:
+    \begin{itemize}
+        \item $\sigma_i^2$ : variansi perubahan biaya instrumen ke-$i$,
+        \item $\Delta c_{i,t}$ : perubahan biaya instrumen ke-$i$ pada periode ke-$t$,
+        \item $\overline{\Delta c}_i$ : rata-rata perubahan biaya instrumen ke-$i$,
+        \item $T$ : jumlah periode pengamatan.
+    \end{itemize}
+
+    Hubungan pergerakan antar instrumen direpresentasikan oleh kovarians perubahan biaya, yang dirumuskan sebagai berikut.
+
+    \begin{equation}
+        \label{eq:kovarians}
+        \mathrm{Cov}(\Delta c_i, \Delta c_j) = \frac{1}{T-1}\sum_{t=1}^{T} \left(\Delta c_{i,t} - \overline{\Delta c}_i\right) \left(\Delta c_{j,t} - \overline{\Delta c}_j\right).
+    \end{equation}
+
+    dengan keterangan:
+    \begin{itemize}
+        \item $\mathrm{Cov}(\Delta c_i, \Delta c_j)$ kovarians perubahan biaya instrumen ke-$i$ dan ke-$j$.
+    \end{itemize}
+
+    Seluruh informasi risiko dan hubungan antar instrumen dirangkum dalam matriks kovarians $\boldsymbol{\Sigma} \in \mathbb{R}^{n\times n}$. Variansi perubahan biaya portofolio kemudian dinyatakan dalam bentuk matrik sebagai berikut.
+
+    \begin{equation}
+        \label{eq:varians-portofolio}
+        \sigma_p^2 =\mathbf{w}^{\top}\boldsymbol{\Sigma}\,\mathbf{w}= \sum_{i=1}^{n}\sum_{j=1}^{n} w_i w_j\,\mathrm{Cov}(\Delta c_i, \Delta c_j).
+    \end{equation}
+
+    dengan keterangan:
+    \begin{itemize}
+        \item $\sigma_p^2$ : variansi perubahan biaya portofolio,
+        \item $\mathbf{w}$ : vektor bobot portofolio,
+        \item $w_i$ : bobot instrumen utang ke-$i$,
+        \item $\boldsymbol{\Sigma}$ : matriks kovarians perubahan biaya,
+        \item $n$ : jumlah instrumen dalam portofolio.
+    \end{itemize}
+
+    Matriks $\boldsymbol{\Sigma}$ bersifat simetris dan positif semidefinit, sehingga variansi portofolio selalu bernilai tidak negatif. Pendekatan ini digunakan sebagai pembanding terhadap ukuran risiko ekor yang menjadi fokus penelitian.
+
+%============================================================
+
+\section{Peramalan \textit{Market Rate} dengan \textit{Geometric Brownian Motion}} \label{sec:gbm}
+Perhitungan risiko ekor pada model MCCaR membutuhkan sejumlah besar skenario pergerakan \textit{market rate}, yaitu suku bunga dan nilai tukar, di masa mendatang. Penelitian ini membangkitkan skenario tersebut menggunakan model \textit{Geometric Brownian Motion} (GBM), yang juga digunakan pada kajian DJPPR agar hasil yang diperoleh dapat dibandingkan secara konsisten \shortcite{djppr2025}. GBM merupakan model stokastik yang menggambarkan pergerakan variabel keuangan secara acak dengan tetap memiliki arah rata-rata (\textit{drift}). Secara matematis, dinamika variabel $S_t$ pada GBM dinyatakan sebagai berikut.
+
+\begin{equation}
+    \label{eq:gbm-sde}
+    dS_t = \mu\,S_t\,dt + \sigma\,S_t\,dW_t.
+\end{equation}
+
+dengan keterangan:
+\begin{itemize}
+    \item $S_t$ : nilai \textit{market rate} pada waktu ke-$t$,
+    \item $\mu$ : parameter \textit{drift} (rata-rata pertumbuhan),
+    \item $\sigma$ : parameter volatilitas,
+    \item $dW_t$ : inkremen proses Wiener (gerak Brown).
+\end{itemize}
+
+Solusi diskret dari Persamaan~\ref{eq:gbm-sde} yang digunakan untuk membangkitkan lintasan simulasi dinyatakan sebagai berikut.
+
+\begin{equation}
+    \label{eq:gbm-discrete}
+    S_{t+\Delta t} = S_t \exp\!\left[\left(\mu - \tfrac{1}{2}\sigma^2\right)\Delta t + \sigma\,\sqrt{\Delta t}\;Z\right].
+    \end{equation}
+
+dengan keterangan:
+\begin{itemize} 
+    \item $S_{t+\Delta t}$ : nilai market rate pada langkah waktu berikutnya,
+    \item $\Delta t$ : ukuran langkah waktu,
+    \item $Z$ : bilangan acak berdistribusi normal baku, $Z \sim N(0,1)$.
+\end{itemize}
+
+Parameter $\mu$ dan $\sigma$ diestimasi dari data historis \textit{market rate} pada periode pengamatan. Dengan membangkitkan banyak lintasan acak, diperoleh distribusi nilai \textit{market rate} di masa depan yang menjadi dasar perhitungan biaya dan risiko ekor pada setiap kombinasi proporsi instrumen. GBM mengasumsikan nilai variabel selalu positif dan terdistribusi lognormal, sehingga tidak menangkap sifat \textit{mean reversion} yang melekat pada suku bunga. Keterbatasan ini menjadi pertimbangan dalam interpretasi hasil dan arah pengembangan penelitian.
+
+%============================================================
+
+\section{Model \textit{Conditional Cost-at-Risk} (CCaR)}\label{sec:ccar}
+Ukuran risiko yang digunakan pada penelitian ini dikembangkan dari konsep\textit{Value-at-Risk} (VaR) dan \textit{Conditional Value-at-Risk} (CVaR). VaR mengukur potensi kerugian maksimum pada tingkat kepercayaan tertentu, tetapi hanya memberikan satu titik persentil dan tidak menggambarkan besarnya kerugian pada kondisi di luar tingkat kepercayaan tersebut. CVaR mengatasi keterbatasan ini dengan mengukur rata-rata kerugian pada skenario terburuk, yaitu skenario yang berada di luar tingkat kepercayaan yang ditetapkan \shortcite{consiglio2015}. Dalam konteks pengelolaan utang, besaran yang ditinjau adalah biaya, sehingga ukuran tersebut dikenal sebagai \textit{Conditional Cost-at-Risk} (CCaR).
+
+Misalkan $\mathrm{Cost}_s(\mathbf{w})$ menyatakan total biaya portofolio dengan bobot $\mathbf{w}$ pada skenario ke-$s$ dari hasil simulasi \textit{market rate}. CCaR pada tingkat kepercayaan $\alpha$ didefinisikan sebagai rata-rata biaya pada $(1-\alpha)$ proporsi skenario dengan biaya tertinggi, yang dinyatakan sebagai berikut.
+
+\begin{equation}
+    \label{eq:ccar}
+    \mathrm{CCaR}_\alpha(\mathbf{w}) = \frac{1}{|\mathcal{S}_\alpha|} \sum_{s\in\mathcal{S}_\alpha} \mathrm{Cost}_s(\mathbf{w}),
+\end{equation}
+
+dengan keterangan:
+\begin{itemize}
+    \item $\mathrm{CCaR}_\alpha(\mathbf{w})$ : \textit{conditional cost-at-risk} portofolio pada tingkat kepercayaan $\alpha$,
+    \item $\mathrm{Cost}_s(\mathbf{w})$ : total biaya portofolio pada skenario ke-$s$,
+    \item $\mathcal{S}_\alpha$ : himpunan skenario dengan biaya tertinggi sebesar proporsi $(1-\alpha)$ dari seluruh skenario,
+    \item $|\mathcal{S}_\alpha|$ : banyaknya skenario dalam $\mathcal{S}_\alpha$.
+\end{itemize}
+
+Sebagai contoh, pada tingkat kepercayaan $\alpha = 95\%$, CCaR dihitung dari rata-rata $5\%$ skenario dengan biaya tertinggi. Dengan demikian, CCaR menekankan biaya pada kondisi terburuk sehingga lebih sesuai untuk menilai risiko ekor utang valas dibandingkan ukuran berbasis variansi.
+
+%============================================================
+
+\section{Model \textit{Marginal Conditional Cost-at-Risk} (MCCaR)} \label{sec:mccar}
+
+\textit{Marginal Conditional Cost-at-Risk} (MCCaR) merupakan turunan dari CCaR yang digunakan untuk menilai tambahan risiko ekor akibat penambahan satu unit pembiayaan pada suatu instrumen \shortcite{yavuz2019,djppr2025}. MCCaR instrumen ke-$i$ didefinisikan sebagai selisih antara CCaR portofolio setelah penambahan proporsi sebesar satu persen pada instrumen ke-$i$ dan CCaR portofolio pada kondisi awal (\textit{baseline}), yang dinyatakan sebagai berikut.
+
+\begin{equation}
+    \label{eq:mccar}
+    \mathrm{MCCaR}_{p,i} =
+    \mathrm{CCaR}_{101\%,\,i} - \mathrm{CCaR}_{100\%}.
+\end{equation}
+
+dengan keterangan:
+\begin{itemize}
+    \item $\mathrm{MCCaR}_{p,i}$ : tambahan risiko ekor (\textit{marginal
+        conditional cost-at-risk}) akibat penambahan proporsi pada instrumen
+        ke-$i$,
+    \item $\mathrm{CCaR}_{101\%,\,i}$ : CCaR portofolio setelah penambahan
+        proporsi satu persen pada instrumen ke-$i$,
+    \item $\mathrm{CCaR}_{100\%}$ : CCaR portofolio pada kondisi awal.
+\end{itemize}
+
+Tambahan risiko tersebut kemudian dibandingkan dengan biaya marginal instrumen melalui rasio efisiensi, yang dinyatakan sebagai berikut.
+\begin{equation}
+    \label{eq:rasio-efisiensi}
+    \text{Rasio Efisiensi}_i = frac{\mathrm{MCCaR}_{p,i}}{\mathrm{MC}_i},
+\end{equation}
+
+dengan keterangan:
+\begin{itemize}
+    \item $\text{Rasio Efisiensi}_i$ : rasio risiko marginal terhadap biaya marginal instrumen ke-$i$,
+    \item $\mathrm{MC}_i$ : biaya marginal (\textit{marginal cost}) instrumen ke-$i$ pada kondisi \textit{baseline}.
+\end{itemize}
+
+Nilai rasio efisiensi memberikan interpretasi sebagaimana dirangkum pada Tabel~\ref{tab:rasio-efisiensi}. Komposisi utang dikatakan optimal apabila rasio efisiensi seluruh instrumen seimbang dan mendekati satu, yaitu ketika tingkat risiko terhadap biaya setara di seluruh instrumen.
+\begin{table}[H]
+    \centering
+    \caption{Interpretasi Rasio Efisiensi MCCaR}
+    \label{tab:rasio-efisiensi}
+    \begin{tabularx}{\textwidth}{c X}
+    \hline
+    \textbf{Rasio Efisiensi} & \textbf{Interpretasi Umum} \\
+    \hline
+    $<1$ & Tambahan biaya lebih besar daripada tambahan risiko, sehingga
+    instrumen relatif aman. \\
+    $=1$ & Tambahan biaya dan tambahan risiko seimbang, kondisi ideal menurut
+    teori portofolio. \\
+    $>1$ & Tambahan risiko lebih besar daripada tambahan biaya, sehingga
+    instrumen perlu dievaluasi ulang. \\
+    \hline
+    \end{tabularx}
+\end{table}
+
+Berbeda dengan kerangka Markowitz yang mengukur risiko total melalui variansi dan kovarians, MCCaR mengukur kontribusi risiko ekor setiap instrumen secara marginal berdasarkan hasil simulasi \textit{market rate}. Karakteristik ini membuat MCCaR lebih responsif terhadap skenario krisis, tetapi juga menjadikan fungsi objektif dan kendalanya tidak mulus (\textit{non-smooth}) serta tidak memiliki turunan analitik, sehingga penyelesaiannya menuntut metode optimasi yang tidak bergantung pada informasi gradien.
+
+%============================================================
+
+\section{Optimasi Berkendala dan Metode Pembanding}\label{sec:benchmark}
+Model optimasi komposisi utang berbasis MCCaR diselesaikan sebagai persoalan optimasi berkendala dengan variabel keputusan berupa vektor bobot portofolio. Penelitian ini menggunakan dua metode pembanding untuk mengevaluasi kualitas solusi yang dihasilkan oleh metode metaheuristik. Metode pembanding pertama adalah penyaringan kombinasi acak (\textit{filtering}) sebagaimana digunakan pada kajian DJPPR \shortcite{djppr2025}. Pada pendekatan ini, sejumlah besar kombinasi proporsi instrumen dibangkitkan secara acak dalam rentang kelayakan, kemudian disaring berdasarkan keseimbangan rasio efisiensi atau tingkat biaya. Pendekatan ini berperan sebagai \textit{baseline} praktik karena merepresentasikan prosedur yang telah digunakan, namun tidak menjamin diperolehnya solusi optimal sebab hanya mengevaluasi titik-titik sampel pada ruang solusi.
+
+Metode pembanding kedua adalah optimasi numerik deterministik menggunakan fungsi \texttt{fmincon} pada perangkat lunak MATLAB \shortcite{nocedal2006}. Fungsi \texttt{fmincon} banyak digunakan untuk menyelesaikan masalah optimasi nonlinear berkendala secara numerik dan deterministik, sehingga solusinya dapat dijadikan acuan (\textit{benchmark}) dalam mengevaluasi metode lain. Perlu dicatat bahwa \texttt{fmincon} mengasumsikan fungsi objektif yang terdiferensialkan, sedangkan fungsi berbasis CCaR bersifat \textit{non-smooth}. Keterbatasan ini menjadi salah satu alasan teoretis diperlukannya metode metaheuristik yang tidakbergantung pada gradien.
+
+%============================================================
+
+\section{Metaheuristik dalam Optimasi}\label{sec:metaheuristik}
+
+Metaheuristik merupakan pendekatan optimasi berbasis pencarian yang dirancang untuk menyelesaikan permasalahan kompleks dan berdimensi besar, khususnya ketika fungsi objektif bersifat non-linear, non-konveks, atau tidak mulus. Pada permasalahan semacam ini, metode optimasi deterministik berbasis gradien menjadi kurang efektif. Metaheuristik diperlakukan sebagai metode \textit{derivative-free} yang menilai kualitas solusi semata-mata berdasarkan nilai fungsi objektif hasil evaluasi \shortcite{marova2016}.
+
+Berdasarkan sumber inspirasinya, metaheuristik dapat dikelompokkan menjadi tiga kategori utama. Kategori pertama adalah metaheuristik berbasis evolusi, seperti \textit{Genetic Algorithm} (GA) dan \textit{Differential Evolution} (DE), yang meniru prinsip seleksi alam dan genetika. Kategori kedua adalah metaheuristik berbasis \textit{swarm intelligence}, seperti \textit{Particle Swarm Optimization} (PSO) dan \textit{Ant Colony Optimization} (ACO), yang terinspirasi dari perilaku kolektif makhluk hidup. Kategori ketiga adalah metaheuristik berbasis lintasan tunggal, seperti \textit{Simulated Annealing} (SA) dan \textit{Tabu Search} (TS) \shortcite{talbi2009}. \textit{Komodo Mlipir Algorithm} yang digunakan pada penelitian ini termasuk dalam pendekatan berbasis populasi yang memadukan elemen \textit{swarm intelligence} dan algoritma evolusioner.
+
+%============================================================
+
+\section{\textit{Komodo Mlipir Algorithm} (KMA)}\label{sec:kma}
+
+\textit{Komodo Mlipir Algorithm} (KMA) merupakan algoritma metaheuristik yang terinspirasi dari perilaku berburu (\textit{foraging}) dan reproduksikomodo di alam liar serta gaya berjalan Jawa yang disebut \textit{mlipir} \shortcite{suyanto2022}. Algoritma ini membagi populasi solusi menjadi tiga kelompok berdasarkan peringkat kualitas (\textit{fitness}), yaitu \textit{big males}, \textit{female}, dan \textit{small males}, di mana setiap kelompok menjalankan strategi berbeda untuk menjaga keseimbangan antara eksplorasi dan eksploitasi ruang solusi. \textit{Big males} merupakan individu berkualitas terbaik yang berfokus pada eksploitasi melalui pencarian lokal intensif di sekitar solusi terbaik. \textit{Female} berperan sebagai penyeimbang melalui mekanisme reproduksi. \textit{Smallmales} berkontribusi pada eksplorasi global melalui gerakan \textit{mlipir}.
+
+%============================================================
+
+    \subsection{Pergerakan \textit{Big Males}}\label{sub:big-males}
+    Kelompok \textit{big males} menerapkan strategi \textit{high-exploitation low-exploration}, dengan pencarian difokuskan pada penyempurnaan solusi di sekitar individu berkualitas terbaik. Pergerakan individu ke-$i$ menuju posisi baru dirumuskan sebagai berikut.
+
+    \begin{equation}
+        \label{eq:bigmale-w}
+        \mathbf{w}_{ij} =
+        \begin{cases}
+        r_1(k_j - k_i), & \text{jika } f(k_j) < f(k_i) \text{ atau } r_2 < 0{,}5,\\ r_1(k_i - k_j), & \text{lainnya.}
+        \end{cases}
+    \end{equation}
+
+    \begin{equation}
+    \label{eq:bigmale-k}
+    k_i' = k_i + \sum_{j=1,\,j\neq i}^{q} \mathbf{w}_{ij}.
+    \end{equation}
+
+    dengan keterangan:
+    \begin{itemize}
+        \item $k_i,\,k_j$ : posisi individu ke-$i$ dan ke-$j$,
+        \item $f(k_i),\,f(k_j)$ : nilai \textit{fitness} individu ke-$i$ dan ke-$j$,
+        \item $r_1,\,r_2$ : bilangan acak pada interval $[0,1]$,
+        \item $q$ : jumlah individu \textit{big males},
+        \item $\mathbf{w}_{ij}$ : vektor pergerakan individu ke-$i$ terhadap ke-$j$,
+        \item $k_i'$ : posisi individu ke-$i$ setelah pembaruan.
+    \end{itemize}
+
+%============================================================
+
+    \subsection{Reproduksi \textit{Female}}\label{sub:female}
+
+    Individu \textit{female} menyeimbangkan eksploitasi dan eksplorasi melalui dua mekanisme, yaitu reproduksi dengan \textit{big male} terbaik (\textit{mating}) dan reproduksi aseksual (\textit{parthenogenesis}). Apabila \textit{female} melakukan \textit{mating}, solusi baru dihasilkan melalui persamaan berikut.
+
+    \begin{align}
+        \label{eq:female-mating1}
+        k_{il}' &= r_l\,k_{il} + (1-r_l)\,k_{jl}, \\
+        \label{eq:female-mating2}
+        k_{jl}' &= r_l\,k_{jl} + (1-r_l)\,k_{il}.
+    \end{align}
+
+    dengan keterangan:
+    \begin{itemize}
+        \item $k_{il},\,k_{jl}$ : komponen ke-$l$ dari individu betina dan
+        \textit{winner big male},
+        \item $r_l$ : bilangan acak pada interval $[0,1]$.
+    \end{itemize}
+
+    Apabila \textit{female} melakuka \textit{parthenogenesis}, posisi individu baru diperoleh melalui persamaan berikut.
+
+    \begin{equation}
+    \label{eq:female-parth}
+    k_{ij}' = k_{ij} + (2r - 1)\,\alpha\,\lvert ub_j - lb_j \rvert.
+    \end{equation}
+
+    dengan keterangan:
+    \begin{itemize}
+        \item $\alpha$ : radius mutasi, ditetapkan sebesar $0{,}1$ ($10\%$ dari
+        rentang ruang pencarian),
+        \item $ub_j,\,lb_j$ : batas atas dan batas bawah dimensi ke-$j$,
+        \item $r$ : bilangan acak pada interval $[0,1]$.
+    \end{itemize}
+
+%============================================================
+
+    \subsection{Pergerakan \textit{Small Males}}\label{sub:small-males}
+
+    Kelompok \textit{small males} menerapkan strategi \textit{low-exploitation high-exploration} untuk menjelajahi ruang solusi secara lebih luas melalui   gerakan \textit{mlipir}, yaitu mengikuti solusi terbaik hanya pada sebagian dimensi tertentu. Pergerakannya dirumuskan sebagai berikut.
+
+    \begin{equation}
+        \label{eq:smallmale-w}
+        \mathbf{w}_{ij} =
+        \begin{cases}
+        \displaystyle\sum_{j=1}^{q} r_1(k_{jl} - k_{il}), & \text{jika } r_2 < d,\\[6pt] 
+        0, & \text{lainnya.}
+        \end{cases}
+    \end{equation}
+
+    \begin{equation}
+        \label{eq:smallmale-k}
+        k_i' = k_i + \sum_{j=1,\,j\neq i}^{q} \mathbf{w}_{ij}.
+    \end{equation}
+
+    dengan keterangan:
+    \begin{itemize}
+        \item $d$ : \textit{mlipir rate}, yaitu probabilitas individu mengikutidimensi tertentu dari \textit{big males},
+        \item $k_{il},\,k_{jl}$ : komponen ke-$l$ dari individu ke-$i$ dan ke-$j$.
+    \end{itemize}
+
+%============================================================
+
+    \subsection{Adaptasi Ukuran Populasi}\label{sub:adaptasi}
+    KMA menyesuaikan ukuran populasi secara adaptif berdasarkan perubahan nilai \textit{fitness} antar iterasi. Apabila kualitas solusi meningkat selama dua generasi berturut-turut, ukuran populasi dikurangi; sebaliknya, apabila pencarian mengalami stagnasi, ukuran populasi ditambah. Aturan ini dirumuskan sebagai berikut.
+
+    \begin{equation}
+        \label{eq:adaptasi}
+        n' =
+        \begin{cases}
+        n - a, & \text{jika } \delta f_1 > 0 \text{ dan } \delta f_2 > 0,\\
+        n + a, & \text{jika } \delta f_1 = 0 \text{ dan } \delta f_2 = 0,
+        \end{cases}
+    \end{equation}
+
+    dengan perubahan relatif \textit{fitness}
+
+    \begin{equation}
+        \label{eq:delta-fitness}
+        \delta f_1 = \frac{f_{n-1} - f_n}{f_{n-1}},
+        \qquad
+        \delta f_2 = \frac{f_{n-2} - f_{n-1}}{f_{n-2}}.
+    \end{equation}
+
+    dengan keterangan:
+    \begin{itemize}
+        \item $n,\,n'$ : ukuran populasi sebelum dan sesudah penyesuaian,
+        \item $a$ : jumlah individu yang ditambah atau dikurangi,
+        \item $\delta f_1,\,\delta f_2$ : perubahan relatif \textit{fitness} terbaik antar iterasi berurutan,
+        \item $f_n$ : nilai \textit{fitness} terbaik pada iterasi ke-$n$.
+    \end{itemize}
+
+%============================================================
+
+    \subsection{Prosedur \textit{Komodo Mlipir Algorithm}}\label{sub:pseudocode}
+
+    Berdasarkan mekanisme yang telah dijelaskan, KMA bekerja secara iteratif dengan memperbarui populasi solusi hingga diperoleh individu berkualitas terbaik sebagai solusi optimal global $k_{\text{best}}$. Prosedur lengkapnya disajikan pada Algoritma~\ref{alg:kma}.
+
+    \begin{algorithm}[H]
+        \caption{\textit{Komodo Mlipir Algorithm}}
+        \label{alg:kma}
+        \begin{algorithmic}[1]
+        \State \textbf{Hasil:} $k_{\text{best}}$ sebagai solusi optimum global
+        \State Tetapkan $n$, $p$, dan $d$ sebagai jumlah individu, proporsi
+        \textit{big males}, dan \textit{mlipir rate}
+        \State Inisialisasi $n$ individu dengan $m$ dimensi
+        \While{kriteria penghentian belum terpenuhi}
+            \For{setiap individu}
+                \State Hitung nilai kualitas dan urutkan
+            \EndFor
+            \State Bagi populasi menjadi $q$ \textit{big males}, satu
+            \textit{female}, dan $s$ \textit{small males}
+            \For{setiap \textit{big male}}
+                \State Perbarui posisi menggunakan Persamaan~\ref{eq:bigmale-k}
+            \EndFor
+            \If{kawin}
+                \State Perbarui \textit{female} dengan Persamaan~\ref{eq:female-mating1}
+                dan \ref{eq:female-mating2}
+            \Else
+                \State Perbarui \textit{female} dengan Persamaan~\ref{eq:female-parth}
+            \EndIf
+            \For{setiap \textit{small male}}
+                \State Perbarui posisi menggunakan Persamaan~\ref{eq:smallmale-k}
+            \EndFor
+            \State Perbarui ukuran populasi menggunakan Persamaan~\ref{eq:adaptasi}
+            \State Pilih individu terbaik sebagai $k_{\text{best}}$
+        \EndWhile
+        \end{algorithmic}   
+    \end{algorithm}
+
+%============================================================
+
+\section{Kriteria Penghentian Iterasi}\label{sec:stopping}
+
+Algoritma iteratif memerlukan kriteria penghentian (\textit{stopping criteria}) untuk menentukan kapan proses pencarian dihentikan, baik ketika solusi telah konvergen maupun untuk menjaga efisiensi komputasi. Penelitian ini menggunakan kriteria gabungan yang mengombinasikan konvergensi solusi dan batas maksimum iterasi, yang dinyatakan sebagai berikut.
+
+\begin{equation}
+    \label{eq:stopping}
+    \left\lVert x^{(k)} - x^{(k-1)} \right\rVert \leq \varepsilon
+    \quad \vee \quad k \geq k_{\max}.
+\end{equation}
+
+dengan keterangan:
+\begin{itemize}
+    \item $x^{(k)}$ : vektor solusi pada iterasi ke-$k$,
+    \item $x^{(k-1)}$ : vektor solusi pada iterasi sebelumnya,
+    \item $\varepsilon$ : toleransi konvergensi yang ditetapkan kecil,
+    \item $k$ : indeks iterasi,
+    \item $k_{\max}$ : jumlah iterasi maksimum.
+\end{itemize}
+
+Kriteria konvergensi memastikan solusi telah mencapai kestabilan, yang ditandai dengan perubahan solusi antar iterasi yang sangat kecil \shortcite{scherzer1995}. Batas maksimum iterasi berfungsi sebagai mekanisme pengaman agar proses optimasi tidak berjalan tanpa batas, dan merupakan salah satu kriteria penghentian yang paling umum digunakan dalam algoritma metaheuristik \shortcite{brezocnik2018}.

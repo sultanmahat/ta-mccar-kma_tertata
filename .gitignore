@@ -1,0 +1,41 @@
+# Virtual Environment
+.venv/
+env/
+venv/
+
+# Python cache & artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Results runs & logs (abaikan isinya, pertahankan direktori dengan .gitkeep)
+results/runs/*
+!results/runs/.gitkeep
+logs/*
+!logs/.gitkeep
+
+# Large binary files & datasets
+*.npz
+*.npy
+*.parquet
+
+# LaTeX temporary files
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.synctex.gz
+*.toc

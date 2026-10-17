@@ -1,0 +1,99 @@
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc, fit, backgrounds}
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+    font=\footnotesize,
+    box/.style   = {rectangle, draw, align=left, inner sep=4pt,
+                    text width=50mm, minimum height=12mm},
+    cat/.style   = {rectangle, draw, align=center, inner sep=3pt,
+                    text width=22mm, font=\footnotesize\bfseries\itshape,
+                    minimum height=11mm},
+    orig/.style  = {rectangle, draw, align=left, inner sep=6pt,
+                    text width=92mm},
+    arr/.style   = {-{Latex[length=2.4mm]}, thick},
+    darr/.style  = {-{Latex[length=2.4mm]}, thick, dashed}
+]
+
+% ===== Kolom 1: akar teori =====
+\node[box] (mpt) {\textbf{\textit{Modern Portfolio Theory}}\\[1pt]
+Mean-Variance Optimization (Markowitz, 1952); diversifikasi dan
+\textit{efficient frontier} (Abolmaali \& Roodposhti, 2018).};
+
+\node[box, below=16mm of mpt] (tail) {\textbf{\textit{Tail-Risk} Utang Negara}\\[1pt]
+\textit{Conditional Debt-at-Risk} (Consiglio \& Zenios, 2015);
+\textit{conditional Flow-at-Risk} (Athanasopoulou dkk., 2023).};
+
+\node[box, below=16mm of tail] (meta) {\textbf{Metaheuristik}\\[1pt]
+GA, PSO, ACO, SA, TS (Talbi, 2009); ACO untuk portofolio
+(Abolmaali \& Roodposhti, 2018).};
+
+% ===== Kolom 2: cabang =====
+\node[cat, right=16mm of mpt]  (markowitz) {Model\\Markowitz\\(MVO)};
+\node[cat, right=16mm of tail] (ccar)      {Model\\CCaR /\\MCCaR};
+\node[cat, right=16mm of meta] (kmacat)    {Algoritma\\KMA};
+
+% ===== Kolom 3: literatur spesifik =====
+\node[box, right=14mm of markowitz] (mvodebt) {\textbf{MVO pada Utang Valas}\\[1pt]
+Adaptasi Markowitz untuk komposisi utang valas Indonesia (DJPPR, 2025).};
+
+\node[box, right=14mm of ccar] (mccarturki) {\textbf{MCCaR (Turki, DJPPR)}\\[1pt]
+Rasio risiko-biaya marginal (Yavuz \& Golbasi, 2019); dibandingkan
+Markowitz via \textit{filtering} (DJPPR, 2025).};
+
+\node[box, right=14mm of kmacat] (kmalit) {\textbf{\textit{Komodo Mlipir Algorithm}}\\[1pt]
+Pengenalan KMA (Suyanto dkk., 2022); varian stokastik (Kusuma \&
+Kallista, 2022); KMA pada utang berbasis variansi (Fauzan, 2025).};
+
+% ===== Kotak ORISINALITAS =====
+\node[orig, below=54mm of mccarturki, xshift=10mm] (orig) {
+{\centering\bfseries\itshape
+Optimasi Portofolio Utang Negara Multivaluta dengan Model MCCaR
+Menggunakan Komodo Mlipir Algorithm\par}
+\vspace{3pt}
+\begin{enumerate}[leftmargin=5.5mm, itemsep=2pt, topsep=2pt, label=\arabic*.]
+  \item Memodelkan komposisi utang valas (USD, EUR, JPY) berbasis MCCaR
+        sebagai persoalan optimasi berkendala.
+  \item Menyelesaikan model MCCaR menggunakan KMA, menggantikan prosedur
+        \textit{filtering} acak dengan pencarian metaheuristik terarah.
+  \item Membandingkan KMA terhadap \textit{filtering} (baseline) dan
+        \texttt{fmincon} (benchmark deterministik) dari sisi biaya, risiko
+        ekor, kendala, dan efisiensi komputasi.
+\end{enumerate}
+\vspace{2pt}
+\hspace*{0pt}\colorbox{yellow}{\bfseries ORISINALITAS PENELITIAN}
+};
+
+\begin{scope}[on background layer]
+  \node[draw, dashed, thick, fit=(orig), inner sep=5mm] (origbox) {};
+\end{scope}
+
+% ===== Panah baris (teori -> cabang -> literatur) =====
+\draw[arr] (mpt)  -- (markowitz);
+\draw[arr] (markowitz) -- (mvodebt);
+\draw[arr] (tail) -- (ccar);
+\draw[arr] (ccar) -- (mccarturki);
+\draw[arr] (meta) -- (kmacat);
+\draw[arr] (kmacat) -- (kmalit);
+
+% ===== Panah literatur -> orisinalitas (rapi, masuk dari ATAS kotak dashed) =====
+% Bus vertikal di kanan kolom 3, lalu turun ke sisi atas origbox.
+\coordinate (busX) at ($(kmalit.east)+(12mm,0)$);
+\coordinate (topO) at (origbox.north);
+
+\draw[arr] (mvodebt.east)    -| (busX |- mvodebt) -- (busX) ;
+\draw[arr] (mccarturki.east) -| (busX |- mccarturki) -- (busX);
+% gabung KMA ke bus juga
+\draw (kmalit.east) -| (busX |- kmalit);
+% turunkan bus menuju sisi atas kotak orisinalitas
+\draw[arr] (busX |- kmalit) -- (busX |- topO) -- (topO);
+
+% ===== Panah penegas dari akar metaheuristik (dashed) ke sisi kiri bawah =====
+\draw[darr] (meta.south) |- ($(origbox.west)+(0,-2mm)$);
+
+\end{tikzpicture}%
+}
+\caption{Skema dan Posisi Penelitian}
+\label{fig:skema-posisi}
+\end{figure}
