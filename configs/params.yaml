@@ -143,9 +143,10 @@ risk:
   m_tail: 250            # m = ceil((1 - alpha) * N) = 250 untuk N = 5000
   delta: 0.01            # Tambahan penerbitan delta = 1% (Persamaan 2.14)
 
-  # KEPUTUSAN TERBUKA D5:
-  # Toleransi pembagian bila MC_i mendekati nol pada theta_i (Persamaan 2.18)
-  zero_tolerance_mc: null
+  # D5 DIPUTUSKAN (2026-10-18):
+  # Toleransi pembagian MC_i mendekati nol: jika |MC_i| <= zero_tolerance_mc, set theta_i = 0.0
+  # Catatan keputusan: docs/decisions/0004-risk-evaluator-d5.md
+  zero_tolerance_mc: 1.0e-12
 
 # Definisi biaya portofolio:
 # 'gross': Persamaan 2.2 (C_{i,s} = q_{c(i),s} * (1 + y_{i,s}/100))

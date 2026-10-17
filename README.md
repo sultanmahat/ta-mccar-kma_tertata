@@ -99,7 +99,7 @@ Pipeline dijalankan secara bertahap menggunakan skrip bernomor:
 2. `02_preprocess_data.py`: Pembersihan data, penanganan data hilang, kalkulasi log-return.
 3. `03_estimate_gbm_params.py`: Estimasi parameter $\mu, \sigma$, matriks korelasi Cholesky, dan statistik biaya historis.
 4. `04_generate_scenarios.py`: Pembangkitan bank skenario GBM (5.000 skenario, 252 hari).
-5. `05_baseline_djppr.py`: Simulasi baseline portofolio eksisting dan penyaringan 1.000 kombinasi acak DJPPR.
+5. `05_benchmark_evaluator.py`: Benchmark evaluator risiko MCCaR/CCaR, baseline w0, dan model kendala.
 6. `06_run_experiments.py`: Eksekusi eksperimen optimasi (KMA, GA, PSO).
 7. `07_statistical_analysis.py`: Uji statistik komparasi (Kruskal-Wallis, Dunn-Holm).
 8. `08_generate_reports.py`: Pembangkitan tabel dan grafik hasil untuk laporan skripsi.
