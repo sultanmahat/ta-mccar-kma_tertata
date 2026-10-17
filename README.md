@@ -97,7 +97,7 @@ Pipeline dijalankan secara bertahap menggunakan skrip bernomor:
 
 1. `01_audit_data.py`: Audit dan validasi integritas dataset asli DJPPR.
 2. `02_preprocess_data.py`: Pembersihan data, penanganan data hilang, kalkulasi log-return.
-3. `03_estimate_gbm.py`: Estimasi parameter $\mu, \sigma$ dan matriks korelasi Cholesky.
+3. `03_estimate_gbm_params.py`: Estimasi parameter $\mu, \sigma$, matriks korelasi Cholesky, dan statistik biaya historis.
 4. `04_generate_scenarios.py`: Pembangkitan bank skenario GBM (5.000 skenario, 252 hari).
 5. `05_baseline_djppr.py`: Simulasi baseline portofolio eksisting dan penyaringan 1.000 kombinasi acak DJPPR.
 6. `06_run_experiments.py`: Eksekusi eksperimen optimasi (KMA, GA, PSO).

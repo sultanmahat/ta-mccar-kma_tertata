@@ -117,12 +117,14 @@ scenarios:
   horizon_days: 252       # Horizon 1 tahun (252 hari kerja)
   dt: 0.003968253968253968 # 1 / 252
 
-  # KEPUTUSAN TERBUKA D2:
-  # Kalibrasi drift (mu = 252*m + sigma^2/2 vs alternatif)
-  # Simulasi terminal 1-step vs simulasi jalur 252-step
-  # Definisi C_{i,t} historis (nilai X_0) untuk statistik Persamaan 2.7–2.10
-  drift_calibration: null
-  simulation_path_mode: null
+  # D2 DIPUTUSKAN (2026-10-18):
+  # D2a: drift_calibration = "ito_annualized" (mu = 252*m + sigma^2/2, sigma = s*sqrt(252))
+  # D2b: simulation_path_mode = "terminal_1step" (lompatan langsung T=1 tahun)
+  # D2c: historical_cost_x0 = "window_end" (kurs observasi terakhir jendela 2025-11-24)
+  # Catatan keputusan: docs/decisions/0002-gbm-calibration.md
+  drift_calibration: "ito_annualized"
+  simulation_path_mode: "terminal_1step"
+  historical_cost_x0: "window_end"
 
   # KEPUTUSAN TERBUKA D3:
   # Ukuran bank skenario validasi independen (misal 20.000 skenario)
