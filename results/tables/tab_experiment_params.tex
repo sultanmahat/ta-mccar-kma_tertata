@@ -1,0 +1,24 @@
+% ==============================================================================
+% Tabel Parameter Desain Eksperimen (Tabel 3.1 Proposal)
+% ==============================================================================
+\begin{table}[htbp]
+\centering
+\caption{Parameter Desain Eksperimen Optimasi Portofolio Utang Negara}
+\label{tab:experiment_params}
+\begin{tabular}{llp{7.5cm}}
+\toprule
+\textbf{Komponen Parameter} & \textbf{Nilai Parameter} & \textbf{Keterangan / Rujukan Metodologis} \\
+\midrule
+Jendela Data Historis & 2017-07-03 s.d. 2025-11-24 & 2.028 hari kerja lengkap (mode \texttt{intersection}) \\
+Jumlah Skenario Latih ($N_{\text{train}}$) & 5.000 skenario & Simulasi terminal GBM horizon 1 tahun ($T=252$ hari) \\
+Tingkat Kepercayaan Risiko ($\alpha$) & 95\% ($\alpha = 0{,}95$) & Skenario ekor $m = \lceil 0{,}05 \times 5.000 \rceil = 250$ skenario \\
+Tambahan Proporsi Utang ($\delta$) & 0,01 (1\%) & Tambahan penerbitan untuk estimasi MCCaR (Pers. 2.14) \\
+Anggaran Evaluasi Fungsi & 25.000 evaluasi & Anggaran evaluasi fungsi portofolio per replikasi \\
+Jumlah Replikasi Independen & 30 replikasi & Seed generator acak identik untuk KMA, GA, dan PSO \\
+Koefisien Penalti Kuadratik & $\rho_J = 10^6, \rho_R = 10^6$ & Penalti pelanggaran kendala $J \le \eta$ dan $\text{CCaR} \le \tau$ \\
+Toleransi Numerik Kendala & $\epsilon_{\text{tol}} = 10^{-8}$ & Batas toleransi kelayakan bobot dan risiko \\
+Bank Validasi Independen & 20.000 skenario & Seed 2026, ekor $m = 1.000$ skenario untuk validasi out-of-sample \\
+Konfigurasi Evaluasi & 4 konfigurasi & Kombinasi \{gross, interest\} $\times$ \{free, djppr\} \\
+\bottomrule
+\end{tabular}
+\end{table}

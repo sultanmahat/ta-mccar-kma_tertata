@@ -371,13 +371,18 @@ def solve_slsqp_reference(
     def obj(w: np.ndarray) -> float:
         return float(np.dot(mean_instrument_costs, w))
 
+    # Buffer keamanan relatif kecil (1e-4) untuk mengimbangi toleransi numerik SLSQP
+    # sehingga solusi hasil proyeksi memenuhi kriteria kelayakan ketat 1e-8
+    margin_ccar = 1e-4 * evaluator.tau
+    margin_j = 1e-4 * evaluator.eta
+
     def ccar_constraint(w: np.ndarray) -> float:
-        # tau - CCaR(w) >= 0
-        return float(evaluator.tau - evaluator.evaluate(w, apply_penalty=False)["ccar"])
+        # (tau - margin) - CCaR(w) >= 0
+        return float((evaluator.tau - margin_ccar) - evaluator.evaluate(w, apply_penalty=False)["ccar"])
 
     def j_constraint(w: np.ndarray) -> float:
-        # eta - J_MCCaR(w) >= 0
-        return float(evaluator.eta - evaluator.evaluate(w, apply_penalty=False)["j_mccar"])
+        # (eta - margin) - J_MCCaR(w) >= 0
+        return float((evaluator.eta - margin_j) - evaluator.evaluate(w, apply_penalty=False)["j_mccar"])
 
     bounds = list(zip(lb, ub))
     constraints = [

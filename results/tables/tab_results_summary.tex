@@ -1,0 +1,34 @@
+% ==============================================================================
+% Tabel Ringkasan Komparasi Solusi Optimal dan Penghematan Relatif
+% ==============================================================================
+\begin{table}[htbp]
+\centering
+\caption{Ringkasan Perbandingan Performa Solusi Portofolio Optimal pada Bank Validasi ($N=20.000$)}
+\label{tab:results_summary}
+\small
+\begin{tabular}{llcccccc}
+\toprule
+\textbf{Konfigurasi} & \textbf{Metode / Solusi} & \textbf{Biaya ($Cost$)} & \textbf{CCaR (0,95)} & \textbf{J (MCCaR)} & \textbf{Layak (\%)} & \textbf{$\Delta$ vs $w_0$ (\%)} & \textbf{$\Delta$ vs Base (\%)} \\
+\midrule
+\multirow{4}{*}{\texttt{gross_free}} & Eksisting 2024 ($w_0$) & 1.042186 & -- & -- & 100{,}0\% & +0{,}000\% & -- \\
+ & KMA (Best) & 1.036697 & 1.071455 & 0.066034 & 100.0\% & +0.527\% & -- \\
+ & GA (Best) & 1.036667 & 1.071512 & 0.066133 & 100.0\% & +0.530\% & -- \\
+ & PSO (Best) & 1.036666 & 1.071513 & 0.066135 & 100.0\% & +0.530\% & -- \\
+\midrule
+\multirow{4}{*}{\texttt{gross_djppr}} & Eksisting 2024 ($w_0$) & 1.042186 & -- & -- & 100{,}0\% & +0{,}000\% & -- \\
+ & KMA (Best) & 1.041688 & 1.085095 & 0.067609 & 100.0\% & +0.048\% & +0.098\% \\
+ & GA (Best) & 1.041677 & 1.085282 & 0.067655 & 100.0\% & +0.049\% & +0.099\% \\
+ & PSO (Best) & 1.041675 & 1.085254 & 0.067649 & 100.0\% & +0.049\% & +0.099\% \\
+\midrule
+\multirow{4}{*}{\texttt{interest_free}} & Eksisting 2024 ($w_0$) & 0.044369 & -- & -- & 100{,}0\% & +0{,}000\% & -- \\
+ & KMA (Best) & 0.031021 & 0.049012 & 0.166621 & 100.0\% & +30.084\% & -- \\
+ & GA (Best) & 0.030959 & 0.048513 & 0.168882 & 100.0\% & +30.224\% & -- \\
+ & PSO (Best) & 0.030941 & 0.048518 & 0.168894 & 93.3\% & +30.264\% & -- \\
+\midrule
+\multirow{4}{*}{\texttt{interest_djppr}} & Eksisting 2024 ($w_0$) & 0.044369 & -- & -- & 100{,}0\% & +0{,}000\% & -- \\
+ & KMA (Best) & 0.043476 & 0.062690 & 0.139461 & 100.0\% & +2.012\% & +1.521\% \\
+ & GA (Best) & 0.043476 & 0.062690 & 0.139461 & 100.0\% & +2.012\% & +1.521\% \\
+ & PSO (Best) & 0.043476 & 0.062690 & 0.139461 & 100.0\% & +2.012\% & +1.521\% \\
+\bottomrule
+\end{tabular}
+\end{table}

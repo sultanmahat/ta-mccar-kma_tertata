@@ -202,6 +202,7 @@ class BaseOptimizer(ABC):
             v_J=eval_dict["v_J"],
             v_R=eval_dict["v_R"],
             evaluation_index=current_eval,
+            f_val=eval_dict.get("f_val", eval_dict["mean_cost"]),
         )
 
         # 6. Catat solusi terbaik keseluruhan (fallback)
@@ -268,6 +269,7 @@ class BaseOptimizer(ABC):
                     v_J=row_dict["v_J"],
                     v_R=row_dict["v_R"],
                     evaluation_index=current_eval,
+                    f_val=row_dict["f_val"],
                 )
                 # Perbarui best overall
                 if self._best_overall is None or row_dict["f_val"] < self._best_overall["f_val"]:
@@ -324,11 +326,7 @@ class BaseOptimizer(ABC):
             return OptimizationResult(
                 best_w=sol.w,
                 best_cost=sol.mean_cost,
-                best_fitness=(
-                    self._best_overall["f_val"]
-                    if self._best_overall is not None
-                    else sol.mean_cost
-                ),
+                best_fitness=sol.f_val,
                 ccar=sol.ccar,
                 j_mccar=sol.j_mccar,
                 v_J=sol.v_J,

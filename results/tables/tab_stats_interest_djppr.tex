@@ -1,0 +1,37 @@
+% ==============================================================================
+% Tabel Hasil Analisis Statistik: Konfigurasi interest_djppr
+% Paket LaTeX yang dibutuhkan: booktabs, multirow, makecell
+% ==============================================================================
+\begin{table}[htbp]
+\centering
+\caption{Hasil Analisis Statistik Deskriptif dan Inferensial Komparasi Algoritma pada Konfigurasi \texttt{interest_djppr}}
+\label{tab:stats_interest_djppr}
+\small
+\begin{tabular}{lcccccccc}
+\toprule
+\multicolumn{9}{c}{\textbf{Panel A: Statistik Deskriptif Nilai Objektif Biaya ($Cost$) dan Konvergensi}} \\
+\midrule
+\textbf{Algoritma} & \textbf{Terbaik} & \textbf{Median} & \textbf{Rerata} & \textbf{Std} & \textbf{IQR} & \textbf{Waktu (s)} & \textbf{$E_{\text{conv}}$} & \textbf{Shapiro ($p$)} \\
+\midrule
+KMA & 0.043629 & 0.043630 & 0.043630 & 8.06e-07 & 7.37e-07 & 180.1 $\pm$ 101.7 & 10250 & <0.0001 \\
+GA & 0.043629 & 0.043629 & 0.043629 & 4.73e-09 & 1.96e-09 & 32.7 $\pm$ 3.0 & 4283 & <0.0001 \\
+PSO & 0.043629 & 0.043629 & 0.043629 & 2.12e-17 & 0.00e+00 & 31.9 $\pm$ 3.7 & 750 & Var 0* \\
+\midrule
+\multicolumn{9}{l}{\footnotesize *Catatan Shapiro: Var 0 mengindikasikan seluruh 30 replikasi mencapai solusi biaya identik.} \\
+\multicolumn{9}{l}{\footnotesize Uji Homogenitas Levene: $W = 17.4308$, $p = 4.3040e-07$ (Heterogen (p < 0.05)).} \\
+\midrule
+\multicolumn{9}{c}{\textbf{Panel B: Uji Komparasi Non-Parametrik Kruskal--Wallis (Pers. 2.37)}} \\
+\midrule
+\multicolumn{9}{l}{\textbf{Statistik $H$} = 82.0697 \quad ($df = 2$, $p = 1.5094e-18$) \quad | \quad \textbf{Ukuran Efek $\epsilon^2$} = 0.9221 (Large (>= 0.26))} \\
+\multicolumn{9}{l}{\footnotesize Rata-rata Peringkat ($\bar{R}_g$): KMA = 75.47, GA = 45.53, PSO = 15.50} \\
+\midrule
+\multicolumn{9}{c}{\textbf{Panel C: Uji Lanjut Post-Hoc Dunn dengan Koreksi Holm (Pers. 2.38)}} \\
+\midrule
+\multicolumn{2}{l}{\textbf{Pasangan Perbandingan}} & \textbf{$\Delta \bar{R}$} & \textbf{SE} & \textbf{$z$-stat} & \textbf{$p_{\text{unadj}}$} & \textbf{$p_{\text{Holm}}$} & \textbf{$r_{rb}$} & \textbf{Signifikansi} \\
+\midrule
+\multicolumn{2}{l}{KMA vs GA} & +29.93 & 6.62 & +4.522 & 6.1241e-06 & 1.1403e-05 & -0.9978 & \textbf{Signifikan} \\
+\multicolumn{2}{l}{KMA vs PSO} & +59.97 & 6.62 & +9.059 & 1.3138e-19 & 3.9413e-19 & -1.0000 & \textbf{Signifikan} \\
+\multicolumn{2}{l}{GA vs PSO} & +30.03 & 6.62 & +4.537 & 5.7015e-06 & 1.1403e-05 & -1.0000 & \textbf{Signifikan} \\
+\bottomrule
+\end{tabular}
+\end{table}

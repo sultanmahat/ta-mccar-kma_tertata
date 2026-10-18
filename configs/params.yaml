@@ -168,6 +168,7 @@ optimization:
 # 6. Desain Eksperimen (Tabel 3.1, Spesifikasi §8)
 # ------------------------------------------------------------------------------
 experiments:
+  base_seed: 42            # Seed dasar deterministik (seed_k = base_seed + k)
   budget_evaluations: 25000 # Anggaran evaluasi fungsi per run/replikasi
   replications: 30         # 30 replikasi per konfigurasi per algoritma
   algorithms:
@@ -251,6 +252,6 @@ analysis:
     - "dunn_holm"
     - "rank_biserial"
 
-  # KEPUTUSAN TERBUKA D7:
-  # Penanganan ties pada uji Dunn (dengan atau tanpa koreksi ties)
-  dunn_ties_correction: null
+  # KEPUTUSAN D7 (DIPUTUSKAN 2026-10-18):
+  # Penanganan ties pada uji Dunn menggunakan faktor koreksi ties C_ties (Glantz, 2012)
+  dunn_ties_correction: true

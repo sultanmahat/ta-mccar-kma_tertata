@@ -157,16 +157,9 @@ class KomodoMlipirOptimizer(BaseOptimizer):
         n_pop_1 = self.phase_1_n_pop
 
         # Inisialisasi populasi Fase 1
-        pop_1: List[np.ndarray] = []
         raw_init_1 = gen_rng.uniform(self._lb, self._ub, size=(n_pop_1, dim))
-        for i in range(n_pop_1):
-            w_init = project_weights(raw_init_1[i], self._lb, self._ub, eps_tol=self.eps_tol)
-            pop_1.append(w_init)
-
-        # Evaluasi populasi awal Fase 1
-        results_1 = self.evaluate_population(np.array(pop_1), evaluator)
-
-        # Urutkan berdasarkan f_val (minimasi)
+        results_1 = self.evaluate_population(raw_init_1, evaluator)
+        pop_1 = [r["w"] for r in results_1]
         pop_1, results_1 = self._sort_population(pop_1, results_1)
 
         # Loop generasi Fase 1
@@ -196,19 +189,17 @@ class KomodoMlipirOptimizer(BaseOptimizer):
             init_n_pop_2 = min(self.phase_2_n_pop_init, max(self.phase_2_n_pop_min, rem_budget))
 
             # Populasi awal Fase 2:
-            # Individu ke-0 mewarisi solusi terbaik Fase 1
+            # Individu ke-0 mewarisi solusi terbaik Fase 1 (tanpa evaluasi ulang)
             # Sisa (init_n_pop_2 - 1) dibangkitkan secara acak seragam
             pop_2: List[np.ndarray] = [best_phase_1_w]
+            results_2: List[Dict[str, Any]] = [results_1[0]]
             num_new = max(0, init_n_pop_2 - 1)
-            if num_new > 0 and self.budget.remaining > 1:
+            if num_new > 0 and self.budget.remaining > 0:
                 raw_init_2 = gen_rng.uniform(self._lb, self._ub, size=(num_new, dim))
-                for i in range(num_new):
-                    w_init = project_weights(raw_init_2[i], self._lb, self._ub, eps_tol=self.eps_tol)
-                    pop_2.append(w_init)
+                results_new = self.evaluate_population(raw_init_2, evaluator)
+                pop_2.extend([r["w"] for r in results_new])
+                results_2.extend(results_new)
 
-            # Evaluasi populasi awal Fase 2
-            # (Individu ke-0 sudah dievaluasi, tetapi untuk konsistensi evaluasi ulang atau pakai batch)
-            results_2 = self.evaluate_population(np.array(pop_2), evaluator)
             pop_2, results_2 = self._sort_population(pop_2, results_2)
 
             # Riwayat fitness terbaik generasi Fase 2 untuk adaptasi ukuran populasi

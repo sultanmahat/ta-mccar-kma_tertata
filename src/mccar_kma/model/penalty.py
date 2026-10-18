@@ -116,6 +116,7 @@ class FeasibleSolution:
     v_J: float
     v_R: float
     evaluation_index: int
+    f_val: float = 0.0
 
 
 class FeasibleArchive:
@@ -149,6 +150,7 @@ class FeasibleArchive:
         v_J: float,
         v_R: float,
         evaluation_index: int = 0,
+        f_val: Optional[float] = None,
     ) -> bool:
         """Memperbarui arsip jika kandidat layak dan memiliki mean_cost lebih rendah.
 
@@ -160,6 +162,9 @@ class FeasibleArchive:
         if not self.is_feasible(v_J, v_R):
             return False
 
+        if f_val is None:
+            f_val = float(mean_cost)
+
         self.total_feasible_count += 1
         candidate = FeasibleSolution(
             w=np.asarray(w, dtype=float).copy(),
@@ -169,6 +174,7 @@ class FeasibleArchive:
             v_J=float(v_J),
             v_R=float(v_R),
             evaluation_index=int(evaluation_index),
+            f_val=float(f_val),
         )
 
         if self.best_solution is None or candidate.mean_cost < self.best_solution.mean_cost:

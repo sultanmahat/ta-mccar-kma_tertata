@@ -1,0 +1,662 @@
+{
+  "run_id": "gross_free_ga_rep01_seed43",
+  "config_id": "gross_free",
+  "cost_definition": "gross",
+  "constraint_type": "free",
+  "algo": "ga",
+  "rep": 1,
+  "seed": 43,
+  "budget": 25000,
+  "evaluations": 25000,
+  "is_feasible": true,
+  "best_cost": 1.037070990953131,
+  "best_fitness": 1.0370709909531308,
+  "ccar": 1.0721802660779631,
+  "j_mccar": 0.06814566910105843,
+  "tau_limit": 1.0860231287449413,
+  "eta_limit": 0.0681942778347374,
+  "v_J": 0.0,
+  "v_R": 0.0,
+  "theta_i": [
+    1.0090272294875464,
+    1.0091460497779168,
+    1.0058899948168931,
+    1.0609176728213483,
+    1.0581324326371673,
+    1.1726390648438696,
+    1.1710899089458615
+  ],
+  "mc_i": [
+    0.01045497746472074,
+    0.010523485024482146,
+    0.010549319496551525,
+    0.010450857870600716,
+    0.01048459474450195,
+    0.009931086027135374,
+    0.01004210358393528
+  ],
+  "mccar_i": [
+    0.0105493569455819,
+    0.010619733342353221,
+    0.010611454933707964,
+    0.011087499811064383,
+    0.011094089742214708,
+    0.011645579431744046,
+    0.011760206171735677
+  ],
+  "best_w": [
+    0.8390853390262717,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.16060608026228443,
+    0.00030858071144373
+  ],
+  "time_seconds": 28.2877,
+  "convergence_history": [
+    {
+      "evaluation": 250,
+      "best_cost": 1.0441248638499698,
+      "best_fitness": 1.0441248638499698,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 500,
+      "best_cost": 1.043585777730162,
+      "best_fitness": 1.043585777730162,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 750,
+      "best_cost": 1.0424191908924942,
+      "best_fitness": 1.0424191908924942,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 1000,
+      "best_cost": 1.0412267280993461,
+      "best_fitness": 1.0412267280993461,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 1250,
+      "best_cost": 1.040856810222298,
+      "best_fitness": 1.040856810222298,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 1500,
+      "best_cost": 1.0406352097465508,
+      "best_fitness": 1.0406352097465508,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 1750,
+      "best_cost": 1.0397530003181255,
+      "best_fitness": 1.0397530003181255,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 2000,
+      "best_cost": 1.0389434941576312,
+      "best_fitness": 1.0389434941576312,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 2250,
+      "best_cost": 1.03866489135993,
+      "best_fitness": 1.03866489135993,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 2500,
+      "best_cost": 1.03866489135993,
+      "best_fitness": 1.03866489135993,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 2750,
+      "best_cost": 1.0386215210787848,
+      "best_fitness": 1.0386215210787848,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 3000,
+      "best_cost": 1.038321906779443,
+      "best_fitness": 1.038321906779443,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 3250,
+      "best_cost": 1.038233237870222,
+      "best_fitness": 1.038233237870222,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 3500,
+      "best_cost": 1.0381095229263742,
+      "best_fitness": 1.0381095229263742,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 3750,
+      "best_cost": 1.0381095229263742,
+      "best_fitness": 1.0381095229263742,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 4000,
+      "best_cost": 1.0380697036065736,
+      "best_fitness": 1.0380697036065736,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 4250,
+      "best_cost": 1.0380478076646773,
+      "best_fitness": 1.0380478076646773,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 4500,
+      "best_cost": 1.0379858186460733,
+      "best_fitness": 1.0379858186460733,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 4750,
+      "best_cost": 1.0379858186460733,
+      "best_fitness": 1.0379858186460733,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 5000,
+      "best_cost": 1.0377967629582672,
+      "best_fitness": 1.0377967629582672,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 5250,
+      "best_cost": 1.0377967629582672,
+      "best_fitness": 1.0377967629582672,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 5500,
+      "best_cost": 1.0377967629582672,
+      "best_fitness": 1.0377967629582672,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 5750,
+      "best_cost": 1.0377967629582672,
+      "best_fitness": 1.0377967629582672,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 6000,
+      "best_cost": 1.0377967629582672,
+      "best_fitness": 1.0377967629582672,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 6250,
+      "best_cost": 1.0377548315569343,
+      "best_fitness": 1.0377548315569343,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 6500,
+      "best_cost": 1.0377548315569343,
+      "best_fitness": 1.0377548315569343,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 6750,
+      "best_cost": 1.037664506035629,
+      "best_fitness": 1.037664506035629,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 7000,
+      "best_cost": 1.037621715658185,
+      "best_fitness": 1.037621715658185,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 7250,
+      "best_cost": 1.037504725202026,
+      "best_fitness": 1.037504725202026,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 7500,
+      "best_cost": 1.0374966637018803,
+      "best_fitness": 1.0374966637018803,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 7750,
+      "best_cost": 1.0374610286546329,
+      "best_fitness": 1.0374610286546329,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 8000,
+      "best_cost": 1.0374422311787956,
+      "best_fitness": 1.0374422311787956,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 8250,
+      "best_cost": 1.0373994531153246,
+      "best_fitness": 1.0373994531153246,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 8500,
+      "best_cost": 1.0373489273083334,
+      "best_fitness": 1.0373489273083334,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 8750,
+      "best_cost": 1.0373131807318168,
+      "best_fitness": 1.0373131807318168,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 9000,
+      "best_cost": 1.0372241367408002,
+      "best_fitness": 1.0372241367408002,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 9250,
+      "best_cost": 1.0372215783971448,
+      "best_fitness": 1.0372215783971448,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 9500,
+      "best_cost": 1.0372215783971448,
+      "best_fitness": 1.0372215783971448,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 9750,
+      "best_cost": 1.0372136902609552,
+      "best_fitness": 1.0372136902609552,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 10000,
+      "best_cost": 1.0372136902609552,
+      "best_fitness": 1.0372136902609552,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 10250,
+      "best_cost": 1.0372136902609552,
+      "best_fitness": 1.0372136902609552,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 10500,
+      "best_cost": 1.0372136902609552,
+      "best_fitness": 1.0372136902609552,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 10750,
+      "best_cost": 1.0372136902609552,
+      "best_fitness": 1.0372136902609552,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 11000,
+      "best_cost": 1.0372136902609552,
+      "best_fitness": 1.0372136902609552,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 11250,
+      "best_cost": 1.0372136902609552,
+      "best_fitness": 1.0372136902609552,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 11500,
+      "best_cost": 1.0372136902609552,
+      "best_fitness": 1.0372136902609552,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 11750,
+      "best_cost": 1.037157554433669,
+      "best_fitness": 1.037157554433669,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 12000,
+      "best_cost": 1.037157554433669,
+      "best_fitness": 1.037157554433669,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 12250,
+      "best_cost": 1.037157554433669,
+      "best_fitness": 1.037157554433669,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 12500,
+      "best_cost": 1.037157554433669,
+      "best_fitness": 1.037157554433669,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 12750,
+      "best_cost": 1.037157554433669,
+      "best_fitness": 1.037157554433669,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 13000,
+      "best_cost": 1.037157554433669,
+      "best_fitness": 1.037157554433669,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 13250,
+      "best_cost": 1.037128925837655,
+      "best_fitness": 1.037128925837655,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 13500,
+      "best_cost": 1.0371269394172593,
+      "best_fitness": 1.0371269394172593,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 13750,
+      "best_cost": 1.0370873913908032,
+      "best_fitness": 1.0370873913908032,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 14000,
+      "best_cost": 1.0370748615618075,
+      "best_fitness": 1.0370748615618075,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 14250,
+      "best_cost": 1.0370748615618075,
+      "best_fitness": 1.0370748615618075,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 14500,
+      "best_cost": 1.0370748615618075,
+      "best_fitness": 1.0370748615618075,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 14750,
+      "best_cost": 1.0370748615618075,
+      "best_fitness": 1.0370748615618075,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 15000,
+      "best_cost": 1.0370748615618075,
+      "best_fitness": 1.0370748615618075,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 15250,
+      "best_cost": 1.037070990953131,
+      "best_fitness": 1.037070990953131,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 15500,
+      "best_cost": 1.037070990953131,
+      "best_fitness": 1.037070990953131,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 15750,
+      "best_cost": 1.037070990953131,
+      "best_fitness": 1.037070990953131,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 16000,
+      "best_cost": 1.037070990953131,
+      "best_fitness": 1.037070990953131,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 16250,
+      "best_cost": 1.037070990953131,
+      "best_fitness": 1.037070990953131,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 16500,
+      "best_cost": 1.037070990953131,
+      "best_fitness": 1.037070990953131,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 16750,
+      "best_cost": 1.037070990953131,
+      "best_fitness": 1.037070990953131,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 17000,
+      "best_cost": 1.037070990953131,
+      "best_fitness": 1.037070990953131,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 17250,
+      "best_cost": 1.037070990953131,
+      "best_fitness": 1.037070990953131,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 17500,
+      "best_cost": 1.037070990953131,
+      "best_fitness": 1.037070990953131,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 17750,
+      "best_cost": 1.037070990953131,
+      "best_fitness": 1.037070990953131,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 18000,
+      "best_cost": 1.037070990953131,
+      "best_fitness": 1.037070990953131,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 18250,
+      "best_cost": 1.037070990953131,
+      "best_fitness": 1.037070990953131,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 18500,
+      "best_cost": 1.037070990953131,
+      "best_fitness": 1.037070990953131,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 18750,
+      "best_cost": 1.037070990953131,
+      "best_fitness": 1.037070990953131,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 19000,
+      "best_cost": 1.037070990953131,
+      "best_fitness": 1.037070990953131,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 19250,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 19500,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 19750,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 20000,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 20250,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 20500,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 20750,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 21000,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 21250,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 21500,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 21750,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 22000,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 22250,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 22500,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 22750,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 23000,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 23250,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 23500,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 23750,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 24000,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 24250,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 24500,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 24750,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    },
+    {
+      "evaluation": 25000,
+      "best_cost": 1.0370709909531308,
+      "best_fitness": 1.0370709909531308,
+      "is_feasible": true
+    }
+  ],
+  "config_hash": "cb18e43035028fb98845a23684d6da838a074b9deddd2525edda5725f606cc5e",
+  "timestamp": "2026-10-18T05:10:35.223219+00:00",
+  "status": "completed"
+}

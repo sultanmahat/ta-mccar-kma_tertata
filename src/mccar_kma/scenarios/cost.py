@@ -199,7 +199,7 @@ def build_scenario_bank(
         "cost_interest": c_interest,
         "q_factors": q_mat,
         "s0": s0_arr,
-        "variable_names": np.array(market_cols, dtype=object),
-        "instrument_names": np.array(inst_names, dtype=object),
-        "currency_names": np.array(CURRENCY_ORDER, dtype=object),
+        "variable_names": np.array(market_cols, dtype="U"),
+        "instrument_names": np.array(inst_names, dtype="U"),
+        "currency_names": np.array(CURRENCY_ORDER, dtype="U"),
     }
