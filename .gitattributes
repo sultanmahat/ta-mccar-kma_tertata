@@ -1,0 +1,26 @@
+# Auto-detect text files and normalize line endings to LF on commit
+* text=auto eol=lf
+
+# Explicit text file types
+*.py text eol=lf
+*.md text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.tex text eol=lf
+*.csv text eol=lf
+*.ps1 text eol=lf
+*.sh text eol=lf
+*.toml text eol=lf
+*.txt text eol=lf
+*.lock text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+
+# Explicit binary files (do not touch or normalize line endings)
+*.npz binary
+*.npy binary
+*.pdf binary
+*.png binary
+*.xlsx binary
+*.ico binary

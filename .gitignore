@@ -3,7 +3,7 @@
 env/
 venv/
 
-# Python cache & artifacts
+# Python cache & build artifacts
 __pycache__/
 *.py[cod]
 *$py.class
@@ -20,14 +20,15 @@ build/
 .DS_Store
 Thumbs.db
 
-# Results runs & logs (abaikan isinya, pertahankan direktori dengan .gitkeep)
-results/runs/*
-!results/runs/.gitkeep
+# Logs (abaikan isinya, pertahankan direktori dengan .gitkeep)
 logs/*
 !logs/.gitkeep
 
-# Large binary files & datasets
-*.npz
+# Data interim (hanya simpan data mentah dan data processed)
+data/interim/*
+!data/interim/.gitkeep
+
+# Format biner tidak terlacak
 *.npy
 *.parquet
 
