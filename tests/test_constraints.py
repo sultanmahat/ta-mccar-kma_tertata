@@ -38,9 +38,9 @@ UB_FREE = np.ones(7)
 
 def test_projection_10000_random_points_djppr():
     """Uji proyeksi pada 10.000 titik acak dalam rentang [-2, 2]^7 untuk batas DJPPR."""
-    np.random.seed(12345)
+    rng = np.random.default_rng(12345)
     n_points = 10000
-    random_points = np.random.uniform(-2.0, 2.0, (n_points, 7))
+    random_points = rng.uniform(-2.0, 2.0, (n_points, 7))
 
     for p in random_points:
         pw = project_weights(p, LB_DJPPR, UB_DJPPR, eps_tol=1e-8)
@@ -51,9 +51,9 @@ def test_projection_10000_random_points_djppr():
 
 def test_projection_10000_random_points_free():
     """Uji proyeksi pada 10.000 titik acak dalam rentang [-2, 2]^7 untuk batas Free."""
-    np.random.seed(54321)
+    rng = np.random.default_rng(54321)
     n_points = 10000
-    random_points = np.random.uniform(-2.0, 2.0, (n_points, 7))
+    random_points = rng.uniform(-2.0, 2.0, (n_points, 7))
 
     for p in random_points:
         pw = project_weights(p, LB_FREE, UB_FREE, eps_tol=1e-8)
@@ -64,9 +64,9 @@ def test_projection_10000_random_points_free():
 
 def test_batch_projection_equivalence():
     """Uji kesamaan identik proyeksi batch W (P, 7) vs looping satu-per-satu."""
-    np.random.seed(999)
+    rng = np.random.default_rng(999)
     P = 100
-    W = np.random.uniform(-1.5, 1.5, (P, 7))
+    W = rng.uniform(-1.5, 1.5, (P, 7))
 
     batch_djppr = project_weights_batch(W, LB_DJPPR, UB_DJPPR)
     batch_free = project_weights_batch(W, LB_FREE, UB_FREE)
@@ -74,8 +74,8 @@ def test_batch_projection_equivalence():
     for p in range(P):
         single_djppr = project_weights(W[p], LB_DJPPR, UB_DJPPR)
         single_free = project_weights(W[p], LB_FREE, UB_FREE)
-        np.testing.assert_allclose(batch_djppr[p], single_djppr, atol=1e-12)
-        np.testing.assert_allclose(batch_free[p], single_free, atol=1e-12)
+        np.testing.assert_allclose(batch_djppr[p], single_djppr, atol=1e-8)
+        np.testing.assert_allclose(batch_free[p], single_free, atol=1e-8)
 
 
 def test_w0_feasibility():

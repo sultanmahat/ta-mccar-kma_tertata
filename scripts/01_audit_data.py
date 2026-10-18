@@ -153,13 +153,16 @@ def run_audit():
 
     # Verifikasi terhadap legacy
     legacy_res = compare_with_legacy(complete_ir, complete_fx, legacy_dir="legacy/data_v0")
-    print(f" - Kesesuaian irisan lengkap 2.028 baris vs legacy:")
-    print(f"   * Jumlah baris sama: {legacy_res['rows_match']} ({legacy_res['rows_count']} vs {legacy_res['legacy_rows_count']})")
-    print(f"   * Tanggal cocok 100%: {legacy_res['dates_match']}")
-    print(f"   * Kategori cocok 100%: {legacy_res['categories_match']}")
-    print(f"   * Selisih absolut maksimum IR: {legacy_res['max_diff_ir']}")
-    print(f"   * Selisih absolut maksimum FX: {legacy_res['max_diff_fx']}")
-    print(f"   * IDENTIK 100%: {legacy_res['is_identical']}")
+    if legacy_res.get("skipped"):
+        print(f" - Folder legacy tidak ditemukan ({legacy_res.get('reason')}), verifikasi legacy dilewati.")
+    else:
+        print(f" - Kesesuaian irisan lengkap 2.028 baris vs legacy:")
+        print(f"   * Jumlah baris sama: {legacy_res['rows_match']} ({legacy_res['rows_count']} vs {legacy_res['legacy_rows_count']})")
+        print(f"   * Tanggal cocok 100%: {legacy_res['dates_match']}")
+        print(f"   * Kategori cocok 100%: {legacy_res['categories_match']}")
+        print(f"   * Selisih absolut maksimum IR: {legacy_res['max_diff_ir']}")
+        print(f"   * Selisih absolut maksimum FX: {legacy_res['max_diff_fx']}")
+        print(f"   * IDENTIK 100%: {legacy_res['is_identical']}")
 
     # 7. Pembuatan Laporan Markdown: results/tables/audit_data.md
     report_md_path = Path("results/tables/audit_data.md")
@@ -319,7 +322,16 @@ Sepuluh kejadian dengan deviasi paling signifikan:
     for _, row in top_jumps.iterrows():
         md += f"| {row['date']} | `{row['series']}` | {row['prev_val']} | {row['curr_val']} | {row['dln']:+.4f} | {row['z_score']:+.2f}σ |\n"
 
-    md += f"""
+    if legacy_res.get("skipped"):
+        md += f"""
+---
+
+## 8. Verifikasi Kesamaan dengan File Acuan Legacy
+
+*Catatan: Direktori file legacy tidak ditemukan ({legacy_res.get('reason')}). Verifikasi file legacy dilewati.*
+"""
+    else:
+        md += f"""
 ---
 
 ## 8. Verifikasi Kesamaan dengan File Acuan Legacy

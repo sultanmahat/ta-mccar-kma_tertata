@@ -310,7 +310,18 @@ def compare_with_legacy(
     legacy_fx_file = leg_path / "fx_data_clean.csv"
 
     if not legacy_ir_file.exists() or not legacy_fx_file.exists():
-        raise FileNotFoundError(f"File legacy tidak ditemukan di {leg_path}")
+        return {
+            "skipped": True,
+            "rows_count": len(df_complete_ir),
+            "legacy_rows_count": 0,
+            "rows_match": False,
+            "dates_match": False,
+            "categories_match": False,
+            "max_diff_ir": 0.0,
+            "max_diff_fx": 0.0,
+            "is_identical": False,
+            "reason": f"File legacy tidak ditemukan di {leg_path}",
+        }
 
     legacy_ir = pd.read_csv(legacy_ir_file)
     legacy_fx = pd.read_csv(legacy_fx_file)

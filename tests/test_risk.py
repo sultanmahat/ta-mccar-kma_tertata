@@ -22,6 +22,21 @@ from mccar_kma.risk.mccar import (
 from mccar_kma.risk.evaluator import PortfolioEvaluator
 
 
+def test_tail_count_exact_for_train_and_validation():
+    """Uji ketepatan m skenario ekor (Persamaan 2.13, AUDIT-01 & AUDIT-03).
+    
+    Memastikan tidak ada floating-point ceil artifact:
+    - N = 5.000, alpha = 0.95 -> m = 250 tepat (bukan 251)
+    - N = 20.000, alpha = 0.95 -> m = 1.000 tepat (bukan 1.001)
+    - N = 100, alpha = 0.95 -> m = 5 tepat
+    - N = 5.001, alpha = 0.95 -> m = 251 tepat (karena ceil(250.05) = 251)
+    """
+    assert compute_tail_count(5000, alpha=0.95) == 250
+    assert compute_tail_count(20000, alpha=0.95) == 1000
+    assert compute_tail_count(100, alpha=0.95) == 5
+    assert compute_tail_count(5001, alpha=0.95) == 251
+
+
 def test_hand_calculated_synthetic_case():
     """Uji kasus sintetis kecil yang dihitung tangan sampai presisi penuh.
 
@@ -130,9 +145,9 @@ def test_analytical_identities_on_bank():
     np.testing.assert_allclose(evaluator.mc, expected_mc, atol=1e-14)
 
     # 2. CCaR >= Cost_bar untuk berbagai portofolio
-    np.random.seed(42)
+    rng = np.random.default_rng(42)
     for _ in range(20):
-        w = np.random.uniform(0.01, 1.0, 7)
+        w = rng.uniform(0.01, 1.0, 7)
         w = w / np.sum(w)
         res = evaluator.evaluate(w, apply_penalty=False)
         assert res["ccar"] >= res["mean_cost"] - 1e-12
@@ -149,16 +164,17 @@ def test_batch_vs_single_equivalence():
     bank_path = Path("data/processed/bank_train_seed42_N5000.npz")
     if not bank_path.exists():
         # Gunakan data sintetis jika file belum ada
-        C = np.random.uniform(0.9, 1.2, (500, 7))
+        rng_dummy = np.random.default_rng(99)
+        C = rng_dummy.uniform(0.9, 1.2, (500, 7))
         evaluator = PortfolioEvaluator(cost_matrix=C, tau=1.05, eta=0.05)
     else:
         evaluator = PortfolioEvaluator.from_scenario_bank(
             bank_path, cost_def="gross", tau=1.085986, eta=0.068115
         )
 
-    np.random.seed(99)
+    rng = np.random.default_rng(99)
     P = 25
-    W = np.random.uniform(0.05, 0.3, (P, 7))
+    W = rng.uniform(0.05, 0.3, (P, 7))
     W = W / np.sum(W, axis=1, keepdims=True)
 
     # Evaluasi batch

@@ -35,7 +35,9 @@ def compute_tail_count(n_scenarios: int, alpha: float = 0.95) -> int:
     if n_scenarios < 1:
         raise ValueError(f"n_scenarios harus bernilai minimal 1, didapat: {n_scenarios}")
 
-    m = int(math.ceil((1.0 - alpha) * n_scenarios))
+    # Pembulatan 9 desimal untuk mencegah floating-point precision artifact
+    # misal (1.0 - 0.95) * 5000 = 250.00000000000023 yang membuat ceil() menghasilkan 251
+    m = int(math.ceil(round((1.0 - alpha) * n_scenarios, 9)))
     return max(1, min(m, n_scenarios))
 
 
