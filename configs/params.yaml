@@ -180,10 +180,13 @@ experiments:
     - "interest_free"
     - "interest_djppr"
 
-  # KEPUTUSAN TERBUKA D8:
-  # Prosedur pembangkitan 1.000 kombinasi bobot acak DJPPR (acuan historis)
+  # D8 DIPUTUSKAN (2026-10-18):
+  # Prosedur pembangkitan 1.000 kombinasi bobot acak DJPPR (acuan historis):
+  # Opsi A: "rejection" (rejection sampling pada bobot ternormalisasi uniform)
+  # Catatan keputusan: docs/decisions/0005-risk-limits-d8-sampling.md
   random_benchmark_count: 1000
-  random_benchmark_method: null
+  random_benchmark_method: "rejection"
+  random_benchmark_seed: 42
 
 # ------------------------------------------------------------------------------
 # 7. Parameter Metaheuristik (Spesifikasi §7)
@@ -201,16 +204,15 @@ algorithms:
       n_pop_max: 200       # Batas atas ukuran populasi
       budget: 20000        # Sisa anggaran 20.000 evaluasi
 
-    # KEPUTUSAN TERBUKA D4:
-    # Parameter KMA yang belum ditentukan: p_bm, gamma, q (jumlah big male interaksi),
-    # probabilitas kawin vs partenogenesis, definisi kriteria stagnasi, dan delta_n
-    p_bm: null
-    gamma: null
-    q_interactions: null
-    p_mating: null
-    stagnation_patience: null
-    delta_n: null
-    phase_transition_strategy: null
+    # D4 DIPUTUSKAN (2026-10-18):
+    p_bm: 0.5
+    gamma: 0.1
+    q_interactions: null # null = seluruh n_bm
+    p_mating: 0.5
+    stagnation_patience: 2
+    stagnation_tol: 1.0e-7
+    delta_n: 5
+    phase_transition_strategy: "inherit_best_with_random_diversity"
 
   # 7.2 Genetic Algorithm (GA) - Subbab 2.9.1
   ga:
@@ -220,9 +222,8 @@ algorithms:
     p_mutation: 0.14285714285714285 # Peluang mutasi per dimensi (1 / D = 1 / 7)
     sigma_m_factor: 0.1   # Standar deviasi mutasi Gaussian = 0.1 * rentang
 
-    # KEPUTUSAN TERBUKA D6 (bagian GA):
-    # Jumlah/mekanisme elitisme pada GA
-    elitism_count: null
+    # D6 DIPUTUSKAN (2026-10-18):
+    elitism_count: 2
 
   # 7.3 Particle Swarm Optimization (PSO) - Subbab 2.9.2
   pso:
@@ -233,11 +234,10 @@ algorithms:
     c2: 1.49618           # Koefisien akselerasi sosial
     v_max_factor: 0.2     # v_max_i = 0.2 * (ub_i - lb_i)
 
-    # KEPUTUSAN TERBUKA D6 (bagian PSO & bersama):
-    # Perlakuan kecepatan v ketika posisi terpotong proyeksi
-    # Strategi inisialisasi populasi awal bersama (apakah identik di 3 algo)
-    velocity_clamp_strategy: null
-    shared_init_strategy: null
+    # D6 DIPUTUSKAN (2026-10-18):
+    velocity_clamp_strategy: "effective_displacement"
+    inertia_schedule: "evaluations_linear"
+    shared_init_strategy: "uniform_box_projected"
 
 # ------------------------------------------------------------------------------
 # 8. Analisis Statistik (Spesifikasi §9, §12)

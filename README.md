@@ -96,10 +96,11 @@ Pipeline dijalankan secara bertahap menggunakan skrip bernomor:
 *(Akan diperbarui bertahap seiring berjalannya tahapan proyek)*
 
 1. `01_audit_data.py`: Audit dan validasi integritas dataset asli DJPPR.
-2. `02_preprocess_data.py`: Pembersihan data, penanganan data hilang, kalkulasi log-return.
+2. `02_preprocess_data.py`: Pembersihan data, interpolasi spline, dan pemotongan jendela analisis.
 3. `03_estimate_gbm_params.py`: Estimasi parameter $\mu, \sigma$, matriks korelasi Cholesky, dan statistik biaya historis.
-4. `04_generate_scenarios.py`: Pembangkitan bank skenario GBM (5.000 skenario, 252 hari).
-5. `05_benchmark_evaluator.py`: Benchmark evaluator risiko MCCaR/CCaR, baseline w0, dan model kendala.
-6. `06_run_experiments.py`: Eksekusi eksperimen optimasi (KMA, GA, PSO).
-7. `07_statistical_analysis.py`: Uji statistik komparasi (Kruskal-Wallis, Dunn-Holm).
-8. `08_generate_reports.py`: Pembangkitan tabel dan grafik hasil untuk laporan skripsi.
+4. `04_generate_scenarios.py`: Pembangkitan bank skenario stokastik GBM (bank latih $N=5.000$ dan bank validasi $N=20.000$).
+5. `05_benchmark_evaluator.py`: Benchmark kinerja komputasi evaluator risiko portofolio MCCaR/CCaR.
+6. `06_compute_limits_and_baseline.py`: Perhitungan batas risiko acuan ($\eta, \tau$), replikasi baseline acak DJPPR (1.000 sampel), dan optimasi referensi SLSQP.
+7. `07_run_experiments.py`: Eksekusi eksperimen optimasi metaheuristik (KMA, GA, PSO).
+8. `08_statistical_analysis.py`: Uji statistik komparasi (Kruskal-Wallis, Dunn-Holm).
+9. `09_generate_reports.py`: Pembangkitan tabel dan grafik hasil untuk laporan skripsi.
