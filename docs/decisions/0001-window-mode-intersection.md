@@ -1,8 +1,9 @@
 # Keputusan D1: Pemilihan Varian Jendela Data (`window_mode`)
 
-- **Tanggal**: 2026-10-18
-- **Status**: DIPUTUSKAN
-- **Diputuskan oleh**: Sultan Bakri Baihaqi Mahat (Mahasiswa)
+- **Tanggal Usulan**: 2026-10-18
+- **Status**: Diusulkan agen / Menunggu konfirmasi Sultan
+- **Diusulkan oleh**: Agen AI (Pair Programming)
+- **Pihak yang Mengonfirmasi**: Sultan Bakri Baihaqi Mahat (Mahasiswa)
 
 ## Keputusan
 
