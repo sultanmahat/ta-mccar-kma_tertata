@@ -1,9 +1,10 @@
 # Keputusan D3: Spesifikasi Bank Validasi Independen
 
 - **Tanggal Usulan**: 2026-10-18
-- **Status**: Diusulkan agen / Menunggu konfirmasi Sultan
-- **Diusulkan oleh**: Agen AI (Pair Programming)
-- **Pihak yang Mengonfirmasi**: Sultan Bakri Baihaqi Mahat (Mahasiswa)
+- **Tanggal Konfirmasi**: 2026-10-24
+- **Status**: **Dikonfirmasi oleh Sultan Bakri Baihaqi Mahat (Mahasiswa)**
+- **Pihak yang Mengonfirmasi**: Sultan Bakri Baihaqi Mahat
+- **Pilihan yang Ditetapkan**: **Opsi A (N=20.000 skenario, seed 2026, m=1.000)**
 
 ## Ringkasan Keputusan
 

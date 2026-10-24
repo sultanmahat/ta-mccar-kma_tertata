@@ -1,9 +1,10 @@
 # Keputusan D4: Detail Parameter dan Mekanisme KMA yang Tidak Ditentukan Proposal
 
 - **Tanggal Usulan**: 2026-10-18
-- **Status**: Diusulkan agen / Menunggu konfirmasi Sultan
-- **Diusulkan oleh**: Agen AI (Pair Programming)
-- **Pihak yang Mengonfirmasi**: Sultan Bakri Baihaqi Mahat (Mahasiswa)
+- **Tanggal Konfirmasi**: 2026-10-24
+- **Status**: **Dikonfirmasi oleh Sultan Bakri Baihaqi Mahat (Mahasiswa)**
+- **Pihak yang Mengonfirmasi**: Sultan Bakri Baihaqi Mahat
+- **Pilihan yang Ditetapkan**: **Opsi A (Parameter default Suyanto 2022 & proposal: p_bm=0.5, gamma=0.1, mating=0.5, delta_n=5)**
 
 ## Ringkasan Keputusan
 

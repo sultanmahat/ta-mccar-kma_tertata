@@ -1,7 +1,7 @@
 """Unit testing untuk memeriksa konsistensi register keputusan (README.md vs params.yaml).
 
 Memastikan tidak ada penyimpangan nilai numerik parameter D1-D9 dan menegakkan
-status netral persetujuan ('Diusulkan agen / Menunggu konfirmasi Sultan').
+status persetujuan resmi ('Dikonfirmasi oleh Sultan').
 """
 
 from pathlib import Path
@@ -29,24 +29,29 @@ def decisions_readme_text(repo_root: Path) -> str:
     return readme_file.read_text(encoding="utf-8")
 
 
-def test_decisions_neutral_status(repo_root: Path, decisions_readme_text: str):
-    """Memastikan status seluruh keputusan D1-D9 di README dan berkas individual berstatus netral."""
+def test_decisions_confirmed_status(repo_root: Path, decisions_readme_text: str):
+    """Memastikan status seluruh keputusan D1-D9 dan D11 di README dan berkas individual berstatus sah Dikonfirmasi oleh Sultan."""
     # 1. Periksa README.md
-    assert "Diusulkan agen / Menunggu konfirmasi Sultan" in decisions_readme_text
+    assert "Dikonfirmasi oleh Sultan" in decisions_readme_text
+    assert "Menunggu konfirmasi Sultan" not in decisions_readme_text
     assert "**Status**: DIPUTUSKAN" not in decisions_readme_text
     assert "disetujui bersama pengguna" not in decisions_readme_text.lower()
 
-    # 2. Periksa berkas 0001 s.d. 0009
-    decision_files = sorted((repo_root / "docs" / "decisions").glob("000*.md"))
-    assert len(decision_files) == 9, f"Harusnya ada 9 berkas keputusan, ditemukan {len(decision_files)}"
+    # 2. Periksa berkas 0001 s.d. 0009 dan 0011
+    decision_files = sorted((repo_root / "docs" / "decisions").glob("00*.md"))
+    # Expect 10 files: 0001 to 0009 and 0011
+    assert len(decision_files) == 10, f"Harusnya ada 10 berkas keputusan, ditemukan {len(decision_files)}"
 
     for df in decision_files:
         content = df.read_text(encoding="utf-8")
-        assert "- **Status**: Diusulkan agen / Menunggu konfirmasi Sultan" in content, (
-            f"Status di {df.name} belum berstatus netral!"
+        assert "- **Status**: **Dikonfirmasi oleh Sultan Bakri Baihaqi Mahat (Mahasiswa)**" in content, (
+            f"Status di {df.name} belum berstatus Dikonfirmasi oleh Sultan!"
         )
         assert "- **Status**: DIPUTUSKAN" not in content, (
             f"Status di {df.name} masih mencantumkan DIPUTUSKAN!"
+        )
+        assert "Menunggu konfirmasi Sultan" not in content, (
+            f"Status di {df.name} masih menunggu konfirmasi!"
         )
 
 
@@ -95,11 +100,11 @@ def test_d5_zero_division_guard_consistency(params_config: dict, decisions_readm
 
 
 def test_d1_through_d9_coverage(repo_root: Path, decisions_readme_text: str):
-    """Memastikan seluruh D1 sampai D9 tercakup dan memiliki file pendukung."""
-    for i in range(1, 10):
+    """Memastikan seluruh D1 sampai D9 dan D11 tercakup dan memiliki file pendukung."""
+    for i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 11]:
         marker = f"**D{i}**"
         assert marker in decisions_readme_text, f"Keputusan {marker} tidak ditemukan di README.md!"
 
     # Periksa keberadaan berkas file
-    for p in (repo_root / "docs" / "decisions").glob("000*.md"):
+    for p in (repo_root / "docs" / "decisions").glob("00*.md"):
         assert p.name in decisions_readme_text, f"Berkas {p.name} tidak ditautkan di README.md!"

@@ -1,9 +1,10 @@
 # Keputusan D7: Penanganan Koreksi Ties pada Uji Lanjut Dunn
 
 - **Tanggal Usulan**: 2026-10-18
-- **Status**: Diusulkan agen / Menunggu konfirmasi Sultan
-- **Diusulkan oleh**: Agen AI (Pair Programming)
-- **Pihak yang Mengonfirmasi**: Sultan Bakri Baihaqi Mahat (Mahasiswa)
+- **Tanggal Konfirmasi**: 2026-10-24
+- **Status**: **Dikonfirmasi oleh Sultan Bakri Baihaqi Mahat (Mahasiswa)**
+- **Pihak yang Mengonfirmasi**: Sultan Bakri Baihaqi Mahat
+- **Pilihan yang Ditetapkan**: **Opsi A (dunn_ties_correction: true)**
 
 ---
 

@@ -1,9 +1,10 @@
 # Keputusan D9: Standar Tipografi, Visualisasi Ilmiah, dan Format Tabel LaTeX Skripsi
 
 - **Tanggal Usulan**: 2026-10-18
-- **Status**: Diusulkan agen / Menunggu konfirmasi Sultan
-- **Diusulkan oleh**: Agen AI (Pair Programming)
-- **Pihak yang Mengonfirmasi**: Sultan Bakri Baihaqi Mahat (Mahasiswa)
+- **Tanggal Konfirmasi**: 2026-10-24
+- **Status**: **Dikonfirmasi oleh Sultan Bakri Baihaqi Mahat (Mahasiswa)**
+- **Pihak yang Mengonfirmasi**: Sultan Bakri Baihaqi Mahat
+- **Pilihan yang Ditetapkan**: **Opsi A (PDF vektor + PNG 300 dpi, DejaVu Serif, arsir 7 instrumen, LaTeX booktabs)**
 
 ---
 
