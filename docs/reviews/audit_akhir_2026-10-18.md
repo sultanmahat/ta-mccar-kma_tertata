@@ -1,9 +1,15 @@
-# Laporan Audit Akhir Komprehensif: Verifikasi Proposal vs Implementasi, Validitas Model, dan Rekomendasi Skripsi
+# [DICABUT / ARSIP] Laporan Audit Akhir Komprehensif (2026-10-18)
+
+> [!WARNING]
+> **STATUS DOKUMEN: DICABUT (REVOKED / SUPERSEDED)**
+> Laporan audit ini disusun berdasarkan draf LaTeX usang (`report/proposal_latex/`) dan memuat sejumlah temuan yang tidak valid (AUD-FINAL-01, AUD-FINAL-05, AUD-FINAL-07, AUD-FINAL-08, serta klaim spekulatif mengenai ketahanan KMA vs PSO).
+> Dokumen resmi audit yang berlaku saat ini adalah **[audit_akhir_v2.md](audit_akhir_v2.md)** yang diverifikasi langsung dan secara murni terhadap PDF revisi proposal resmi (`docs/proposal/proposal_ta_sultan_revisi_after_sempro.pdf`).
 
 - **Dokumen Target Audit:** Seluruh artefak proyek Tugas Akhir (kode `src/mccar_kma/`, skrip `scripts/`, data `data/`, hasil `results/`, dan konfigurasi `configs/params.yaml`).
-- **Dokumen Rujukan:** `docs/proposal/proposal_ta_sultan_revisi_after_sempro.pdf`, dokumen LaTeX `report/proposal_latex/`, dan `docs/context/spesifikasi_model.md`.
+- **Dokumen Rujukan:** `report/proposal_latex/` (Draf LaTeX Usang — Tidak Berlaku Lagi).
 - **Peran:** Auditor Akhir Independen.
-- **Tanggal Audit:** 2026-10-18.
+- **Tanggal Audit Asli:** 2026-10-18.
+- **Tanggal Pencabutan:** 2026-10-18.
 
 ---
 
