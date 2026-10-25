@@ -1,0 +1,13 @@
+config_id,pair,k_a,n_a,k_b,n_b,p_fisher,p_barnard,p_fisher_holm,p_barnard_holm
+gross_free,kma_vs_ga,30,30,30,30,1.0,1.0,1.0,1.0
+gross_free,kma_vs_pso,30,30,30,30,1.0,1.0,1.0,1.0
+gross_free,ga_vs_pso,30,30,30,30,1.0,1.0,1.0,1.0
+gross_djppr,kma_vs_ga,30,30,30,30,1.0,1.0,1.0,1.0
+gross_djppr,kma_vs_pso,30,30,30,30,1.0,1.0,1.0,1.0
+gross_djppr,ga_vs_pso,30,30,30,30,1.0,1.0,1.0,1.0
+interest_free,kma_vs_ga,30,30,30,30,1.0,1.0,1.0,1.0
+interest_free,kma_vs_pso,30,30,28,30,0.4915254237288136,0.19871091469680088,1.0,0.5961327440904026
+interest_free,ga_vs_pso,30,30,28,30,0.4915254237288136,0.19871091469680088,1.0,0.5961327440904026
+interest_djppr,kma_vs_ga,30,30,30,30,1.0,1.0,1.0,1.0
+interest_djppr,kma_vs_pso,30,30,30,30,1.0,1.0,1.0,1.0
+interest_djppr,ga_vs_pso,30,30,30,30,1.0,1.0,1.0,1.0

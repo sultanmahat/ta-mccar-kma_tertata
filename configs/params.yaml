@@ -337,3 +337,28 @@ kma_diagnosis:
       sphere: {avg: 43.80, std: 5.257}
       rosenbrock: {avg: 634.7, std: 130.0}
       rastrigin: {avg: 121.3, std: 15.09}
+
+# ------------------------------------------------------------------------------
+# 11. Signifikansi Praktis 360 Run (Tahap 19-20; KEPUTUSAN D12 DIPUTUSKAN)
+# Bank latih & batas risiko = bank seed `scenarios.train_seed` (sama dgn 360 run).
+# Seed di sini terpisah dari seluruh seed proyek sebelumnya (lihat blok lain).
+# ------------------------------------------------------------------------------
+single_worker_timing:
+  output_path: "results/tables/timing_single_worker_360.csv"
+  algorithms: ["kma", "ga", "pso"]
+  configurations: ["gross_free", "gross_djppr", "interest_free", "interest_djppr"]
+  replications: 5
+  seed_base: 50000       # seed rep r = seed_base + r
+  budget: 25000          # sama dengan eksperimen utama (experiments.budget_evaluations)
+
+practical_significance:
+  output_dir: "results/tables"
+  bootstrap_resamples: 10000
+  bootstrap_seed: 60000
+  confidence_level: 0.95
+  j_r_active_rel_tol: 1.0e-3    # |eta-J|<=tol*eta dianggap kendala J "aktif" (mendekati batas)
+  bound_active_abs_tol: 1.0e-4  # |w_i - lb_i| atau |w_i - ub_i| <= tol dianggap bobot "di batas"
+
+  # D12 DIPUTUSKAN (2026-10-25): Opsi A (margin seragam 0,01%)
+  # Catatan keputusan: docs/decisions/0012-practical-equivalence-margin-d12.md
+  equivalence_margin_pct: 0.01   # margin TOST, persen relatif terhadap median biaya grup pembanding

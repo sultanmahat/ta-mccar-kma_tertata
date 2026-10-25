@@ -3,11 +3,11 @@
 Dokumen ini mencatat seluruh keputusan metodologis teknis yang melengkapi rincian komputasi yang tidak ditentukan secara eksplisit dalam proposal tugas akhir optimasi portofolio utang negara multivaluta (MCCaR + KMA).
 
 > [!NOTE]
-> **Status Persetujuan Formal:** Seluruh keputusan D1–D9 dan D11 telah resmi ditinjau dan dikonfirmasi (**"Dikonfirmasi oleh Sultan"**) oleh Sultan Bakri Baihaqi Mahat pada tanggal 24 Oktober 2026 (Seluruh opsi Opsi A); D10 dikonfirmasi 25 Oktober 2026 (Opsi C).
+> **Status Persetujuan Formal:** Seluruh keputusan D1–D9 dan D11 telah resmi ditinjau dan dikonfirmasi (**"Dikonfirmasi oleh Sultan"**) oleh Sultan Bakri Baihaqi Mahat pada tanggal 24 Oktober 2026 (Seluruh opsi Opsi A); D10 dikonfirmasi 25 Oktober 2026 (Opsi C); D12 dikonfirmasi 25 Oktober 2026 (Opsi A).
 
 ---
 
-## Matriks Status Keputusan (D1 – D11)
+## Matriks Status Keputusan (D1 – D12)
 
 | ID | Topik Keputusan | Berkas Keputusan | Tanggal Usulan | Tanggal Konfirmasi | Status | Pilihan yang Dikonfirmasi & Nilai Persis `configs/params.yaml` |
 |:---:|:---|:---|:---:|:---:|:---:|:---|
@@ -22,13 +22,14 @@ Dokumen ini mencatat seluruh keputusan metodologis teknis yang melengkapi rincia
 | **D9** | Standar Tipografi, Visualisasi, & Tabel | [0009-thesis-figures-tables-d9.md](0009-thesis-figures-tables-d9.md) | 2026-10-18 | 2026-10-24 | **Dikonfirmasi oleh Sultan** | **Opsi A**: Format ganda PDF vektor + PNG 300 dpi, tipografi serif (`DejaVu Serif`), pola arsir (*hatching*) 7 instrumen untuk cetak hitam-putih, dan tabel LaTeX `booktabs` otomatis tanpa *hardcoded numbers*. |
 | **D10** | Perlakuan Ketidakpastian Monte Carlo pada Batas Risiko (η, τ) | [0010-limit-stability-d10.md](0010-limit-stability-d10.md) | 2026-10-24 | 2026-10-25 | **Dikonfirmasi oleh Sultan** | **Opsi C (Pertahankan Bank 42, Laporkan Ketidakpastian)**: Batas η dan τ tetap dihitung dari bank seed 42 (360 run tidak diulang); temuan studi 20-bank independen (Tahap 17) — terutama kelayakan validasi rendah pada `interest_free` — dilaporkan sebagai keterbatasan di Bab 4/5, bukan dipakai merevisi hasil utama. |
 | **D11** | Kebijakan Penalaan Parameter yang Adil (*Fair Tuning Policy*) | [0011-fair-tuning-policy-d11.md](0011-fair-tuning-policy-d11.md) | 2026-10-18 | 2026-10-24 | **Dikonfirmasi oleh Sultan** | **Opsi A (Default Literatur / Status Quo Proposal)**: Ketiga algoritma (KMA, GA, PSO) menggunakan parameter default rujukan literatur masing-masing (Suyanto 2022, Goldberg, Eberhart/Shi) sesuai Tabel 3.1 proposal tanpa penalaan selektif tambahan. Ditinjau ulang 2026-10-25 setelah Diagnosis KMA v2 (Tahap 18): tetap Opsi A. |
+| **D12** | Margin Ekivalensi Praktis untuk Uji TOST | [0012-practical-equivalence-margin-d12.md](0012-practical-equivalence-margin-d12.md) | 2026-10-25 | 2026-10-25 | **Dikonfirmasi oleh Sultan** | **Opsi A (Margin Seragam 0,01%)**: `practical_significance.equivalence_margin_pct: 0.01`, margin relatif 0,01% dari median biaya grup pembanding, diterapkan seragam di keempat konfigurasi untuk uji ekivalensi (TOST) pada analisis signifikansi praktis Tahap 19-20. |
 
 ---
 
 ## Rekapitulasi Status
 
-- **Total Keputusan Teknis**: 11
-- **Status Dikonfirmasi oleh Sultan**: **11** (D1–D9 & D11 - Opsi A; D10 - Opsi C)
+- **Total Keputusan Teknis**: 12
+- **Status Dikonfirmasi oleh Sultan**: **12** (D1–D9, D11, D12 - Opsi A; D10 - Opsi C)
 - **Status Menunggu Konfirmasi Sultan**: **0**
 - **Status Ditolak**: **0**
 
