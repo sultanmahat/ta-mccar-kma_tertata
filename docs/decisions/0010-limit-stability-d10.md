@@ -15,7 +15,7 @@ Batas risiko η = J_MCCaR(w0) dan τ = CCaR(w0) di 360 run eksperimen utama dihi
 Ditetapkan:
 1. **Batas risiko (η, τ) tetap dihitung dari bank seed 42**, konsisten dengan desain proposal yang sudah disetujui. **360 run eksperimen utama tidak diulang.**
 2. Temuan Tahap 17 — terutama bahwa η (definisi biaya *interest*) punya variabilitas antar-bank terbesar (CV 4,34%), bank 42 adalah outlier longgar pada metrik ini (z = 3,44), dan solusi `interest_free` hanya tetap layak di 1–2 dari 20 bank independen saat divalidasi dengan batas presisi tinggi — **dilaporkan sebagai keterbatasan metodologis** di Bab 4/5 naskah skripsi, bukan dipakai untuk merevisi angka 360 run.
-3. Konfigurasi `interest_djppr`, `gross_djppr`, dan `gross_free` tidak menunjukkan masalah stabilitas sebesar `interest_free` (kelayakan validasi 40–100% vs 5–10%) — catatan keterbatasan difokuskan ke `interest_free`.
+3. Konfigurasi `interest_djppr` dan `gross_free` tidak menunjukkan masalah stabilitas sebesar `interest_free`; `gross_djppr` berada di antara keduanya (lihat tabel kelayakan 360 solusi vs batas benar pada Addendum di bawah) — catatan keterbatasan tetap difokuskan ke `interest_free`, dengan `gross_djppr` dicatat sebagai catatan tambahan yang lebih ringan.
 
 ---
 

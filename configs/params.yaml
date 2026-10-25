@@ -257,7 +257,7 @@ analysis:
   dunn_ties_correction: true
 
 # ------------------------------------------------------------------------------
-# 9. Studi Stabilitas Batas Risiko (Tahap 17; KEPUTUSAN D10 TERBUKA)
+# 9. Studi Stabilitas Batas Risiko (Tahap 17; D10 Opsi C, lihat docs/decisions/0010-limit-stability-d10.md)
 # Anggaran, konfigurasi, N bank, dan seed validasi dipakai ulang dari blok
 # experiments / scenarios (tidak diduplikasi di sini).
 # ------------------------------------------------------------------------------
