@@ -32,6 +32,10 @@ data/interim/*
 results/sensitivity/kma/runs_*/
 results/sensitivity/kma/smoke/
 
+# Keluaran mentah per-run studi stabilitas limit (Tahap 17); ringkasan CSV/figur tetap dilacak
+results/sensitivity/limits/runs/
+results/sensitivity/limits/smoke/
+
 # Format biner tidak terlacak
 *.npy
 *.parquet
