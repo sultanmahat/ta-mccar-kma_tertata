@@ -1,45 +1,59 @@
 \chapter{Pendahuluan}\label{ch:introduction}
-    
-    \section{Latar Belakang Masalah}\label{sec:background}
+% =============================================================================
+% KERANGKA BAB 1 — sumber: PDF proposal revisi (docs/proposal/), Bab I hlm. 1–4.
+% Pola TA rujukan (rico_laporan_final.pdf): latar belakang makro bersumber data
+% (BI, DJPPR) -> masalah pengelolaan utang valas -> keterbatasan pendekatan yang
+% ada -> celah penelitian -> kontribusi; rumusan, tujuan, dan kesimpulan Bab 5
+% saling memetakan satu-satu.
+% Butir bernomor di bawah disalin dari proposal; perbaikan hanya pada penamaan
+% instrumen (audit R4: "EUR 8Y" -> "EUR Fixed 7Y (tenor 8 tahun)").
+% =============================================================================
 
-        % (KASIH COMMENT SEBELUM `BEGIN` DAN SETELAH `END`)
-        % Ilustrasi singkat menggambarkan metode serupa dengan penelitian Tugas Akhir
-        \begin{figure}
-            \centering
-            \includegraphics[width=0.5\linewidth]{example-image-a}
-            \caption{Caption}
-            \label{fig:ilustrasi model}
-        \end{figure}
-        %
+    \section{Latar Belakang}\label{sec:background}
+    % Alur paragraf (proposal hlm. 1–3):
+    % 1. Utang sebagai sumber pembiayaan; sasaran biaya minimum pada risiko yang
+    %    dapat ditoleransi (IMF & World Bank, 2014; Panzer dkk., 2015).
+    % 2. Porsi dan posisi utang valas Indonesia (Bank Indonesia, 2025; DJPPR, 2025).
+    % 3. Pertukaran biaya–risiko: risiko nilai tukar dan suku bunga.
+    % 4. Komposisi harus dinilai pada tingkat portofolio (korelasi antarpasar).
+    % 5. Keterbatasan MVO untuk utang; ukuran risiko ekor (Consiglio & Zenios, 2015).
+    % 6. MCCaR (Yavuz & Golbasi, 2019) dan kajian DJPPR (2025): pencarian terbatas
+    %    pada 1.000 kombinasi acak.
+    % 7. Penelitian ITS terdahulu (Fauzan, Furoida, Pambudi, Qurrotul A'in, 2026).
+    % 8. Kontribusi: MCCaR sebagai kendala; KMA dibandingkan GA dan PSO.
 
     \section{Rumusan Masalah}\label{sec:problem}
 
-        % Rumusan Masalah pada Penelitian Tugas Akhir
+        Berdasarkan latar belakang yang telah diuraikan, permasalahan yang akan dibahas dalam penelitian ini dirumuskan sebagai berikut.
         \begin{enumerate}
-            \item 
+            \item Bagaimana memodifikasi model portofolio utang negara multivaluta berbasis MCCaR sebagai masalah optimasi berkendala?
+            \item Bagaimana kinerja KMA dibandingkan dengan GA dan PSO dalam menyelesaikan model tersebut untuk mencari kombinasi utang terbaik dengan cicilan paling minimum, dinilai dari nilai fungsi objektif, tingkat kelayakan solusi, konsistensi hasil antarreplikasi, dan waktu komputasi pada anggaran evaluasi yang sama?
         \end{enumerate}
-        % 
 
     \section{Batasan Masalah}\label{sec:limitation}
 
-        % Batasan Masalah pada Penelitian Tugas Akhir
+        Agar penelitian ini lebih terarah dan fokus pada permasalahan yang telah dirumuskan, penulis menetapkan batasan-batasan masalah sebagai berikut.
         \begin{enumerate}
-            \item 
+            \item Portofolio terdiri atas tujuh instrumen berbunga tetap dalam USD, EUR, dan JPY, yaitu USD 5Y, USD 10Y, USD 30Y, EUR Fixed 7Y (tenor 8 tahun), EUR 10Y, JPY 5Y, dan JPY 10Y. Data mencakup \textit{yield}, kurs USD/EUR dan USD/JPY, komposisi 2024, serta batas proporsi DJPPR pada irisan periode pengamatan 3 Juli 2017--24 November 2025.
+            \item Skenario \textit{market rate} dibangkitkan menggunakan \textit{Geometric Brownian Motion} (GBM) dengan parameter tetap selama horizon simulasi. GBM tidak memodelkan \textit{mean reversion}, perubahan rezim, atau lonjakan volatilitas.
+            \item Risiko diukur dengan CCaR dan MCCaR. Biaya utama berupa faktor layanan utang bruto satu periode dalam USD ekuivalen, sedangkan proksi biaya bunga digunakan untuk analisis sensitivitas. Hasil hanya ditafsirkan untuk membandingkan komposisi, bukan sebagai proyeksi nominal beban APBN.
+            \item KMA, GA, dan PSO dibandingkan pada fungsi objektif, kendala, skenario, serta anggaran evaluasi yang sama. Penyaringan 1.000 kombinasi digunakan sebagai acuan historis, bukan sebagai pembanding algoritma.
+            \item Model tidak memasukkan instrumen berbunga mengambang, biaya transaksi, risiko likuiditas, lindung nilai, perubahan kebijakan fiskal, atau kondisi makroekonomi agregat. Algoritma stokastik tidak menjamin optimum global.
         \end{enumerate}
-        % 
 
-    \section{Tujuan}\label{sec:purpose}
+    \section{Tujuan Penelitian}\label{sec:purpose}
 
-        % Tujuan Penelitian Tugas Akhir
+        Berdasarkan rumusan masalah yang telah ditetapkan, tujuan dari penelitian ini adalah sebagai berikut.
         \begin{enumerate}
-            \item 
+            \item Memodifikasi model portofolio utang negara multivaluta berbasis MCCaR sebagai masalah optimasi berkendala, dengan ketercapaian dinilai dari terpenuhinya seluruh kendala pada solusi yang dihasilkan serta konsistensi hasil perhitungan pada kasus uji sintetis.
+            \item Menerapkan KMA serta membandingkan kinerjanya dengan GA dan PSO dalam menyelesaikan model tersebut untuk mencari kombinasi utang terbaik dengan cicilan paling minimum, dengan ketercapaian dinilai dari nilai fungsi objektif, tingkat kelayakan solusi, konsistensi hasil antarreplikasi, dan waktu komputasi pada anggaran evaluasi yang sama.
         \end{enumerate}
-        % 
 
-    \section{Manfaat}\label{sec:benefit}
+    \section{Manfaat Penelitian}\label{sec:benefit}
 
-        % Manfaat Penelitian Tugas Akhir
+        Berdasarkan tujuan yang telah disusun, penelitian ini diharapkan dapat memberikan manfaat sebagai berikut.
         \begin{enumerate}
-            \item 
+            \item Memberikan alternatif metode kuantitatif bagi pengelola utang negara dalam menentukan komposisi utang valas yang mempertimbangkan keseimbangan biaya dan risiko ekstrem secara terukur.
+            \item Menyediakan gambaran kelayakan KMA sebagai metode penyelesaian optimasi komposisi utang valas dibandingkan metode acuan sehingga dapat menjadi pertimbangan dalam pemilihan alat analisis pengelolaan utang.
+            \item Menjadi rujukan bagi peneliti selanjutnya yang menekuni optimasi portofolio, manajemen risiko utang negara, dan penerapan algoritma metaheuristik pada bidang keuangan publik.
         \end{enumerate}
-        % 

@@ -1,16 +1,47 @@
-\chapter{Kesimpulan dan Saran}
-    \section{Kesimpulan}
+\chapter{Kesimpulan dan Saran}\label{ch:summary}
+% =============================================================================
+% KERANGKA BAB 5 — pola TA rujukan: kesimpulan bernomor menjawab rumusan masalah
+% satu-satu dengan angka kunci; saran bernomor untuk penelitian lanjutan.
+% Setiap angka di kesimpulan WAJIB sama dengan angka di Bab 4 (rujuk label).
+% =============================================================================
 
-        % Kesimpulan pada Penelitian Tugas Akhir
+    \section{Kesimpulan}\label{sec:conclusion}
+
+        Berdasarkan hasil analisis yang telah dilakukan, kesimpulan yang menjawab rumusan masalah penelitian ini adalah sebagai berikut.
         \begin{enumerate}
-            \item 
+            \item % Menjawab rumusan masalah 1 (modifikasi model MCCaR sebagai optimasi berkendala).
+                  % Bukti: Pers. 2.21–2.24; verifikasi kasus sintetis (tests/test_risk.py,
+                  % tests/test_constraints.py); 360/360 solusi memenuhi kendala bobot
+                  % (Tabel \ref{tab:validation feasibility}); kelayakan terhadap batas
+                  % bank latih vs batas bank validasi (Tabel \ref{tab:validation true limits}).
+                  % SUMBER: results/tables/validation_summary.md
+                  % SUMBER: results/tables/validation_true_limits_summary.csv
+                  \textit{[diisi]}
+            \item % Menjawab rumusan masalah 2 (KMA vs GA vs PSO) pada empat kriteria proposal:
+                  % (a) nilai fungsi objektif: Tabel \ref{tab:descriptive stats}, \ref{tab:practical significance};
+                  % (b) kelayakan: Tabel \ref{tab:validation feasibility}, \ref{tab:fisher};
+                  % (c) konsistensi antarreplikasi: simpangan baku/IQR, Tabel \ref{tab:descriptive stats};
+                  % (d) waktu komputasi: Tabel \ref{tab:computation time}.
+                  % Sertakan diagnosis penyebab (Subbab \ref{subsec:kma diagnosis});
+                  % hasil negatif dinyatakan apa adanya.
+                  % SUMBER: results/tables/stats_praktis.csv
+                  % SUMBER: results/tables/timing_single_worker_360.csv
+                  \textit{[diisi]}
         \end{enumerate}
-        % 
 
-    \section{Saran}
+    \section{Saran}\label{sec:suggestion}
 
-        % Saran pada Penelitian Tugas Akhir
+        Berdasarkan hasil yang telah diperoleh, saran untuk penelitian selanjutnya adalah sebagai berikut.
         \begin{enumerate}
-            \item 
+            \item % Model skenario dengan mean reversion / perubahan rezim (Subbab \ref{subsec:no mean reversion}).
+                  \textit{[diisi]}
+            \item % Horizon multiperiode dengan jadwal jatuh tempo dan rollover (Subbab \ref{subsec:one year horizon}).
+                  \textit{[diisi]}
+            \item % Batas risiko dari beberapa bank atau bank berukuran besar (Subbab \ref{subsec:single bank limits}).
+                  \textit{[diisi]}
+            \item % Penyetelan parameter algoritma pada anggaran setara (D11 Opsi B sebagai penelitian lanjut;
+                  % arah dari ablasi Tahap 18, Subbab \ref{subsec:kma diagnosis}).
+                  \textit{[diisi]}
+            \item % Studi drift dengan common random numbers dan beberapa bank per skenario (audit T4).
+                  \textit{[diisi]}
         \end{enumerate}
-        % 

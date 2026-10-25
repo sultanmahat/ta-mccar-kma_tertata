@@ -1,3 +1,103 @@
 \chapter{Tinjauan Pustaka}\label{ch:literature}
+% =============================================================================
+% KERANGKA BAB 2 — susunan subbab mengikuti PDF proposal revisi (Bab II).
+% Pola TA rujukan: (a) penelitian terdahulu dirangkum dalam tabel No–Judul–
+% Metode–Fokus lalu paragraf kebaruan; (b) setiap persamaan bernomor diikuti
+% blok "dengan keterangan"; (c) uji statistik ditulis dengan format
+% (1) Hipotesis, (2) Statistik Uji, (3) Daerah Kritis, (4) Keputusan.
+% Nomor persamaan WAJIB sama dengan proposal (2.1–2.39) karena kode dan
+% docs/context/spesifikasi_model.md merujuk nomor tersebut.
+% =============================================================================
 
     \section{Penelitian Terdahulu}\label{sec:past research}
+    % Isi: urutan kronologis dari indikator statis ke model berbasis skenario
+    % (Bolder, 2003; Jonasson & Papaioannou, 2018), CCaR/MCCaR (Yavuz & Golbasi,
+    % 2019), kajian DJPPR (2025), KMA (Suyanto dkk., 2022), dan empat TA ITS 2026
+    % pada data DJPPR yang sama. Laporan TA Pambudi (2026) memakai w0 dan batas
+    % Kemenkeu yang identik dengan penelitian ini tetapi model biaya berbeda
+    % (persentase perubahan nilai utang bulanan, MVO/CVaR dengan peramalan ARIMA).
+    % SUMBER: docs/references/core/
+    % SUMBER: docs/references/prior_theses/
+
+        \begin{table}[H]
+            \centering
+            \caption{Ringkasan penelitian terdahulu}\label{tab:past research}
+            \small
+            \begin{tabularx}{\linewidth}{|c|X|X|X|}
+                \hline
+                \textbf{No.} & \textbf{Judul Penelitian} & \textbf{Metode} & \textbf{Fokus Penelitian}\\
+                \hline
+                1 & Yavuz dan Golbasi (2019) & [diisi] & [diisi]\\
+                \hline
+                2 & Direktorat Jenderal Pengelolaan Pembiayaan dan Risiko (2025) & [diisi] & [diisi]\\
+                \hline
+                3 & Suyanto dkk. (2022) & [diisi] & [diisi]\\
+                \hline
+                4 & Fauzan (2026) & [diisi] & [diisi]\\
+                \hline
+                5 & Furoida (2026) & [diisi] & [diisi]\\
+                \hline
+                6 & Pambudi (2026) & [diisi] & [diisi]\\
+                \hline
+                7 & Qurrotul A'in (2026) & [diisi] & [diisi]\\
+                \hline
+            \end{tabularx}
+        \end{table}
+        % Paragraf kebaruan: MCCaR dirumuskan sebagai kendala keseimbangan risiko
+        % marjinal (bukan alat penyaringan); KMA diuji terhadap GA dan PSO pada
+        % masalah, bank skenario, dan anggaran evaluasi yang sama.
+
+    \section{Portofolio Utang Valas}\label{sec:debt portfolio}
+    % Tabel 2.1 instrumen (EUR Fixed 7Y bertenor 8 tahun) dan Tabel 2.2 komposisi
+    % eksisting + batas proporsi; Pers. 2.1–2.3 (faktor kurs, biaya bruto, biaya bunga).
+
+    \section{Interpolasi \textit{Cubic Spline}}\label{sec:spline}
+    % Pers. 2.4–2.6. Catatan audit S2: pada pipeline utama (D1 Opsi A) spline
+    % hanya dipakai sebagai varian sensitivitas; nyatakan peran ini secara eksplisit.
+
+    \section{Statistik Historis Biaya Portofolio}\label{sec:historical cost}
+
+        \subsection{Perubahan Biaya}\label{subsec:cost change}
+
+        \subsection{Variansi dan Kovarians}\label{subsec:covariance}
+
+    \section{Pembangkitan Skenario dengan \textit{Geometric Brownian Motion}}\label{sec:gbm theory}
+
+    \section{Model \textit{Conditional Cost-at-Risk} (CCaR)}\label{sec:ccar}
+    % Pers. 2.13: m = ceil((1 - alpha) N).
+
+    \section{Model \textit{Marginal Conditional Cost-at-Risk} (MCCaR)}\label{sec:mccar}
+    % Pers. 2.14–2.20. Tabel 2.3 tafsir rasio: seragamkan notasi theta_i dan
+    % theta-bar (audit R4).
+    % Contoh ilustrasi J_MCCaR di proposal hlm. 19 salah hitung (audit S3):
+    % sqrt((0,10^2 + 0,15^2 + 0,05^2)/3) = 0,1080, bukan 0,0855; dengan eta = 0,09
+    % contoh itu MELANGGAR kendala. Perbaiki contoh di naskah ini.
+
+        \subsection{Model Optimasi Berbasis MCCaR}\label{subsec:mccar optimization}
+        % Pers. 2.21–2.22.
+
+        \subsection{Penanganan Kendala}\label{subsec:constraint handling}
+        % Pers. 2.23–2.24 (pelanggaran relatif dan penalti kuadratik).
+
+    \section{\textit{Komodo Mlipir Algorithm} (KMA)}\label{sec:kma}
+
+        \subsection{Perilaku Komodo}\label{subsec:komodo behaviour}
+
+        \subsection{Konsep Matematis}\label{subsec:kma math}
+        % Pers. 2.25–2.32. Laju mlipir fase kedua belum tercantum di proposal
+        % (audit T5); cantumkan nilainya sesuai kode setelah dikonfirmasi.
+
+        \subsection{Struktur Umum}\label{subsec:kma structure}
+
+    \section{Algoritma Pembanding}\label{sec:comparators}
+
+        \subsection{\textit{Genetic Algorithm}}\label{subsec:ga}
+        % Pers. 2.33–2.34.
+
+        \subsection{\textit{Particle Swarm Optimization}}\label{subsec:pso}
+        % Pers. 2.35–2.36.
+
+    \section{Analisis Algoritma}\label{sec:algorithm analysis}
+    % Pers. 2.37–2.39 (Kruskal–Wallis, Dunn, epsilon^2) dalam format uji (1)–(4).
+    % Tambahkan uji ekivalensi praktis (TOST, Hodges–Lehmann; D12) dan uji eksak
+    % Fisher/Barnard yang dipakai di Bab 4.

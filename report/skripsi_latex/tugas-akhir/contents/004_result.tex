@@ -1,11 +1,29 @@
 \chapter{Hasil dan Pembahasan}\label{ch:result}
 % =============================================================================
-% OUTLINE BAB 4 — disusun 2026-10-25. Belum berisi narasi.
+% OUTLINE BAB 4 — revisi 2026-10-25, mengikuti pola laporan TA terdahulu yang
+% menjadi rujukan format (docs/references/prior_theses/rico_laporan_final.pdf).
+%
+% Pola yang diadopsi:
+%  (P1) Setiap tahap diawali SATU contoh hitung manual lengkap untuk satu
+%       variabel/konfigurasi, lalu tabel ringkasan seluruh variabel.
+%  (P2) Model optimasi ditulis eksplisit dengan angka untuk tiap skenario batas.
+%  (P3) Tabel kinerja portofolio eksisting 2024 sebagai acuan; setiap hasil
+%       disertai persentase perubahan terhadap acuan itu.
+%  (P4) Uji statistik dituliskan dalam format (1) Hipotesis, (2) Statistik Uji,
+%       (3) Daerah Kritis, (4) Keputusan untuk satu contoh, lalu tabel ringkasan.
+%  (P5) Subbab Analisis Hasil dan Pembahasan memuat tabel perbandingan eksisting
+%       vs hasil optimasi dan tabel perubahan bobot terhadap eksisting.
+%  (P6) Setiap tabel/gambar diperkenalkan ("disajikan pada tabel berikut") dan
+%       diikuti paragraf "Berdasarkan Tabel/Gambar X, ...".
+%
+% Yang TIDAK ditiru: angka belasan desimal dan klaim yang melebihi data.
+%
 % Aturan penulisan bab ini:
-%  - Setiap angka di teks WAJIB diambil langsung dari berkas pada baris "% SUMBER:".
+%  - Setiap angka di teks WAJIB diambil dari berkas pada baris "% SUMBER:".
 %    Jangan mengutip angka dari teks review di docs/reviews/ tanpa cek ke CSV;
-%    lihat docs/reviews/audit_ulang_2026-10-25.md (temuan T1, T2, T4, T6, S5, S7, S8).
-%  - Perbandingan algoritma (K1 Opsi A): tidak memakai kata "unggul"/"terburuk"
+%    lihat docs/reviews/audit_ulang_2026-10-25.md (T1, T2, T4, T6, S5, S7, S8).
+%  - Presisi (R2): nilai 6 angka penting, persentase 2–4 desimal, desimal koma.
+%  - Perbandingan algoritma (K1): tidak memakai kata "unggul"/"terburuk"
 %    untuk biaya; sajikan selisih, CI, dan status ekivalensi. Peringkat KMA hanya
 %    untuk waktu komputasi (Tahap 19). Tahap 17 tidak mengikutkan KMA.
 %  - Hasil negatif KMA yang terdiagnosis (Tahap 18) adalah kontribusi sah:
@@ -13,44 +31,58 @@
 %    agar "menang"; ablasi hanya analisis sensitivitas (D11 Opsi A).
 %    Nuansa data: ekivalen praktis pada konfigurasi DJPPR, tidak ekivalen pada
 %    konfigurasi bebas (stats_praktis.csv) — "kompetitif" hanya berlaku untuk DJPPR.
-%  - Bank untuk angka (K2): Subbab 4.4–4.6 memakai bank latih (runs_summary.csv);
-%    Subbab 4.7 memakai bank validasi. Sebutkan bank di setiap caption.
+%  - Bank untuk angka (K2): Subbab 4.5–4.7 memakai bank latih (runs_summary.csv);
+%    Subbab 4.8 memakai bank validasi. Sebutkan bank di setiap caption.
 %  - Gambar (K7): saat menulis narasi, salin PDF dari results/ ke
 %    tugas-akhir/assets/images/ lalu ganti placeholder dengan \includegraphics.
+%  - Laporan TA Rico memakai data DJPPR yang sama (w0 dan batas Kemenkeu identik),
+%    tetapi model biayanya berbeda; jangan membandingkan angka biaya antarkeduanya.
 % =============================================================================
 
     % -------------------------------------------------------------------------
-    \section{Deskripsi dan Prapemrosesan Data}\label{sec:data}
+    \section{Pra-pemrosesan dan Deskripsi Data}\label{sec:data}
     % -------------------------------------------------------------------------
 
-        \subsection{Data Pasar}\label{subsec:market data}
-        % Isi: 9 variabel pasar (7 yield + 2 kurs), jendela data, jumlah hari
-        % (D1 Opsi A: intersection), blok data hilang EUR 10Y.
+        \subsection{Pemeriksaan Kelengkapan Data dan Jendela Irisan}\label{subsec:data completeness}
+        % Isi: 9 variabel pasar harian; blok data hilang EUR 10Y (163 hari kerja);
+        % D1 Opsi A: irisan tanggal 3 Juli 2017–24 November 2025, 2.028 hari, tanpa
+        % interpolasi. Kontras dengan TA rujukan yang mengisi celah serupa (data
+        % bulanan) memakai cubic spline: di sini spline hanya varian sensitivitas
+        % (Subbab \ref{sec:drift sensitivity}); selaraskan dengan Bab 3 (audit S2).
 
         \begin{table}[H]
             \centering
             \caption{Ringkasan data pasar dan blok data hilang}\label{tab:data summary}
             % SUMBER: results/tables/audit_data.md
             % SUMBER: results/tables/audit_data_gaps.csv
+            % SUMBER: results/tables/preprocess_comparison.md
             \textit{[Tabel belum diisi]}
         \end{table}
+
+        \subsection{Deskripsi Data Pasar}\label{subsec:market description}
+        % Isi (P6): plot deret waktu lalu paragraf "Berdasarkan Gambar ...".
+        % Penjelasan sebab ekonomi (pandemi, kenaikan suku bunga AS, kebijakan BoJ)
+        % wajib bersitasi pustaka; angka hanya dari berkas sumber.
 
         \begin{figure}[H]
             \centering
             \textit{[Gambar belum disisipkan]}
-            \caption{Pergerakan yield dan kurs valuta asing}\label{fig:market timeseries}
+            \caption{Pergerakan yield dan kurs valuta asing, 3 Juli 2017–24 November 2025}\label{fig:market timeseries}
             % SUMBER: results/figures/fig_timeseries_market.pdf
         \end{figure}
 
         \begin{table}[H]
             \centering
-            \caption{Statistik deskriptif log-return variabel pasar}\label{tab:market stats}
+            \caption{Statistik deskriptif data pasar}\label{tab:market stats}
             % SUMBER: results/tables/tab_market_stats.tex
+            % Catatan: TA rujukan menyajikan rata-rata, simpangan baku, min, maks;
+            % tab_market_stats.tex belum memuat simpangan baku level.
             \textit{[Tabel belum diisi]}
         \end{table}
 
         \subsection{Komposisi Eksisting 2024 dan Batas Proporsi DJPPR}\label{subsec:existing composition}
-        % Isi: w0, lb, ub per instrumen; tenor EUR Fixed 7Y = 8; Σlb dan Σub.
+        % Isi: w0, lb, ub per instrumen; tenor EUR Fixed 7Y = 8 (audit R4);
+        % Σlb = 0,88 dan Σub = 1,105.
 
         \begin{table}[H]
             \centering
@@ -60,10 +92,15 @@
         \end{table}
 
     % -------------------------------------------------------------------------
-    \section{Estimasi Parameter GBM dan Pembangkitan Skenario}\label{sec:gbm}
+    \section{Estimasi Parameter GBM}\label{sec:gbm}
     % -------------------------------------------------------------------------
-    % Isi: anualisasi D2 Opsi A, korelasi dan Cholesky, statistik Δc historis
-    % kedua definisi biaya, verifikasi skenario simulasi terhadap target.
+    % (P1) Contoh hitung IR_USD_5Y, lalu tabel 9 variabel:
+    %   r_t = ln(S_t / S_{t-1});  m = 0,000172375;  s = 0,0138827   (n = 2.026)
+    %   sigma = s * sqrt(252) = 0,220380 (22,04% per tahun)
+    %   mu    = 252 m + sigma^2 / 2 = 0,0434384 + 0,0242837 = 0,0677221 (6,77% per tahun)
+    %   (D2 Opsi A: anualisasi Ito)
+    % SUMBER: data/processed/gbm_params_intersection.csv
+    % Lanjutkan dengan korelasi dan pemeriksaan Cholesky (simetris, definit positif).
 
         \begin{table}[H]
             \centering
@@ -86,6 +123,27 @@
             \textit{[Tabel belum diisi]}
         \end{table}
 
+    % -------------------------------------------------------------------------
+    \section{Pembangkitan Skenario dan Model Biaya}\label{sec:scenarios}
+    % -------------------------------------------------------------------------
+
+        \subsection{Contoh Hitung Biaya pada Satu Skenario}\label{subsec:scenario example}
+        % (P1) Skenario 1 bank latih seed 42: nilai pasar terminal -> q (Pers. 2.1)
+        % -> biaya bruto (Pers. 2.2) dan bunga (Pers. 2.3) per instrumen. Contoh
+        % angka skenario 1: q_EUR = 1,02923; q_JPY = 0,986984; biaya bruto
+        % JPY_Fixed_5Y = 1,00204. Seluruh nilai dihitung ulang dari Pers. 2.1–2.3
+        % dan cocok dengan matriks biaya bank (toleransi 1e-12).
+
+        \begin{table}[H]
+            \centering
+            \caption{Contoh perhitungan faktor kurs dan biaya instrumen pada skenario 1 (bank latih)}\label{tab:scenario example}
+            % SUMBER: results/tables/thesis_scenario_example.csv
+            % SUMBER: results/tables/thesis_tables_metadata.json
+            \textit{[Tabel belum diisi]}
+        \end{table}
+
+        \subsection{Verifikasi Bank Skenario}\label{subsec:scenario verification}
+
         \begin{table}[H]
             \centering
             \caption{Verifikasi skenario simulasi terhadap parameter target dan biaya instrumen per skenario}\label{tab:scenario verification}
@@ -94,10 +152,11 @@
         \end{table}
 
     % -------------------------------------------------------------------------
-    \section{Batas Risiko Acuan dan Baseline DJPPR}\label{sec:limits baseline}
+    \section{Pembentukan Model Optimasi}\label{sec:model formulation}
     % -------------------------------------------------------------------------
-    % Isi: η = J_MCCaR(w0) dan τ = CCaR(w0) pada bank latih (Persamaan 2.22),
-    % baseline 1.000 portofolio acak (D8), solusi referensi SLSQP.
+
+        \subsection{Batas Risiko Acuan}\label{subsec:risk limits}
+        % Isi: eta = J_MCCaR(w0), tau = CCaR_0,95(w0) pada bank latih (Pers. 2.22).
 
         \begin{table}[H]
             \centering
@@ -106,6 +165,32 @@
             % SUMBER: results/tables/limits_and_baseline_summary.md
             \textit{[Tabel belum diisi]}
         \end{table}
+
+        \subsection{Formulasi Model untuk Tiap Konfigurasi}\label{subsec:model per config}
+        % (P2) Pers. 2.21 ditulis eksplisit dengan angka. Nilai eta dan tau dari
+        % data/processed/risk_limits_bank_train_seed42_N5000.json (6 angka penting).
+        % SUMBER: data/processed/risk_limits_bank_train_seed42_N5000.json
+        % SUMBER: results/tables/audit_data.md
+        Model untuk definisi biaya bruto dengan batas proporsi DJPPR:
+        \begin{equation}\label{eq:model gross djppr}
+            \begin{aligned}
+                \min_{\mathbf{w}} \quad & \overline{\mathrm{Cost}}(\mathbf{w}) = \frac{1}{N}\sum_{s=1}^{N}\sum_{i=1}^{7} w_i C_{i,s}\\
+                \text{dengan kendala} \quad & J_{\mathrm{MCCaR}}(\mathbf{w}) \le 0{,}0681943,\\
+                & \mathrm{CCaR}_{0{,}95}(\mathbf{w}) \le 1{,}08602,\\
+                & \textstyle\sum_{i=1}^{7} w_i = 1,\\
+                & 0{,}425 \le w_1 \le 0{,}490,\quad 0{,}100 \le w_2 \le 0{,}125,\quad 0{,}130 \le w_3 \le 0{,}165,\\
+                & 0{,}130 \le w_4 \le 0{,}155,\quad 0{,}015 \le w_5 \le 0{,}030,\quad 0{,}050 \le w_6 \le 0{,}085,\\
+                & 0{,}030 \le w_7 \le 0{,}055.
+            \end{aligned}
+        \end{equation}
+        % Konfigurasi gross_free: kendala proporsi diganti 0 <= w_i <= 1.
+        % Konfigurasi interest_*: C_{i,s} diganti C^I_{i,s} (Pers. 2.3),
+        % eta = 0,174188 dan tau = 0,0649691.
+        % Tuliskan ketiga model lainnya dengan pola yang sama (seperti TA rujukan),
+        % lalu jelaskan penanganan kendala (proyeksi + penalti, Pers. 2.23–2.24,
+        % rho_J = rho_R = 10^6).
+
+        \subsection{Baseline Penyaringan 1.000 Kombinasi Acak DJPPR}\label{subsec:baseline}
 
         \begin{table}[H]
             \centering
@@ -117,28 +202,41 @@
         \end{table}
 
     % -------------------------------------------------------------------------
-    \section{Hasil Optimasi Empat Konfigurasi}\label{sec:optimization results}
+    \section{Implementasi dan Hasil Optimasi}\label{sec:optimization results}
     % -------------------------------------------------------------------------
-    % Isi: desain 4 konfigurasi × 3 algoritma × 30 replikasi, 25.000 evaluasi.
-    % Angka bank latih (K2). Komposisi optimal dibandingkan dengan w0 2024.
+
+        \subsection{Parameter Eksperimen}\label{subsec:experiment params}
 
         \begin{table}[H]
             \centering
             \caption{Parameter eksperimen}\label{tab:experiment params}
             % SUMBER: results/tables/tab_experiment_params.tex
+            % Catatan audit T5: mlipir rate fase 2 (d = 0,5) belum tercatat di Tabel 3.1
+            % proposal; selaraskan Bab 3 sebelum tabel ini diisi.
+            \textit{[Tabel belum diisi]}
+        \end{table}
+
+        \subsection{Kinerja Portofolio Eksisting 2024}\label{subsec:existing performance}
+        % (P3) Acuan seluruh perbandingan: biaya rata-rata, CCaR, J dari w0 untuk
+        % kedua definisi biaya, pada bank latih dan bank validasi.
+
+        \begin{table}[H]
+            \centering
+            \caption{Kinerja portofolio eksisting 2024 pada bank latih dan bank validasi}\label{tab:existing performance}
+            % SUMBER: results/tables/limits_and_baseline_summary.md
+            % SUMBER: results/tables/validation_summary.md
             \textit{[Tabel belum diisi]}
         \end{table}
 
         \begin{table}[H]
             \centering
-            \caption{Ringkasan biaya, CCaR, $J_{\text{MCCaR}}$, dan penghematan terhadap eksisting dan baseline}\label{tab:results summary}
+            \caption{Ringkasan biaya, CCaR, $J_{\text{MCCaR}}$, dan penghematan terhadap eksisting dan baseline (bank latih)}\label{tab:results summary}
             % SUMBER: results/tables/tab_results_summary.tex
             % SUMBER: results/tables/runs_summary.csv
             \textit{[Tabel belum diisi]}
         \end{table}
 
         \subsection{Konfigurasi Biaya Bruto Tanpa Batas DJPPR}\label{subsec:gross free}
-        % Isi: biaya, penghematan, komposisi optimal vs w0.
 
         \begin{table}[H]
             \centering
@@ -173,8 +271,9 @@
         \end{figure}
 
         \subsection{Konfigurasi Biaya Bunga Tanpa Batas DJPPR}\label{subsec:interest free}
-        % Catatan: penghematan konfigurasi ini sensitif terhadap batas η bank latih;
-        % rujuk Subbab \ref{sec:limit stability}.
+        % Catatan wajib (D10 addendum): solusi konfigurasi ini 0/90 layak terhadap
+        % batas eta presisi tinggi (Subbab \ref{sec:validation}); penghematan tidak
+        % boleh disajikan tanpa catatan tersebut.
 
         \begin{table}[H]
             \centering
@@ -222,7 +321,7 @@
     \section{Kendala Aktif dan Struktur Solusi}\label{sec:active constraints}
     % -------------------------------------------------------------------------
     % Isi: proporsi run dengan J aktif, CCaR aktif, vertex kotak-simpleks,
-    % rata-rata bobot di batas; slack J per algoritma; rasio θ_i.
+    % rata-rata bobot di batas; slack J per algoritma; rasio theta_i.
     % Catatan: "vertex" adalah diagnosis, bukan hasil solve LP.
 
         \begin{table}[H]
@@ -254,7 +353,7 @@
 
         \begin{table}[H]
             \centering
-            \caption{Statistik deskriptif biaya terbaik 30 replikasi per algoritma}\label{tab:descriptive stats}
+            \caption{Statistik deskriptif biaya terbaik 30 replikasi per algoritma (bank latih)}\label{tab:descriptive stats}
             % SUMBER: results/tables/tab_stats_gross_free.tex
             % SUMBER: results/tables/tab_stats_gross_djppr.tex
             % SUMBER: results/tables/tab_stats_interest_free.tex
@@ -270,17 +369,22 @@
         \end{figure}
 
         \subsection{Signifikansi Statistik}\label{subsec:statistical significance}
-        % Isi: Shapiro-Wilk, Levene, Kruskal-Wallis (Persamaan 2.37), ε² (Persamaan 2.39),
-        % Dunn-Holm (Persamaan 2.38, D7). Jangan kutip "Temuan Analitis" di
-        % stats_summary.md §4 (audit S5); ambil angka dari CSV.
+        % (P4) Contoh uji Kruskal–Wallis konfigurasi gross_free:
+        %  (1) H0: ketiga distribusi biaya sama; H1: minimal satu berbeda.
+        %  (2) H = 52,2760 (Pers. 2.37, koreksi ties C = 0,999984), df = 2.
+        %  (3) Tolak H0 bila H > chi^2_{0,05;2} = 5,9915 (atau p < 0,05).
+        %  (4) p = 4,4505e-12 -> H0 ditolak; epsilon^2 = 0,5874 (Pers. 2.39).
+        %  Lanjutkan dengan contoh Dunn-Holm satu pasangan, lalu tabel 4 konfigurasi.
+        %  Jangan kutip "Temuan Analitis" stats_summary.md §4 (audit S5).
 
         \begin{table}[H]
             \centering
-            \caption{Uji Kruskal-Wallis dan ukuran efek $\epsilon^2$}\label{tab:kruskal wallis}
+            \caption{Uji Kruskal–Wallis dan ukuran efek $\epsilon^2$}\label{tab:kruskal wallis}
             % SUMBER: results/tables/stats_gross_free.csv
             % SUMBER: results/tables/stats_gross_djppr.csv
             % SUMBER: results/tables/stats_interest_free.csv
             % SUMBER: results/tables/stats_interest_djppr.csv
+            % SUMBER: results/tables/stats_summary.md
             \textit{[Tabel belum diisi]}
         \end{table}
 
@@ -295,18 +399,17 @@
         \end{table}
 
         \subsection{Signifikansi Praktis}\label{subsec:practical significance}
-        % Isi: selisih median (satuan biaya dan %), Hodges-Lehmann, CI bootstrap,
-        % TOST dan CI-vs-margin dengan margin 0,01% (D12).
+        % (P4) Contoh TOST satu pasangan dalam format (1)–(4), margin 0,01% (D12),
+        % lalu tabel seluruh pasangan.
 
         \begin{table}[H]
             \centering
-            \caption{Selisih praktis, estimator Hodges-Lehmann, dan status ekivalensi}\label{tab:practical significance}
+            \caption{Selisih praktis, estimator Hodges–Lehmann, dan status ekivalensi}\label{tab:practical significance}
             % SUMBER: results/tables/stats_praktis.csv
             \textit{[Tabel belum diisi]}
         \end{table}
 
         \subsection{Konvergensi}\label{subsec:convergence}
-        % Isi: kurva konvergensi, evaluasi saat konvergen, perbaikan 5.000→25.000 evaluasi.
 
         \begin{figure}[H]
             \centering
@@ -325,14 +428,15 @@
         \end{table}
 
         \subsection{Waktu Komputasi}\label{subsec:computation time}
-        % Isi: waktu satu proses (Tahap 19) vs 6 worker (eksperimen utama), spesifikasi mesin.
-        % Catatan (audit S6, K6): sel gross_free/KMA rep 1–4 terkontaminasi perubahan
-        % pengaturan daya; ulang sel itu sebelum angka dipakai, atau beri catatan kaki.
+        % Isi: waktu satu proses (Tahap 19) vs 6 worker (eksperimen utama), spesifikasi
+        % mesin. Sel gross_free/KMA sudah diukur ulang 2026-10-25 dengan pengaturan daya
+        % tetap (median 25,38 s); baris lama diarsipkan.
 
         \begin{table}[H]
             \centering
             \caption{Waktu komputasi satu proses dan enam worker}\label{tab:computation time}
             % SUMBER: results/tables/timing_single_worker_360.csv
+            % SUMBER: results/tables/archive_2026-10-25/timing_single_worker_360_gross_free_kma_sebelum_ulang.csv
             % SUMBER: results/tables/runs_summary.csv
             \textit{[Tabel belum diisi]}
         \end{table}
@@ -346,10 +450,8 @@
 
         \subsection{Diagnosis Perilaku KMA}\label{subsec:kma diagnosis}
         % Isi (K5 Opsi B): ringkas mekanisme Tahap 18 — penerimaan Big Male Fase 2,
-        % jarak proyeksi, profil waktu, ablasi. Tulis apa adanya bila hasilnya negatif.
-        % Benchmark fidelitas vs Suyanto dkk. dipindah ke Lampiran.
-        % Catatan: varian kma_d2_low menyentuh parameter mlipir_rate_2 yang belum
-        % tercatat di Tabel 3.1/params.yaml (audit T5) — selaraskan Bab 3 dulu.
+        % jarak proyeksi, profil waktu, ablasi. Benchmark fidelitas vs Suyanto dkk.
+        % dipindah ke Lampiran.
 
         \begin{table}[H]
             \centering
@@ -392,10 +494,11 @@
     % -------------------------------------------------------------------------
     \section{Validasi \textit{Out-of-Sample}}\label{sec:validation}
     % -------------------------------------------------------------------------
-    % Isi: bank validasi N = 20.000 (D3), batas bank latih dipertahankan (spesifikasi §10).
-    % Jangan memakai label "Robust" (audit S7); tulis "layak terhadap batas bank latih".
-    % Rincian run PSO yang melanggar diambil dari validation_interest_free.csv
-    % (bukan dari audit_akhir_v2.md; audit T1).
+    % Isi: bank validasi N = 20.000 (D3). Dua pembanding berdampingan (D10 addendum):
+    % (a) batas bank latih (spesifikasi §10, Tahap 12);
+    % (b) batas "benar" dari w0 pada bank validasi (Tahap 21).
+    % Jangan memakai label "Robust" (audit S7). Rincian run yang melanggar diambil
+    % dari CSV, bukan dari audit_akhir_v2.md (audit T1).
 
         \begin{table}[H]
             \centering
@@ -408,21 +511,25 @@
 
         \begin{table}[H]
             \centering
+            \caption{Kelayakan solusi terhadap batas risiko dari bank validasi}\label{tab:validation true limits}
+            % SUMBER: results/tables/validation_true_limits_summary.csv
+            % SUMBER: results/tables/validation_true_limits_runs.csv
+            % SUMBER: results/tables/validation_true_limits_metadata.json
+            \textit{[Tabel belum diisi]}
+        \end{table}
+
+        \begin{table}[H]
+            \centering
             \caption{Uji eksak Fisher dan Barnard untuk proporsi kelayakan validasi}\label{tab:fisher}
             % SUMBER: results/tables/fisher_feasibility.csv
             \textit{[Tabel belum diisi]}
         \end{table}
 
-        % TODO (K3): kelayakan solusi 360 run terhadap batas "benar" dari bank validasi
-        % (audit T3). Angkanya belum ada sebagai berkas di results/; butuh skrip
-        % terpisah dengan Implementation Plan sendiri. Jangan diisi sebelum berkas ada.
-
     % -------------------------------------------------------------------------
-    \section{Stabilitas Batas Risiko $\eta$ dan $\tau$}\label{sec:limit stability}
+    \section{Stabilitas Batas Risiko \texorpdfstring{$\eta$}{eta} dan \texorpdfstring{$\tau$}{tau}}\label{sec:limit stability}
     % -------------------------------------------------------------------------
     % Isi: 20 bank latih independen, GA dan PSO (KMA tidak diikutkan), D10 Opsi C.
-    % Angka penghematan diambil langsung dari summary_savings.csv; laporan
-    % studi_stabilitas_limit.md memuat salah skala 100× (audit T2).
+    % Angka penghematan diambil langsung dari summary_savings.csv (audit T2).
 
         \begin{table}[H]
             \centering
@@ -517,8 +624,39 @@
         \end{table}
 
     % -------------------------------------------------------------------------
+    \section{Analisis Hasil dan Pembahasan}\label{sec:discussion}
+    % -------------------------------------------------------------------------
+    % (P5) Pola subbab penutup TA rujukan: (a) tabel eksisting vs hasil optimasi
+    % tiap algoritma (run median) per konfigurasi, dengan biaya bank latih dan bank
+    % validasi serta status kelayakan dua jenis batas; (b) tabel perubahan bobot
+    % terhadap w0. Pembahasan menjawab rumusan masalah 2 (proposal hlm. 3):
+    % nilai fungsi objektif, kelayakan, konsistensi antarreplikasi, waktu.
+    % Contoh pola data (run median): gross_free GA/PSO memindahkan bobot ke
+    % USD_Fixed_5Y (+37,9 poin) dan JPY_Fixed_5Y (+9,4 poin); KMA hanya +17,4 poin
+    % di USD_Fixed_5Y. Ambil angka dari CSV, bukan dari catatan ini.
+
+        \begin{table}[H]
+            \centering
+            \caption{Perbandingan portofolio eksisting 2024 dan hasil optimasi tiap algoritma}\label{tab:existing vs optimized}
+            % SUMBER: results/tables/runs_summary.csv
+            % SUMBER: results/tables/validation_all_runs.csv
+            % SUMBER: results/tables/validation_true_limits_runs.csv
+            % SUMBER: results/tables/thesis_weight_change_vs_w0.csv
+            \textit{[Tabel belum diisi]}
+        \end{table}
+
+        \begin{table}[H]
+            \centering
+            \caption{Perubahan bobot portofolio hasil optimasi terhadap komposisi eksisting 2024}\label{tab:weight change}
+            % SUMBER: results/tables/thesis_weight_change_vs_w0.csv
+            % SUMBER: results/tables/thesis_tables_metadata.json
+            \textit{[Tabel belum diisi]}
+        \end{table}
+
+    % -------------------------------------------------------------------------
     \section{Keterbatasan Model}\label{sec:limitations}
     % -------------------------------------------------------------------------
+    % R5 Opsi A: subbab tersendiri + ringkasan di Saran (Bab 5).
 
         \subsection{GBM Tanpa \textit{Mean Reversion}}\label{subsec:no mean reversion}
         % Isi: drift yield diekstrapolasi tanpa tarikan balik; contoh drift yield JPY.
@@ -535,8 +673,10 @@
         % SUMBER: results/sensitivity/drift/drift_scenarios_comparison.csv
 
         \subsection{Batas Risiko dari Satu Bank Latih}\label{subsec:single bank limits}
-        % Isi: D10 Opsi C; rujuk Subbab \ref{sec:limit stability}.
+        % Isi: D10 Opsi C + addendum; rujuk Subbab \ref{sec:limit stability} dan
+        % tabel kelayakan terhadap batas benar pada Subbab \ref{sec:validation}.
         % SUMBER: results/sensitivity/limits/limits_summary.csv
+        % SUMBER: results/tables/validation_true_limits_summary.csv
 
         \subsection{Parameter Algoritma Default Literatur}\label{subsec:default parameters}
         % Isi: D11 Opsi A; hasil ablasi sebagai analisis sensitivitas, bukan tuning.

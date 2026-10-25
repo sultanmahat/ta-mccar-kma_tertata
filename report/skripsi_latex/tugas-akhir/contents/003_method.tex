@@ -1,19 +1,62 @@
-\chapter{Metode Penelitian}\label{ch:method}
+\chapter{Metodologi}\label{ch:method}
+% =============================================================================
+% KERANGKA BAB 3 — isi tahapan dari PDF proposal revisi (Bab III, 13 tahap);
+% susunan subbab mengikuti TA rujukan: 3.1 Data, 3.2 Variabel Penelitian,
+% 3.3 Tahapan Penelitian (subsubbab per tahap), 3.4 Diagram Alir.
+% Penyesuaian terhadap proposal yang wajib dicantumkan:
+%  - D1 Opsi A: irisan 2.028 hari tanpa interpolasi; spline hanya sensitivitas (audit S2).
+%  - Laju mlipir fase kedua dicantumkan di Tabel 3.2 (audit T5).
+%  - Tahap verifikasi dan validasi mencakup batas bank latih dan batas dari bank
+%    validasi (Tahap 21, D10 addendum).
+% =============================================================================
+
+    \section{Data}\label{sec:data source}
+    % Data sekunder DJPPR Kementerian Keuangan: yield harian tujuh instrumen, kurs
+    % USD/EUR dan USD/JPY, komposisi eksisting 2024, batas proporsi; 3 Juli 2017–
+    % 24 November 2025 (2.028 hari perdagangan setelah irisan tanggal).
+    % SUMBER: results/tables/audit_data.md
+
+    \section{Variabel Penelitian}\label{sec:variables}
+
+        \begin{table}[H]
+            \centering
+            \caption{Variabel penelitian}\label{tab:variables}
+            % Isi: w_i (bobot), y_{i,t} (yield), X_{c,t} (kurs), C_{i,s} dan C^I_{i,s}
+            % (biaya), eta dan tau (batas risiko) beserta keterangan dan satuan.
+            \textit{[Tabel belum diisi]}
+        \end{table}
 
     \section{Tahapan Penelitian}\label{sec:stages}
 
-    \section{Pengambilan Data}\label{sec:data collection}
+        \subsection{Studi Literatur}\label{subsec:literature study}
+        \subsection{Pengumpulan Data}\label{subsec:data collection}
+        \subsection{Pra-pemrosesan Data}\label{subsec:preprocessing}
+        \subsection{Pengolahan Data}\label{subsec:processing}
+        \subsection{Pembangkitan Skenario GBM}\label{subsec:scenario generation}
+        \subsection{Formulasi Model MCCaR}\label{subsec:model formulation}
+        \subsection{Skenario Batas Proporsi Portofolio Utang}\label{subsec:boundary scenarios}
+        \subsection{Penentuan Batas Risiko}\label{subsec:risk limit determination}
+        \subsection{Penyelesaian Optimasi}\label{subsec:solving}
 
-    \section{Pra-pemrosesan Data}\label{sec:preprocessing}
+            \begin{table}[H]
+                \centering
+                \caption{Parameter utama eksperimen}\label{tab:main parameters}
+                % SUMBER: configs/params.yaml (blok risk, optimization, experiments, algorithms)
+                % SUMBER: results/tables/tab_experiment_params.tex
+                \textit{[Tabel belum diisi]}
+            \end{table}
 
-    \section{Konstruksi Model \method}\label{sec:method construction}
-    
-        \subsection{Arsitektur}\label{} % Isi sendiri
-        
-        \subsection{Arsitektur}\label{} % Isi sendiri
-        
-        \subsection{Arsitektur}\label{} % Isi sendiri
+        \subsection{Hasil Optimasi}\label{subsec:optimization output}
+        \subsection{Verifikasi dan Validasi}\label{subsec:verification}
+        \subsection{Analisis Hasil dan Pembahasan}\label{subsec:analysis stage}
+        \subsection{Penulisan Laporan Tugas Akhir}\label{subsec:writing}
 
-    \section{Pelatihan Model \method}\label{sec:training scheme}
+    \section{Diagram Alir Penelitian}\label{sec:flowchart}
 
-    \section{Pengujian Model \method}\label{sec:testing scheme}
+        \begin{figure}[H]
+            \centering
+            \textit{[Gambar belum disisipkan]}
+            \caption{Diagram alir penelitian}\label{fig:flowchart}
+            % Gambar 3.1 proposal; tambahkan cabang analisis tambahan (Tahap 16–21)
+            % sebagai blok "Analisis Sensitivitas dan Validasi".
+        \end{figure}

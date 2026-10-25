@@ -1,1 +1,37 @@
 \chapter{Lampiran}\label{ch:appendix}
+% =============================================================================
+% KERANGKA LAMPIRAN — pola TA rujukan: listing program, data, dan tabel/plot
+% pelengkap. R6 Opsi B: data harian (2.028 baris x 9 variabel) tidak dicetak
+% penuh; cuplikan awal/akhir + rujukan ke repositori.
+% Listing kode memakai paket listings (dimuat di skripsi-main.tex), contoh:
+%   \lstinputlisting[language=Python]{../../../src/mccar_kma/risk/mccar.py}
+% Path relatif terhadap folder kompilasi; uji path sebelum diaktifkan.
+% =============================================================================
+
+    \section{Listing Program Evaluator Risiko (CCaR dan MCCaR)}\label{app:code risk}
+    % SUMBER: src/mccar_kma/risk/ccar.py
+    % SUMBER: src/mccar_kma/risk/mccar.py
+    % SUMBER: src/mccar_kma/risk/evaluator.py
+
+    \section{Listing Program Proyeksi dan Penalti Kendala}\label{app:code constraints}
+    % SUMBER: src/mccar_kma/model/constraints.py
+    % SUMBER: src/mccar_kma/model/penalty.py
+
+    \section{Listing Program KMA, GA, dan PSO}\label{app:code optimizers}
+    % SUMBER: src/mccar_kma/optimizers/kma.py
+    % SUMBER: src/mccar_kma/optimizers/ga.py
+    % SUMBER: src/mccar_kma/optimizers/pso.py
+
+    \section{Cuplikan Data Pasar}\label{app:data excerpt}
+    % Sepuluh baris pertama dan terakhir data irisan.
+    % SUMBER: data/processed/market_2017-07-03_2025-11-24_intersection.csv
+
+    \section{Hasil Lengkap 360 Run}\label{app:all runs}
+    % Biaya, CCaR, J, dan bobot tiap replikasi per konfigurasi dan algoritma.
+    % SUMBER: results/tables/runs_summary.csv
+
+    \section{Benchmark Fidelitas KMA terhadap Suyanto dkk. (2022)}\label{app:kma benchmark}
+    % K5 Opsi B: dipindah dari Bab 4.
+    % SUMBER: results/sensitivity/kma/benchmark_vs_suyanto.csv
+    % SUMBER: results/sensitivity/kma/benchmark_fidelity.csv
+    % SUMBER: results/sensitivity/kma/fig_kma_benchmark_fidelity.pdf

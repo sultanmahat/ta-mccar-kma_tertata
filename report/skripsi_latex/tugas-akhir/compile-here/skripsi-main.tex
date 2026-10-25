@@ -16,6 +16,11 @@
 \newcommand{\method}{}
 \newcommand{\smethod}{}
 
+% Paket tambahan (R8): booktabs untuk results/tables/tab_*.tex (\toprule dst.),
+% listings untuk listing program di Lampiran.
+\usepackage{booktabs}
+\usepackage{listings}
+
 \begin{document}
     \input{tugas-akhir/contents/000_metadata}
     \input{tugas-akhir/front-matter/000_front-matter}
@@ -23,11 +28,14 @@
     \input{tugas-akhir/contents/XXX_abstrak}
     \input{tugas-akhir/contents/XXX_abstract}
     \input{tugas-akhir/contents/XXX_preface}
-    \newpage
-    \listoffigures
-    \input{tugas-akhir/contents/100_symbols}
+    % Urutan mengikuti TA rujukan 2026: daftar isi, gambar, tabel, simbol.
     \newpage
     \tableofcontents
+    \newpage
+    \listoffigures
+    \newpage
+    \listoftables
+    \input{tugas-akhir/contents/100_symbols}
     \newpage
     \setstretch{1.2}
     \pagenumbering{arabic}
