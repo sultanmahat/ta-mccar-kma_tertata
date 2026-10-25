@@ -308,7 +308,7 @@
 % NIP Sekretaris Departemen
 \newcommand\NIP@sekdep{1122334455}
 \DeclareRobustCommand{\NIPSekdep}[1]{
-    \renewcommand{\NIP@Sekdep}{#1}
+    \renewcommand{\NIP@sekdep}{#1}
 }
 
 % ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
