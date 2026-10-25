@@ -30,39 +30,28 @@ def decisions_readme_text(repo_root: Path) -> str:
 
 
 def test_decisions_confirmed_status(repo_root: Path, decisions_readme_text: str):
-    """Memastikan status D1-D12 sah Dikonfirmasi; D13 boleh pending ("Diusulkan agen, menunggu konfirmasi Sultan").
-
-    D13 (docs/decisions/0013-kma-phase2-mlipir-rate-d13.md) dibuat 2026-10-25 untuk mencatat
-    (bukan memilih) parameter kma.py yang sebelumnya tak tercatat (temuan T5). Statusnya sengaja
-    pending sampai Sultan memutuskan antara mempertahankan nilai atau mengulang eksperimen.
-    """
+    """Memastikan status seluruh keputusan D1-D13 di README dan berkas individual berstatus sah Dikonfirmasi oleh Sultan."""
     # 1. Periksa README.md
     assert "Dikonfirmasi oleh Sultan" in decisions_readme_text
+    assert "Menunggu konfirmasi Sultan" not in decisions_readme_text
     assert "**Status**: DIPUTUSKAN" not in decisions_readme_text
     assert "disetujui bersama pengguna" not in decisions_readme_text.lower()
 
     # 2. Periksa berkas 0001 s.d. 0013
     decision_files = sorted((repo_root / "docs" / "decisions").glob("00*.md"))
-    assert len(decision_files) == 13, f"Harusnya ada 13 berkas keputusan (D1-D12 + D13), ditemukan {len(decision_files)}"
-
-    pending_allowed = {"0013-kma-phase2-mlipir-rate-d13.md"}
+    assert len(decision_files) == 13, f"Harusnya ada 13 berkas keputusan (D1-D13), ditemukan {len(decision_files)}"
 
     for df in decision_files:
         content = df.read_text(encoding="utf-8")
+        assert "- **Status**: **Dikonfirmasi oleh Sultan Bakri Baihaqi Mahat (Mahasiswa)**" in content, (
+            f"Status di {df.name} belum berstatus Dikonfirmasi oleh Sultan!"
+        )
         assert "- **Status**: DIPUTUSKAN" not in content, (
             f"Status di {df.name} masih mencantumkan DIPUTUSKAN!"
         )
-        if df.name in pending_allowed:
-            assert "- **Status**: **Diusulkan agen, menunggu konfirmasi Sultan**" in content, (
-                f"Status di {df.name} harus 'Diusulkan agen, menunggu konfirmasi Sultan'!"
-            )
-        else:
-            assert "- **Status**: **Dikonfirmasi oleh Sultan Bakri Baihaqi Mahat (Mahasiswa)**" in content, (
-                f"Status di {df.name} belum berstatus Dikonfirmasi oleh Sultan!"
-            )
-            assert "Menunggu konfirmasi Sultan" not in content, (
-                f"Status di {df.name} masih menunggu konfirmasi, tapi bukan D13!"
-            )
+        assert "Menunggu konfirmasi Sultan" not in content, (
+            f"Status di {df.name} masih menunggu konfirmasi!"
+        )
 
 
 def test_d4_kma_parameters_consistency(params_config: dict, decisions_readme_text: str, repo_root: Path):

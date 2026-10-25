@@ -1,10 +1,10 @@
 # Keputusan D13: Laju Mlipir (d) Fase 2 KMA
 
 - **Tanggal Usulan**: 2026-10-25
-- **Tanggal Konfirmasi**: —
-- **Status**: **Diusulkan agen, menunggu konfirmasi Sultan**
-- **Pihak yang Mengonfirmasi**: —
-- **Pilihan yang Ditetapkan**: belum ditetapkan — mencatat nilai yang **sudah dipakai** di kode (bukan usulan nilai baru)
+- **Tanggal Konfirmasi**: 2026-10-25
+- **Status**: **Dikonfirmasi oleh Sultan Bakri Baihaqi Mahat (Mahasiswa)**
+- **Pihak yang Mengonfirmasi**: Sultan Bakri Baihaqi Mahat
+- **Pilihan yang Ditetapkan**: **Opsi A (Pertahankan $d_2 = 0{,}5$, 360 run tidak diulang)**
 
 ---
 
@@ -32,19 +32,23 @@ algorithms:
 
 ---
 
-## Mengapa ini "diusulkan agen, menunggu konfirmasi" (bukan "diputuskan")
+## Mengapa dua opsi dipertimbangkan, dan mengapa Opsi A dipilih
 
-Laju $d_2 = 0,5$ tidak ditentukan proposal maupun D4. Ablasi Tahap 18 (`results/sensitivity/kma/ablation_tests.csv`) menunjukkan `kma_d2_low` signifikan lebih baik dari default pada `gross_free` (p_Holm = 0,0031) dan `interest_free` (p_Holm = 0,047) — artinya nilai ini **mempengaruhi hasil** dan pemilihannya bukan keputusan teknis netral seperti D5/D13-floor. Karena itu, agen tidak memilih sendiri apakah nilai 0,5 ini **dipertahankan untuk 360 run yang sudah ada** (Opsi A) atau **diubah lalu seluruh eksperimen diulang** (Opsi B) — itu keputusan Sultan.
+Laju $d_2 = 0,5$ tidak ditentukan proposal maupun D4. Ablasi Tahap 18 (`results/sensitivity/kma/ablation_tests.csv`) menunjukkan `kma_d2_low` signifikan lebih baik dari default pada `gross_free` (p_Holm = 0,0031) dan `interest_free` (p_Holm = 0,047) — artinya nilai ini **mempengaruhi hasil** dan pemilihannya bukan keputusan teknis netral seperti D5/floor R11.
 
 - **Opsi A (dipertahankan)**: Tidak ada pekerjaan tambahan. 360 run tetap sah seperti sekarang.
 - **Opsi B (ubah ke `kma_d2_low` lalu ulang eksperimen)**: Mengikuti temuan ablasi Tahap 18, tapi mengulang 360 run + seluruh analisis turunannya (Tahap 12, 13, 17, 18, 19, 20) — biaya komputasi dan dokumentasi besar.
 
-Rekomendasi tidak diberikan di sini (di luar cakupan tugas refactor config-flow); keputusan menunggu Sultan.
+**Dipilih: Opsi A.** Alasan:
+1. **D11 (Fair Tuning Policy, Opsi A)** sudah menetapkan KMA/GA/PSO memakai parameter default literatur tanpa penalaan selektif tambahan. Mengubah $d_2$ sekarang — setelah melihat hasil ablasi yang menguntungkan KMA — adalah penalaan selektif pasca-hoc yang persis ditolak D11.
+2. Jika $d_2$ diubah dan KMA jadi menang karena parameter yang dipilih setelah intip hasil, itu melemahkan kredibilitas hasil di sidang, bukan menguatkan (hasil negatif terdiagnosis adalah kontribusi sah; lihat `docs/decisions/0011-fair-tuning-policy-d11.md`).
+3. Temuan ablasi `kma_d2_low` tetap bernilai, tapi tempatnya di Bab 4 sebagai **diagnosis/limitasi** ("KMA sensitif terhadap $d_2$, arah tuning belum dieksplorasi"), bukan sebagai revisi hasil utama.
 
 ---
 
 ## Implikasi ke Tahap Selanjutnya
 
-1. `src/mccar_kma/optimizers/kma.py`: `phase_2_mlipir_rate` dan `population_adapt_floor` adalah parameter konstruktor (default = nilai di atas, tidak berubah).
+1. `src/mccar_kma/optimizers/kma.py`: `phase_2_mlipir_rate` dan `population_adapt_floor` adalah parameter konstruktor (default = nilai di atas, **tidak berubah**).
 2. `src/mccar_kma/experiments/runner.py` (`build_optimizer`) membaca kedua nilai ini dari `configs/params.yaml` saat membangun optimizer KMA untuk tiap run.
-3. Jika Sultan memilih Opsi B di atas pada sesi berikutnya, cukup ubah `configs/params.yaml` (`algorithms.kma.phase_2.mlipir_rate`) — tidak perlu ubah kode lagi, karena jalur ini sudah mengalir dari config (itulah tujuan refactor ini).
+3. 360 run utama (`results/runs/`) dan seluruh analisis turunannya (Tahap 12, 13, 17, 18, 19, 20) **tetap sah, tidak diulang**.
+4. Temuan ablasi `kma_d2_low` (Tahap 18) dicantumkan di Bab 4/5 skripsi sebagai limitasi/arah penelitian lanjutan, dengan rujukan ke berkas ini dan ke D11.
