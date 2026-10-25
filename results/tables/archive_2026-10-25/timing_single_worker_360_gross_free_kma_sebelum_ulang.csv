@@ -1,0 +1,6 @@
+config_id,algo,rep,seed,time_seconds,best_cost,machine_cpu,machine_cores_logical,os_version
+gross_free,kma,1,50001,42.6432,1.037082978428647,12th Gen Intel(R) Core(TM) i5-12450H,12,Windows 11 (10.0.26300)
+gross_free,kma,2,50002,43.75,1.038255470887473,12th Gen Intel(R) Core(TM) i5-12450H,12,Windows 11 (10.0.26300)
+gross_free,kma,3,50003,44.312,1.0386838996155694,12th Gen Intel(R) Core(TM) i5-12450H,12,Windows 11 (10.0.26300)
+gross_free,kma,4,50004,34.3272,1.038434245877188,12th Gen Intel(R) Core(TM) i5-12450H,12,Windows 11 (10.0.26300)
+gross_free,kma,5,50005,24.5489,1.037390213096781,12th Gen Intel(R) Core(TM) i5-12450H,12,Windows 11 (10.0.26300)

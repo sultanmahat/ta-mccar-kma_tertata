@@ -71,7 +71,7 @@ Mesin: `12th Gen Intel(R) Core(TM) i5-12450H`, 12 core logis, `Windows 11 (10.0.
 
 | Konfigurasi | Algo | Waktu 1-proses (median, s) | Waktu 6-worker (mean, s) | Rasio |
 |---|---|---:|---:|---:|
-| `gross_free` | KMA | 42.64 | 73.02 | 0.58x |
+| `gross_free` | KMA | 25.38 | 73.02 | 0.35x |
 | `gross_free` | GA | 8.03 | 34.31 | 0.23x |
 | `gross_free` | PSO | 7.87 | 29.53 | 0.27x |
 | `gross_djppr` | KMA | 26.51 | 88.39 | 0.30x |
