@@ -1,0 +1,12 @@
+{
+  "stage": 22,
+  "created_utc": "2026-10-25T06:32:00.968022+00:00",
+  "config_sha256": "7d9cb2cd2be58abb6f739c20ecdacf1f0ee92830c5370d9b9973380598d074ed",
+  "inputs": {
+    "results/tables/runs_summary.csv": "960dd09c8d5be657f1fc0e297a65e5df43326ffdc3d5fcbac5a6ca901b4adcae",
+    "data/processed/bank_train_seed42_N5000.npz": "be88f1726319eda2c80a40c096812bdb3ed6c29db484001d6184725a6e7a6480"
+  },
+  "train_seed": 42,
+  "n_example_scenarios": 5,
+  "median_rule": "run ke-floor((n-1)/2) setelah urut best_cost naik (median bawah)"
+}
