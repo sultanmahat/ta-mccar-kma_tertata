@@ -65,13 +65,13 @@ Dijalankan 4 skenario drift pada bank skenario $N=5.000$ (seed terpisah), dengan
 
 ### Temuan Kunci Analisis Drift
 
-1. **Dekomposisi Keunggulan JPY: Efek Kupon vs Efek Depresiasi Kurs**:
-   - Ketika tren depresiasi kurs dinolkan ($\mu_{\text{fx}} = 0$), penghematan biaya bunga pada `interest_free` **hanya mengalami penurunan moderat dari 30,29% menjadi 26,51%** (selisih 3,78%).
+1. **Efek Depresiasi Kurs pada Penghematan JPY**:
+   - Ketika tren depresiasi kurs dinolkan ($\mu_{\text{fx}} = 0$), penghematan biaya bunga pada `interest_free` **turun dari 30,29% menjadi 26,51%** (selisih 3,78 poin persentase).
    - Alokasi total instrumen JPY tetap sangat dominan, yaitu **47,2%** (dibandingkan 53,6% pada basis historis).
-   - **Kesimpulan Ilmiah:** Keunggulan instrumen JPY bukan artefak dari asumsi depresiasi kurs semata. Sebanyak **~88% dari total penghematan** ($26{,}51\% / 30{,}29\%$) berasal dari **disparitas kupon nominal intrinsik** (kupon JPY 0,4%–0,8% vs kupon USD 4,0%–4,6%). Depresiasi JPY hanya berkontribusi sebagai pemanis tambahan sebesar ~12% dari total penghematan.
-2. **Ketahanan pada Asumsi Martingale Murni**:
+   - > **Koreksi 2026-10-25 (T4, audit ulang):** dekomposisi "~88% dari total penghematan berasal dari disparitas kupon" **dihapus** — perhitungannya ($26{,}51\%/30{,}29\%$) hanya membagi dua titik tunggal dari skenario yang masing-masing memakai **bank skenario berbeda** (basis = seed 42, drift-kurs-nol = seed 1042; lihat `scripts/16_analyze_drift_sensitivity.py:35-38`). Selisih 3,78 poin itu tercampur galat Monte Carlo antar-bank: studi 20-bank independen dengan drift historis yang sama (Tahap 17, `results/sensitivity/limits/summary_savings.csv`) menunjukkan penghematan `interest_free` PSO bersebaran q05–q95 **24,97–29,67%** — rentang ini **memuat** nilai skenario drift-kurs-nol (26,51%), dan bank-42 (basis, 30,29%) justru berada di ekor atas sebaran itu. Selisih antarskenario drift karena itu tidak bisa dibaca sebagai dekomposisi sumber penghematan tanpa mengontrol bank (*common random numbers*) terlebih dahulu.
+2. **Hasil pada Asumsi Martingale Murni**:
    - Pada Skenario (c) di mana seluruh drift dinolkan ($\mu = 0$ untuk yield dan kurs), model tetap menghasilkan penghematan biaya bunga sebesar **31,78%** dan penghematan biaya bruto sebesar **0,32%**.
-   - Hal ini membuktikan ketahanan (*robustness*) model MCCaR: optimasi portofolio tidak runtuh saat pasar berada dalam kondisi netral tanpa tren, karena diversifikasi tetap memberikan peredaman risiko ekor ($\text{CCaR}$) dan pembatasan konsentrasi dispersi ($J_{\text{MCCaR}}$).
+   - Optimasi portofolio tetap menghasilkan solusi layak saat pasar berada dalam kondisi netral tanpa tren, karena diversifikasi tetap memberikan peredaman risiko ekor ($\text{CCaR}$) dan pembatasan konsentrasi dispersi ($J_{\text{MCCaR}}$). <!-- koreksi 2026-10-25 T4: kalimat "membuktikan ketahanan (robustness)" dihapus — klaim ini juga rentan terhadap percampuran galat antar-bank di atas, dan satu skenario tidak membuktikan ketahanan model secara umum. -->
 3. **Efek Penjepit Batas DJPPR (*DJPPR Boundary Clamping*)**:
    - Di bawah batas alokasi DJPPR, penghematan pada seluruh skenario drift terkunci rapat pada rentang yang sangat sempit: **$1{,}92\% - 2{,}33\%$** pada biaya bunga dan **$0{,}044\% - 0{,}066\%$** pada biaya bruto.
    - Hal ini menegaskan bahwa kebijakan konservatif alokasi valas DJPPR (membatasi JPY maksimal 14% kumulatif) menjadi faktor penentu utama yang menahan penghematan fiskal demi menjaga stabilitas risiko likuiditas dan akses pasar.
@@ -155,11 +155,11 @@ graph LR
 
 ## 5. Rekomendasi Narasi untuk Bab 4 dan Bab 5 Naskah Skripsi
 
-Temuan sensitivitas ini membekali Sultan dengan argumentasi ilmiah yang sangat matang untuk naskah skripsi dan sidang munaqasyah:
+Temuan sensitivitas ini menjadi bahan argumentasi untuk naskah skripsi dan sidang Tugas Akhir: <!-- koreksi 2026-10-25 R7: "sidang munaqasyah" bukan istilah ITS -->
 
 ### A. Untuk Bab 4 (Hasil dan Pembahasan):
 1. **Menjelaskan Mengapa Penghematan Gross Sangat Kecil**:
-   Jangan ragu menyajikan penghematan gross sebesar $0{,}05\% - 0{,}5\%$. Jelaskan bahwa dalam portofolio utang negara sovereign bernilai ribuan triliun rupiah, **penghematan 0,5% setara dengan puluhan triliun rupiah penghematan absolut**. Selain itu, nilai penghematan yang kecil pada biaya bruto mencerminkan kehati-hatian (*prudence*) model yang menolak spekulasi valas agresif pada pokok utang.
+   Jangan ragu menyajikan penghematan gross sebesar $0{,}05\% - 0{,}5\%$. <!-- koreksi 2026-10-25 R7: kalimat "penghematan 0,5% setara dengan puluhan triliun rupiah" dihapus -- tidak ada data nominal pokok utang/APBN di results/ yang mendukung perkalian ini. --> Nilai penghematan yang kecil pada biaya bruto mencerminkan kehati-hatian (*prudence*) model yang menolak spekulasi valas agresif pada pokok utang.
 2. **Menjawab Keraguan Penguji Terkait Tren JPY**:
    Gunakan data Skenario (b) dan (c) untuk menjawab jika penguji bertanya: *"Apakah hasil ini hanya karena JPY kebetulan melemah?"*. Jawab secara tegas dengan merujuk Tabel 1 bahwa ketika tren depresiasi kurs dinolkan ($\mu_{\text{fx}} = 0$) atau ketika seluruh pasar dijadikan martingale ($\mu = 0$), instrumen JPY tetap memberikan penghematan bunga masif sebesar **26,5% hingga 31,8%** karena keunggulan struktur kupon nominalnya yang sangat rendah.
 3. **Mempertahankan Integritas Keputusan D1**:
@@ -167,6 +167,6 @@ Temuan sensitivitas ini membekali Sultan dengan argumentasi ilmiah yang sangat m
 
 ### B. Untuk Bab 5 (Kesimpulan dan Saran):
 1. **Kesimpulan**:
-   Model MCCaR terbukti memiliki ketahanan (*robustness*) tinggi terhadap variasi asumsi drift GBM dan metode pembersihan data pasar.
+   Model MCCaR menghasilkan solusi layak pada seluruh skenario drift GBM yang diuji (basis historis, drift kurs nol, martingale murni, shrinkage 50%) dan pada kedua varian jendela data (*intersection*, *spline*). <!-- koreksi 2026-10-25 T4: kalimat "terbukti memiliki ketahanan (robustness) tinggi" dihapus — selisih antarskenario tercampur galat Monte Carlo antar-bank (lihat Bagian 2 butir 1), jadi "ketahanan tinggi" tidak bisa disimpulkan dari satu titik per skenario. -->
 2. **Saran untuk Pengelola Utang (DJPPR)**:
    Pemerintah dapat memanfaatkan instrumen JPY untuk efisiensi belanja bunga APBN (sebagaimana ditunjukkan oleh definisi biaya bunga), namun harus tetap mempertahankan batas proporsi konservatif (sebagaimana tercermin pada skenario batas DJPPR) guna membendung risiko pembalikan nilai tukar (*currency reversal*) pada pokok pinjaman.

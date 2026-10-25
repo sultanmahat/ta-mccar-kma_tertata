@@ -33,6 +33,8 @@ Dibaca baris per baris terhadap Algorithm 1 dan Persamaan 1–10 paper. **Tidak 
 | K4 | Ukuran grup q | q = ⌊p·n⌋ (tercetak ⌊(p−1)n⌋, salah cetak jelas) | q = ⌊p(n−1)⌋ (n=200 → 99, bukan 100) | `kma_paper_q` |
 | K5 | Distribusi r1,r2 | "random... in the normal distribution" (ambigu) | Uniform [0,1] | Tidak diuji — ambigu di sumber |
 
+> **Koreksi 2026-10-25 (S4, audit ulang):** tabel K1–K5 di atas membandingkan kode hanya terhadap paper Suyanto dkk. (2022) — sumber kebenaran **proyek ini** adalah proposal, bukan paper tersebut. Terhadap proposal, K3, K4, dan K5 **sesuai**, bukan deviasi: K3 cocok dengan Persamaan 2.31 proposal (Bernoulli per dimensi); K4 cocok dengan Persamaan 2.25 (⌊p(n−1)⌋); K5 cocok dengan teks proposal hlm. 23 ("U(0,1)"). Hanya **K1** (aturan seleksi Big Male) dan **K2** (urutan sinkron/asinkron) yang benar-benar tidak ditentukan oleh proposal. "Deviasi" K3–K5 di tabel berarti deviasi dari paper akademik rujukan, bukan dari spesifikasi proyek yang disetujui.
+
 Status setelah Tahap 18: lihat **H1** di Bagian 4. Ringkasnya — **tidak satu pun variant K1–K4 (sendiri atau gabungan `kma_paper_all`) menutup selisih ke Tabel 2 Suyanto**; deviasi ini bukan penyebab utama gap fidelitas.
 
 ---
@@ -70,7 +72,7 @@ Contoh Rosenbrock D=7: default (median) 2.168,8; `kma_paper_all` 1.934,3; `kma_p
 ### H2 — Bias titik-asal (optimum paper di 0; KMA terlemah di Rosenbrock yang optimumnya di 1)
 **Uji**: fungsi tergeser (optimum di vektor acak ber-seed, shift_domain_fraction=0,8) untuk KMA, `kma_paper_all`, GA, PSO. Sumber: `benchmark_fidelity.csv` (set=`shifted`).
 
-Sphere D=30: base KMA mean 3.659,7 vs tergeser 3.458,3 (≈ sama). Rosenbrock D=30: base KMA mean 2.102.946 vs tergeser 2.505.645 (≈ sama orde besaran, malah sedikit lebih buruk saat tergeser, bukan lebih baik). GA dan PSO juga relatif stabil terhadap pergeseran (tidak ada lonjakan degradasi yang drastis untuk GA/PSO dibanding KMA).
+Sphere D=30: base KMA mean 3.659,7 vs tergeser 3.458,3 (≈ sama). Rosenbrock D=30: base KMA mean 2.102.946 vs tergeser 2.505.645 (≈ sama orde besaran, malah sedikit lebih buruk saat tergeser, bukan lebih baik). Mediannya GA dan PSO relatif stabil terhadap pergeseran. **Koreksi 2026-10-25 (R8, audit ulang):** klaim "GA dan PSO juga relatif stabil ... tidak ada lonjakan degradasi" hanya berlaku untuk **median**, bukan **rerata** — rerata PSO justru melonjak tajam (`benchmark_fidelity.csv`): Sphere D=30 base 0,00198 → tergeser 222,98; Rosenbrock D=30 base 214,99 → tergeser 169.236,65. Lonjakan rerata ini didorong oleh beberapa replikasi dengan nilai ekstrem (lihat kolom `max`), bukan pergeseran sistematis seluruh sebaran.
 
 **Status: TIDAK DIDUKUNG.** Performa KMA tidak berubah signifikan saat optimum dipindah dari titik asal. Bukan bias posisi optimum.
 

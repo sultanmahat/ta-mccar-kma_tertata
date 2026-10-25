@@ -32,7 +32,7 @@ Sumber: `limits_summary.csv`, 20 bank.
 | interest | η | 0,151573 | 0,006577 | **4,34%** | 0,174188 | **3,44** | 0,149065 |
 | interest | τ | 0,064422 | 0,000522 | 0,81% | 0,064969 | 1,05 | 0,064173 |
 
-**Temuan kunci**: η (definisi biaya *interest*) adalah satu-satunya metrik dengan variabilitas antar bank yang besar (CV 4,34%) **dan** bank 42 adalah outlier jauh di ekor kanan (z = 3,44 — hanya ~0,03% probabilitas seberat ini di bawah normalitas). Tiga metrik lain (η gross, τ gross, τ interest) punya CV di bawah 3,3% dan bank 42 dalam rentang wajar (|z| < 1,1). Batas "benar" (dari bank validasi N=20.000, jauh lebih stabil karena N besar) untuk η interest = 0,149065 — **lebih rendah 14,3% dari nilai bank 42** (0,174188). Ini berarti: kendala J≤η yang dipakai di eksperimen utama untuk konfigurasi *interest* **lebih longgar** dari yang seharusnya kalau memakai estimasi presisi tinggi.
+**Temuan kunci**: η (definisi biaya *interest*) adalah satu-satunya metrik dengan variabilitas antar bank yang besar (CV 4,34%) **dan** bank 42 adalah outlier jauh di ekor kanan (z = 3,44 — hanya ~0,03% probabilitas seberat ini di bawah normalitas). Tiga metrik lain (η gross, τ gross, τ interest) punya CV di bawah 3,3% dan bank 42 dalam rentang wajar (|z| < 1,1). Batas "benar" (dari bank validasi N=20.000, jauh lebih stabil karena N besar) untuk η interest = 0,149065 — **lebih rendah 14,4% dari nilai bank 42** (0,174188; (0,174188−0,149065)/0,174188 = 0,14435) <!-- koreksi 2026-10-25 R5: sebelumnya tertulis 14,3% --> . Ini berarti: kendala J≤η yang dipakai di eksperimen utama untuk konfigurasi *interest* **lebih longgar** dari yang seharusnya kalau memakai estimasi presisi tinggi.
 
 ---
 
@@ -40,16 +40,18 @@ Sumber: `limits_summary.csv`, 20 bank.
 
 Sumber: `summary_savings.csv` (rata-rata antar 20 bank, `savings_in` = penghematan di bank sendiri, `savings_val` = penghematan saat divalidasi dengan batas sendiri, `ref_bank42_median` = median 30 replikasi bank-42 dari 360 run utama, hanya dibaca).
 
+> **Koreksi 2026-10-25 (T2):** tiga baris di bawah (`gross_djppr`, `gross_free`, `interest_djppr`) sebelumnya salah faktor 100× (nilai proporsi di `summary_savings.csv` ditulis ulang sebagai persen tanpa dikali 100). Baris `interest_free` sudah benar sejak awal.
+
 | Config | Algo | Penghematan 20-bank (mean) | Median bank-42 (360 run) | Selisih |
 |---|---|---|---|---|
-| gross_djppr | ga/pso | 6,6% | 4,8% | bank-42 **lebih rendah** |
-| gross_free | ga/pso | 56,6–58,5% | 50,9–51,0% | bank-42 **lebih rendah** |
-| interest_djppr | ga/pso | 200,7% | 201,4% | ≈ sama |
+| gross_djppr | ga/pso | 0,066% | 0,048% | bank-42 **lebih rendah** |
+| gross_free | ga/pso | 0,566–0,585% | 0,509–0,510% | bank-42 **lebih rendah** |
+| interest_djppr | ga/pso | 2,007% | 2,014% | ≈ sama |
 | interest_free | ga/pso | 27,58–27,66% | **30,27–30,29%** | bank-42 **lebih tinggi** |
 
 **Interest_free adalah satu-satunya konfigurasi di mana bank 42 melaporkan penghematan lebih besar dari rata-rata 20 bank independen** (30,27% vs 27,6%, selisih ~2,6 poin persentase) — konsisten dengan temuan Bagian 2: η interest di bank 42 adalah outlier longgar, jadi kendala di bank 42 lebih mudah dipenuhi dengan biaya lebih rendah. Untuk tiga konfigurasi lain, bank 42 justru melaporkan penghematan yang **lebih kecil** dari rata-rata — artinya bank 42 bukan "bank paling menguntungkan" secara sistematis, efeknya spesifik ke kombinasi (interest, η).
 
-`optimism_gap_mean` (savings_in − savings_val, dampak memvalidasi dengan batas sendiri vs performa aktual) kecil di semua konfigurasi (|gap| ≤ 1,4 poin persentase) — jadi solusi yang ditemukan tidak "overfit" ke bank latihnya sendiri secara berarti; isu utamanya bukan optimisme internal, melainkan posisi bank 42 relatif terhadap populasi bank (Bagian 2).
+`optimism_gap_mean` (savings_in − savings_val, dampak memvalidasi dengan batas sendiri vs performa aktual) kecil di semua konfigurasi (|gap| ≤ 0,014 poin persentase <!-- koreksi 2026-10-25 T2: sebelumnya 1,4 poin persentase, salah faktor 100x -->) — jadi solusi yang ditemukan tidak "overfit" ke bank latihnya sendiri secara berarti; isu utamanya bukan optimisme internal, melainkan posisi bank 42 relatif terhadap populasi bank (Bagian 2).
 
 ---
 
@@ -101,9 +103,20 @@ Sumber: `optimism_correlation.csv`, `variance_decomposition.csv`.
 
 Pertanyaan yang dijawab: apakah batas risiko (η, τ) di 360 run eksperimen utama — dihitung sekali dari bank latih seed 42 — dipertahankan sebagai status quo, atau perlu prosedur lain mengingat temuan Bagian 2–4?
 
+> **Koreksi 2026-10-25 (T3):** angka "~5–10%" dan "40–100%" di Opsi A dan paragraf Keputusan (di bawah) berasal dari solusi yang dioptimasi **di 20 bank Tahap 17**, bukan dari 360 solusi eksperimen utama. Evaluasi langsung 360 solusi terhadap batas "benar" (η, τ dari w₀ pada bank validasi N=20.000; Tahap 21, `results/tables/validation_true_limits_summary.csv`) menghasilkan:
+>
+> | Konfigurasi | KMA | GA | PSO |
+> |---|---:|---:|---:|
+> | `interest_free` | 0/30 | 0/30 | 0/30 |
+> | `gross_djppr` | 24/30 | 10/30 | 17/30 |
+> | `gross_free` | 27/30 | 30/30 | 29/30 |
+> | `interest_djppr` | 30/30 | 30/30 | 30/30 |
+>
+> `gross_djppr` GA (33%) berada di bawah rentang "40–100%" yang tertulis di Opsi A/Keputusan. Semua pelanggaran ada pada kendala J (dispersi rasio MCCaR), tidak ada pelanggaran CCaR.
+
 **Opsi A — Pertahankan bank seed 42 (status quo proposal).**
 (+) Tidak mengubah 360 run; sesuai desain yang sudah disetujui; nol biaya tambahan.
-(−) Bagian 4 menunjukkan untuk `interest_free`, solusi yang dilaporkan sebagai "layak" di eksperimen utama hanya akan tetap layak di ~5–10% bank latih independen lain — generalisasi hasil `interest_free` lemah.
+(−) Bagian 4 menunjukkan untuk `interest_free`, solusi yang dilaporkan sebagai "layak" di eksperimen utama hanya akan tetap layak di ~5–10% bank latih independen lain (dari studi 20-bank Tahap 17; lihat tabel koreksi di atas untuk kelayakan 360 solusi utama sendiri) — generalisasi hasil `interest_free` lemah.
 
 **Opsi B — Ganti batas ke statistik multi-bank (mis. median 20 bank, atau bank validasi N besar) dan ulang 360 run.**
 (+) Batas lebih presisi/stabil, terutama untuk η interest.
@@ -114,7 +127,7 @@ Tambahkan interval ketidakpastian batas (CV%, posisi bank-42 relatif ke populasi
 (+) Tidak mengubah desain yang disetujui; jujur mengenai keterbatasan tanpa biaya run ulang.
 (−) Headline savings `interest_free` (30,27%) tetap dilaporkan sebagai angka utama, meski Bagian 3–4 menunjukkan itu mendekati titik paling optimis dari distribusi 20-bank, bukan titik tengahnya.
 
-**Keputusan: Opsi C.** Konsisten dengan pola D11 (tidak mengubah 360 run yang sudah disetujui, melaporkan sensitivitas sebagai analisis tambahan bukan revisi hasil utama). `interest_djppr`, `gross_djppr`, `gross_free` tidak menunjukkan masalah besar (kelayakan validasi 40–100%, bukan 5–10%) — isu stabilitas batas terkonsentrasi di `interest_free`, jadi catatan keterbatasan di Bab 4/5 difokuskan ke konfigurasi itu saja.
+**Keputusan: Opsi C.** Konsisten dengan pola D11 (tidak mengubah 360 run yang sudah disetujui, melaporkan sensitivitas sebagai analisis tambahan bukan revisi hasil utama). `interest_djppr` tidak menunjukkan masalah (30/30 terhadap batas benar); `gross_free` juga relatif aman (27–30/30). `gross_djppr` ternyata juga tidak seluruhnya aman — GA hanya 10/30 terhadap batas benar — tetapi besaran pelanggarannya kecil (v_J maks ≈ 0,08%, lihat Tahap 21). Masalah paling berat tetap `interest_free` (0/30 ketiga algoritma, v_J sampai ~21%), jadi catatan keterbatasan di Bab 4/5 tetap difokuskan ke konfigurasi itu, dengan `gross_djppr` disebutkan sebagai catatan tambahan yang lebih ringan.
 
 ---
 
