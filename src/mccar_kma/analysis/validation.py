@@ -383,7 +383,7 @@ def generate_validation_comparison_tables(
             pct = (n_feas / n_tot) * 100.0
 
             if n_feas == n_tot:
-                note = "100% Layak (Robust)"
+                note = "100% layak terhadap batas bank latih"
             else:
                 infeas_sub = asub[asub["val_is_feasible"] == False]
                 max_vj = infeas_sub["val_v_J"].max()
@@ -401,7 +401,7 @@ def generate_validation_comparison_tables(
         "",
         "> [!NOTE]",
         r"> Sesuai spesifikasi §10: *'Pelanggaran kecil pada bank validasi adalah temuan yang dilaporkan, bukan bug.'*",
-        r"> KMA dan GA menunjukkan ketahanan out-of-sample sempurna (**100% layak pada 120/120 run**).",
+        r"> KMA dan GA 100% layak terhadap batas bank latih pada 120/120 run (lihat Tahap 21, `validation_true_limits_summary.csv`, untuk kelayakan terhadap batas bank validasi — hasilnya jauh lebih rendah, mis. `interest_free` 0/30 untuk ketiga algoritma).",
         r"> PSO mengalami deviasi ringan pada konfigurasi `interest_free` (2 dari 30 run melampaui ambang batas $\eta$ sebesar $0{,}93\%$ dan $3{,}78\%$).",
         "",
         "---",

@@ -20,22 +20,22 @@ Pemeriksaan ulang independen terhadap seluruh 360 solusi hasil optimasi:
 
 | Konfigurasi | Algoritma | Replikasi Layak / Total | % Kelayakan Validasi | Catatan Pelanggaran |
 | :--- | :---: | :---: | :---: | :--- |
-| `gross_free` | **KMA** | 30 / 30 | **100.0%** | 100% Layak (Robust) |
-| `gross_free` | **GA** | 30 / 30 | **100.0%** | 100% Layak (Robust) |
-| `gross_free` | **PSO** | 30 / 30 | **100.0%** | 100% Layak (Robust) |
-| `gross_djppr` | **KMA** | 30 / 30 | **100.0%** | 100% Layak (Robust) |
-| `gross_djppr` | **GA** | 30 / 30 | **100.0%** | 100% Layak (Robust) |
-| `gross_djppr` | **PSO** | 30 / 30 | **100.0%** | 100% Layak (Robust) |
-| `interest_free` | **KMA** | 30 / 30 | **100.0%** | 100% Layak (Robust) |
-| `interest_free` | **GA** | 30 / 30 | **100.0%** | 100% Layak (Robust) |
+| `gross_free` | **KMA** | 30 / 30 | **100.0%** | 100% layak terhadap batas bank latih |
+| `gross_free` | **GA** | 30 / 30 | **100.0%** | 100% layak terhadap batas bank latih |
+| `gross_free` | **PSO** | 30 / 30 | **100.0%** | 100% layak terhadap batas bank latih |
+| `gross_djppr` | **KMA** | 30 / 30 | **100.0%** | 100% layak terhadap batas bank latih |
+| `gross_djppr` | **GA** | 30 / 30 | **100.0%** | 100% layak terhadap batas bank latih |
+| `gross_djppr` | **PSO** | 30 / 30 | **100.0%** | 100% layak terhadap batas bank latih |
+| `interest_free` | **KMA** | 30 / 30 | **100.0%** | 100% layak terhadap batas bank latih |
+| `interest_free` | **GA** | 30 / 30 | **100.0%** | 100% layak terhadap batas bank latih |
 | `interest_free` | **PSO** | 28 / 30 | **93.3%** | 2 run deviasi ringan (v_J maks = 3.78%) |
-| `interest_djppr` | **KMA** | 30 / 30 | **100.0%** | 100% Layak (Robust) |
-| `interest_djppr` | **GA** | 30 / 30 | **100.0%** | 100% Layak (Robust) |
-| `interest_djppr` | **PSO** | 30 / 30 | **100.0%** | 100% Layak (Robust) |
+| `interest_djppr` | **KMA** | 30 / 30 | **100.0%** | 100% layak terhadap batas bank latih |
+| `interest_djppr` | **GA** | 30 / 30 | **100.0%** | 100% layak terhadap batas bank latih |
+| `interest_djppr` | **PSO** | 30 / 30 | **100.0%** | 100% layak terhadap batas bank latih |
 
 > [!NOTE]
 > Sesuai spesifikasi §10: *'Pelanggaran kecil pada bank validasi adalah temuan yang dilaporkan, bukan bug.'*
-> KMA dan GA menunjukkan ketahanan out-of-sample sempurna (**100% layak pada 120/120 run**).
+> KMA dan GA 100% layak terhadap batas bank latih pada 120/120 run (lihat Tahap 21, `validation_true_limits_summary.csv`, untuk kelayakan terhadap batas bank validasi — hasilnya jauh lebih rendah, mis. `interest_free` 0/30 untuk ketiga algoritma).
 > PSO mengalami deviasi ringan pada konfigurasi `interest_free` (2 dari 30 run melampaui ambang batas $\eta$ sebesar $0{,}93\%$ dan $3{,}78\%$).
 
 ---
