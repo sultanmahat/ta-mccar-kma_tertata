@@ -105,6 +105,18 @@ Pipeline eksekusi dibagi menjadi 13 skrip modular bernomor di dalam direktori `s
 | **13** | `13_analyze_stats.py` | Analisis inferensial: Kruskal-Wallis, $\epsilon^2$, Dunn-Holm, Rank-Biserial | `results/tables/runs_summary.csv` | `results/tables/stats_*.csv`, `tab_stats_*.tex` | ~15 detik | ~15 detik |
 | **14** | `14_make_figures_tables.py` | Pembuatan 18 pasang gambar (PDF+PNG 300 dpi) dan tabel LaTeX booktabs | Berkas hasil `results/` | `results/figures/fig_*.pdf/.png`, `results/tables/tab_*.tex` | ~20 detik | ~20 detik |
 
+### Pemeriksaan Independen (Hanya-Baca)
+
+`scripts/15_independent_check.py` **tidak mengimpor kode di `src/mccar_kma`**; evaluator ditulis ulang dari rumus proposal (Pers. 2.1–2.3, 2.13–2.20, 2.22) sebagai pemeriksaan silang terhadap hasil pipeline. Hanya membaca `data/processed/` dan `results/`, tidak mengubah berkas apa pun.
+
+```bash
+python scripts/15_independent_check.py                       # semua pemeriksaan
+python scripts/15_independent_check.py --noise-banks 50
+python scripts/15_independent_check.py --runs-dir results/runs_v2   # set run lain (mis. KMA baru)
+```
+
+Kode keluar 1 bila ditemukan ketidakcocokan numerik.
+
 ---
 
 ## 5. Pengujian Unit Matematis (Test Suite)
