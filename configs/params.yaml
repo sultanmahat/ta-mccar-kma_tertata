@@ -350,6 +350,9 @@ single_worker_timing:
   replications: 5
   seed_base: 50000       # seed rep r = seed_base + r
   budget: 25000          # sama dengan eksperimen utama (experiments.budget_evaluations)
+  # Arsip baris lama saat satu sel diulang (--only); dipakai untuk sel gross_free/kma
+  # yang terkontaminasi perubahan PROCTHROTTLEMAX 80%->100% di tengah run (audit S6).
+  archive_dir: "results/tables/archive_2026-10-25"
 
 practical_significance:
   output_dir: "results/tables"
@@ -362,3 +365,28 @@ practical_significance:
   # D12 DIPUTUSKAN (2026-10-25): Opsi A (margin seragam 0,01%)
   # Catatan keputusan: docs/decisions/0012-practical-equivalence-margin-d12.md
   equivalence_margin_pct: 0.01   # margin TOST, persen relatif terhadap median biaya grup pembanding
+
+# ------------------------------------------------------------------------------
+# Tahap 21: Kelayakan 360 run terhadap batas "benar" bank validasi (temuan T3 audit 2026-10-25)
+# Tidak mengubah 360 run maupun keluaran Tahap 12; hanya evaluasi ulang batas.
+# ------------------------------------------------------------------------------
+true_limits:
+  bank_valid_path: "data/processed/bank_valid_seed2026_N20000.npz"
+  validation_runs_path: "results/tables/validation_all_runs.csv"
+  limits_summary_path: "results/sensitivity/limits/limits_summary.csv"  # cross-check batas benar Tahap 17
+  crosscheck_rel_tol: 1.0e-9     # selisih relatif maksimum vs valid_bank_value Tahap 17
+  confidence_level: 0.95         # CI Clopper-Pearson proporsi layak
+  output_runs: "results/tables/validation_true_limits_runs.csv"
+  output_summary: "results/tables/validation_true_limits_summary.csv"
+  output_metadata: "results/tables/validation_true_limits_metadata.json"
+
+# ------------------------------------------------------------------------------
+# Tahap 22: Tabel turunan untuk naskah skripsi (pola laporan prior thesis Rico 2026)
+# Membaca hasil yang sudah ada; tidak menjalankan optimasi.
+# ------------------------------------------------------------------------------
+thesis_tables:
+  bank_train_path: "data/processed/bank_train_seed42_N5000.npz"
+  n_example_scenarios: 5         # jumlah skenario contoh untuk contoh hitung Subbab 4.3
+  output_weight_change: "results/tables/thesis_weight_change_vs_w0.csv"
+  output_scenario_example: "results/tables/thesis_scenario_example.csv"
+  output_metadata: "results/tables/thesis_tables_metadata.json"

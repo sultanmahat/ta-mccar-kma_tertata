@@ -32,3 +32,25 @@ Ditetapkan:
 1. `configs/params.yaml` blok `experiments`/`scenarios` (termasuk `train_seed: 42`) **tidak berubah**. Blok `sensitivity_limits` (Tahap 17) dipertahankan sebagai studi tambahan, bukan pengganti desain utama.
 2. 360 run (`results/runs/`, `results/tables/`), dan 360 run yang dipakai Tahap 17/18 sebagai referensi, **tidak diubah** (diverifikasi hash SHA-256 sebelum/sesudah Tahap 17 dan 18).
 3. Bab 4/5 naskah skripsi mencantumkan ringkasan Tahap 17 (`docs/reviews/studi_stabilitas_limit.md` Bagian 2–4) sebagai subbab keterbatasan/analisis sensitivitas, dengan penekanan pada konfigurasi `interest_free`.
+
+---
+
+## Addendum 2026-10-25 — Koreksi dasar angka (temuan T3 audit ulang) dan konfirmasi ulang Opsi C
+
+**Konteks.** Audit ulang (`docs/reviews/audit_ulang_2026-10-25.md`, temuan T3) menemukan bahwa butir 3 di atas memakai angka dari solusi yang dioptimasi di 20 bank Tahap 17, bukan dari solusi 360 run. Tahap 21 (`scripts/21_validate_true_limits.py`) mengevaluasi langsung 360 solusi utama pada bank validasi N = 20.000 terhadap batas "benar" dari w0 pada bank yang sama (η_v = 0,149065, τ_v = 0,064173 untuk *interest*; η_v = 0,067652, τ_v = 1,085888 untuk *gross*; cocok dengan Tahap 17 dengan selisih relatif ≤ 8,2×10⁻¹⁶). Sumber angka: `results/tables/validation_true_limits_summary.csv`.
+
+| Konfigurasi | KMA | GA | PSO | v_J maks (relatif) |
+|---|---:|---:|---:|---:|
+| `gross_free` | 27/30 | 30/30 | 29/30 | 0,0056 |
+| `gross_djppr` | 24/30 | 10/30 | 17/30 | 0,00082 |
+| `interest_free` | 0/30 | 0/30 | 0/30 | 0,2127 |
+| `interest_djppr` | 30/30 | 30/30 | 30/30 | 0 |
+
+Semua pelanggaran berasal dari kendala J (dispersi rasio MCCaR); tidak ada pelanggaran CCaR.
+
+**Koreksi butir 3.** Rentang "40–100%" tidak tepat: `gross_djppr` GA hanya 10/30 (33%). Namun pelanggaran pada `gross_*` berukuran sangat kecil (v_J ≤ 0,56%), sedangkan pada `interest_free` seluruh 90 solusi melanggar dengan besaran sampai 21%. Kesimpulan arahnya tetap: masalah stabilitas terkonsentrasi pada `interest_free`, tetapi solusi `gross_djppr` juga berada sangat dekat batas J sehingga kelayakannya sensitif terhadap estimasi η.
+
+**Keputusan.** Opsi C **dipertahankan** (dikonfirmasi Sultan pada 2026-10-25 melalui persetujuan rekomendasi plan "D10 Opsi A: addendum, tanpa membuka ulang"). Temuan di atas justru memperkuat alasan Opsi C: yang dibutuhkan adalah pelaporan ketidakpastian, bukan pengulangan 360 run. Implikasi tambahan:
+1. Bab 4 subbab validasi *out-of-sample* menyajikan dua tabel kelayakan berdampingan: terhadap batas bank latih (Tahap 12) dan terhadap batas benar (Tahap 21), beserta besaran pelanggaran.
+2. Headline penghematan `interest_free` tidak boleh disajikan tanpa catatan bahwa solusinya tidak layak terhadap batas η presisi tinggi.
+3. Tidak ada angka 360 run yang berubah.

@@ -1,0 +1,53 @@
+{
+  "stage": 21,
+  "created_utc": "2026-10-25T06:26:39.083810+00:00",
+  "config_sha256": "a054e0ed18a232ba16748938efa24cffb679bb46ba3484db285e8a97cb0aa2d9",
+  "inputs": {
+    "results/tables/validation_all_runs.csv": "7f28d4c8b8a2e0172bae913b14c728ccfdb036a26ed83a124942b83517772993",
+    "data/processed/bank_valid_seed2026_N20000.npz": "25db609fea40bce937559aec53d211ac1268f11b3054116a236dd5854f1ddbf0"
+  },
+  "validation_seed": 2026,
+  "true_limits": {
+    "gross": {
+      "eta": 0.06765201878952906,
+      "tau": 1.085887634042554,
+      "w0_cost": 1.042186135832954
+    },
+    "interest": {
+      "eta": 0.14906490688032958,
+      "tau": 0.0641726830370257,
+      "w0_cost": 0.04436922590993375
+    }
+  },
+  "crosscheck_tahap17": [
+    {
+      "cost_definition": "gross",
+      "metric": "eta",
+      "tahap21": 0.06765201878952906,
+      "tahap17": 0.067652018789529,
+      "rel_diff": 8.205394639287496e-16
+    },
+    {
+      "cost_definition": "gross",
+      "metric": "tau",
+      "tahap21": 1.085887634042554,
+      "tahap17": 1.085887634042554,
+      "rel_diff": 0.0
+    },
+    {
+      "cost_definition": "interest",
+      "metric": "eta",
+      "tahap21": 0.14906490688032958,
+      "tahap17": 0.1490649068803295,
+      "rel_diff": 5.585937601915516e-16
+    },
+    {
+      "cost_definition": "interest",
+      "metric": "tau",
+      "tahap21": 0.0641726830370257,
+      "tahap17": 0.0641726830370257,
+      "rel_diff": 0.0
+    }
+  ],
+  "eps_tol": 1e-08
+}
