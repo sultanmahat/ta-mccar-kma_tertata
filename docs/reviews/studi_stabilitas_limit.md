@@ -95,9 +95,11 @@ Sumber: `optimism_correlation.csv`, `variance_decomposition.csv`.
 
 ---
 
-## 7. KEPUTUSAN DIBUTUHKAN — D10 (belum pernah diformalkan)
+## 7. D10 — dikonfirmasi: Opsi C (2026-10-25)
 
-**Pertanyaan**: apakah batas risiko (η, τ) di 360 run eksperimen utama — dihitung sekali dari bank latih seed 42 — dipertahankan sebagai status quo, atau perlu prosedur lain mengingat temuan Bagian 2–4?
+**Status**: dikonfirmasi oleh Sultan Bakri Baihaqi Mahat pada 2026-10-25. Dicatat di `docs/decisions/0010-limit-stability-d10.md`. Opsi yang dipertimbangkan dipertahankan di bawah sebagai jejak alasan.
+
+Pertanyaan yang dijawab: apakah batas risiko (η, τ) di 360 run eksperimen utama — dihitung sekali dari bank latih seed 42 — dipertahankan sebagai status quo, atau perlu prosedur lain mengingat temuan Bagian 2–4?
 
 **Opsi A — Pertahankan bank seed 42 (status quo proposal).**
 (+) Tidak mengubah 360 run; sesuai desain yang sudah disetujui; nol biaya tambahan.
@@ -112,7 +114,7 @@ Tambahkan interval ketidakpastian batas (CV%, posisi bank-42 relatif ke populasi
 (+) Tidak mengubah desain yang disetujui; jujur mengenai keterbatasan tanpa biaya run ulang.
 (−) Headline savings `interest_free` (30,27%) tetap dilaporkan sebagai angka utama, meski Bagian 3–4 menunjukkan itu mendekati titik paling optimis dari distribusi 20-bank, bukan titik tengahnya.
 
-**Rekomendasi (bukan keputusan)**: **Opsi C**. Konsisten dengan pola D11 (tidak mengubah 360 run yang sudah disetujui, melaporkan sensitivitas sebagai analisis tambahan bukan revisi hasil utama). `interest_djppr`, `gross_djppr`, `gross_free` tidak menunjukkan masalah besar (kelayakan validasi 40–100%, bukan 5–10%) — isu stabilitas batas terkonsentrasi di `interest_free`, jadi catatan keterbatasan bisa difokuskan ke konfigurasi itu saja. **Keputusan ada di tangan Sultan** — ini keputusan baru (D10), belum pernah dikonfirmasi sebelumnya.
+**Keputusan: Opsi C.** Konsisten dengan pola D11 (tidak mengubah 360 run yang sudah disetujui, melaporkan sensitivitas sebagai analisis tambahan bukan revisi hasil utama). `interest_djppr`, `gross_djppr`, `gross_free` tidak menunjukkan masalah besar (kelayakan validasi 40–100%, bukan 5–10%) — isu stabilitas batas terkonsentrasi di `interest_free`, jadi catatan keterbatasan di Bab 4/5 difokuskan ke konfigurasi itu saja.
 
 ---
 

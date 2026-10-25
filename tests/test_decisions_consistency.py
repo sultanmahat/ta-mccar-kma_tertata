@@ -30,17 +30,17 @@ def decisions_readme_text(repo_root: Path) -> str:
 
 
 def test_decisions_confirmed_status(repo_root: Path, decisions_readme_text: str):
-    """Memastikan status seluruh keputusan D1-D9 dan D11 di README dan berkas individual berstatus sah Dikonfirmasi oleh Sultan."""
+    """Memastikan status seluruh keputusan D1-D11 di README dan berkas individual berstatus sah Dikonfirmasi oleh Sultan."""
     # 1. Periksa README.md
     assert "Dikonfirmasi oleh Sultan" in decisions_readme_text
     assert "Menunggu konfirmasi Sultan" not in decisions_readme_text
     assert "**Status**: DIPUTUSKAN" not in decisions_readme_text
     assert "disetujui bersama pengguna" not in decisions_readme_text.lower()
 
-    # 2. Periksa berkas 0001 s.d. 0009 dan 0011
+    # 2. Periksa berkas 0001 s.d. 0011
     decision_files = sorted((repo_root / "docs" / "decisions").glob("00*.md"))
-    # Expect 10 files: 0001 to 0009 and 0011
-    assert len(decision_files) == 10, f"Harusnya ada 10 berkas keputusan, ditemukan {len(decision_files)}"
+    # Expect 11 files: 0001 to 0011
+    assert len(decision_files) == 11, f"Harusnya ada 11 berkas keputusan, ditemukan {len(decision_files)}"
 
     for df in decision_files:
         content = df.read_text(encoding="utf-8")
@@ -100,8 +100,8 @@ def test_d5_zero_division_guard_consistency(params_config: dict, decisions_readm
 
 
 def test_d1_through_d9_coverage(repo_root: Path, decisions_readme_text: str):
-    """Memastikan seluruh D1 sampai D9 dan D11 tercakup dan memiliki file pendukung."""
-    for i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 11]:
+    """Memastikan seluruh D1 sampai D11 tercakup dan memiliki file pendukung."""
+    for i in range(1, 12):
         marker = f"**D{i}**"
         assert marker in decisions_readme_text, f"Keputusan {marker} tidak ditemukan di README.md!"
 
