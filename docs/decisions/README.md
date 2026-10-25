@@ -7,7 +7,7 @@ Dokumen ini mencatat seluruh keputusan metodologis teknis yang melengkapi rincia
 
 ---
 
-## Matriks Status Keputusan (D1 – D12)
+## Matriks Status Keputusan (D1 – D13)
 
 | ID | Topik Keputusan | Berkas Keputusan | Tanggal Usulan | Tanggal Konfirmasi | Status | Pilihan yang Dikonfirmasi & Nilai Persis `configs/params.yaml` |
 |:---:|:---|:---|:---:|:---:|:---:|:---|
@@ -23,15 +23,16 @@ Dokumen ini mencatat seluruh keputusan metodologis teknis yang melengkapi rincia
 | **D10** | Perlakuan Ketidakpastian Monte Carlo pada Batas Risiko (η, τ) | [0010-limit-stability-d10.md](0010-limit-stability-d10.md) | 2026-10-24 | 2026-10-25 | **Dikonfirmasi oleh Sultan** | **Opsi C (Pertahankan Bank 42, Laporkan Ketidakpastian)**: Batas η dan τ tetap dihitung dari bank seed 42 (360 run tidak diulang); temuan studi 20-bank independen (Tahap 17) — terutama kelayakan validasi rendah pada `interest_free` — dilaporkan sebagai keterbatasan di Bab 4/5, bukan dipakai merevisi hasil utama. **Addendum 2026-10-25**: dasar angka dikoreksi dengan evaluasi langsung 360 run terhadap batas bank validasi (Tahap 21; `interest_free` 0/90 layak, `gross_djppr` 51/90, pelanggaran hanya pada kendala J); Opsi C dipertahankan. |
 | **D11** | Kebijakan Penalaan Parameter yang Adil (*Fair Tuning Policy*) | [0011-fair-tuning-policy-d11.md](0011-fair-tuning-policy-d11.md) | 2026-10-18 | 2026-10-24 | **Dikonfirmasi oleh Sultan** | **Opsi A (Default Literatur / Status Quo Proposal)**: Ketiga algoritma (KMA, GA, PSO) menggunakan parameter default rujukan literatur masing-masing (Suyanto 2022, Goldberg, Eberhart/Shi) sesuai Tabel 3.1 proposal tanpa penalaan selektif tambahan. Ditinjau ulang 2026-10-25 setelah Diagnosis KMA v2 (Tahap 18): tetap Opsi A. |
 | **D12** | Margin Ekivalensi Praktis untuk Uji TOST | [0012-practical-equivalence-margin-d12.md](0012-practical-equivalence-margin-d12.md) | 2026-10-25 | 2026-10-25 | **Dikonfirmasi oleh Sultan** | **Opsi A (Margin Seragam 0,01%)**: `practical_significance.equivalence_margin_pct: 0.01`, margin relatif 0,01% dari median biaya grup pembanding, diterapkan seragam di keempat konfigurasi untuk uji ekivalensi (TOST) pada analisis signifikansi praktis Tahap 19-20. |
+| **D13** | Laju Mlipir ($d$) Fase 2 KMA | [0013-kma-phase2-mlipir-rate-d13.md](0013-kma-phase2-mlipir-rate-d13.md) | 2026-10-25 | — | **Diusulkan agen, menunggu konfirmasi Sultan** | Mencatat nilai yang **sudah dipakai** (bukan usulan baru): `algorithms.kma.phase_2.mlipir_rate: 0.5`, `algorithms.kma.phase_2.population_adapt_floor: 1.0e-12`. Menunggu Sultan memilih antara mempertahankan nilai ini (360 run tetap sah) atau mengubahnya ke `kma_d2_low` sesuai ablasi Tahap 18 (mengharuskan mengulang eksperimen). |
 
 ---
 
 ## Rekapitulasi Status
 
-- **Total Keputusan Teknis**: 12
+- **Total Keputusan Teknis**: 13
 - **Status Dikonfirmasi oleh Sultan**: **12** (D1–D9, D11, D12 - Opsi A; D10 - Opsi C)
-- **Status Menunggu Konfirmasi Sultan**: **0**
+- **Status Menunggu Konfirmasi Sultan**: **1** (D13 — diusulkan agen 2026-10-25)
 - **Status Ditolak**: **0**
 
 > [!NOTE]
-> Seluruh keputusan metodologis di atas telah dikonfirmasi secara sah oleh mahasiswa peneliti (Sultan Bakri Baihaqi Mahat) pada 24–25 Oktober 2026 dan menjadi dasar metodologi komputasi resmi untuk draf naskah skripsi Bab 3, 4, dan 5.
+> D1–D12 telah dikonfirmasi secara sah oleh mahasiswa peneliti (Sultan Bakri Baihaqi Mahat) pada 24–25 Oktober 2026 dan menjadi dasar metodologi komputasi resmi untuk draf naskah skripsi Bab 3, 4, dan 5. D13 diusulkan agen pada 25 Oktober 2026, mencatat (bukan memilih) nilai yang sudah dipakai kode, dan menunggu konfirmasi Sultan.

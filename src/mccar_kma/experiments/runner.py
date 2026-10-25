@@ -29,6 +29,7 @@ from mccar_kma.optimizers.kma import KomodoMlipirOptimizer
 from mccar_kma.optimizers.ga import GeneticAlgorithmOptimizer
 from mccar_kma.optimizers.pso import ParticleSwarmOptimizer
 from mccar_kma.risk.evaluator import PortfolioEvaluator
+from mccar_kma.utils.config import load_config
 
 logger = logging.getLogger(__name__)
 
@@ -49,12 +50,68 @@ def get_bounds_for_constraint(constraint_type: str) -> Tuple[np.ndarray, np.ndar
         raise ValueError(f"Jenis kendala tidak dikenal: {constraint_type}. Harus 'djppr' atau 'free'.")
 
 
+def build_optimizer(algo_name: str, cfg: Dict[str, Any]) -> BaseOptimizer:
+    """Membangun instance optimizer dari blok `algorithms.<algo_name>` di params.yaml.
+
+    Mengalirkan konfigurasi ke konstruktor (temuan S1, audit_ulang_2026-10-25.md):
+    mengubah params.yaml sekarang benar-benar mengubah hyperparameter eksperimen,
+    bukan hanya dokumentasi yang tidak dipakai kode.
+    """
+    if algo_name not in ALGORITHM_REGISTRY:
+        raise ValueError(f"Algoritma {algo_name} tidak terdaftar di ALGORITHM_REGISTRY.")
+
+    eps_tol = float(cfg["optimization"]["eps_tol"])
+    algo_cfg = cfg["algorithms"][algo_name]
+
+    if algo_name == "kma":
+        return KomodoMlipirOptimizer(
+            phase_1_n_pop=int(algo_cfg["phase_1"]["n_pop"]),
+            phase_1_budget=int(algo_cfg["phase_1"]["budget"]),
+            phase_2_n_pop_init=int(algo_cfg["phase_2"]["n_pop_init"]),
+            phase_2_n_pop_min=int(algo_cfg["phase_2"]["n_pop_min"]),
+            phase_2_n_pop_max=int(algo_cfg["phase_2"]["n_pop_max"]),
+            phase_2_budget=int(algo_cfg["phase_2"]["budget"]),
+            p_bm=float(algo_cfg["p_bm"]),
+            gamma=float(algo_cfg["gamma"]),
+            q_interactions=algo_cfg["q_interactions"],
+            p_mating=float(algo_cfg["p_mating"]),
+            stagnation_patience=int(algo_cfg["stagnation_patience"]),
+            stagnation_tol=float(algo_cfg["stagnation_tol"]),
+            delta_n=int(algo_cfg["delta_n"]),
+            phase_2_mlipir_rate=float(algo_cfg["phase_2"]["mlipir_rate"]),
+            population_adapt_floor=float(algo_cfg["phase_2"]["population_adapt_floor"]),
+            eps_tol=eps_tol,
+        )
+    if algo_name == "ga":
+        return GeneticAlgorithmOptimizer(
+            n_pop=int(algo_cfg["n_pop"]),
+            tournament_size=int(algo_cfg["tournament_size"]),
+            p_crossover=float(algo_cfg["p_crossover"]),
+            p_mutation=float(algo_cfg["p_mutation"]) if algo_cfg.get("p_mutation") is not None else None,
+            sigma_m_factor=float(algo_cfg["sigma_m_factor"]),
+            elitism_count=int(algo_cfg["elitism_count"]),
+            eps_tol=eps_tol,
+        )
+    # algo_name == "pso"
+    return ParticleSwarmOptimizer(
+        n_pop=int(algo_cfg["n_pop"]),
+        w_start=float(algo_cfg["w_start"]),
+        w_end=float(algo_cfg["w_end"]),
+        c1=float(algo_cfg["c1"]),
+        c2=float(algo_cfg["c2"]),
+        v_max_factor=float(algo_cfg["v_max_factor"]),
+        velocity_clamp_strategy=str(algo_cfg["velocity_clamp_strategy"]),
+        eps_tol=eps_tol,
+    )
+
+
 def execute_single_run(
     spec: ExperimentSpec,
     bank_path: Path,
     limits_path: Path,
     output_dir: Path,
     resume: bool = True,
+    config: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """Mengeksekusi satu replikasi eksperimen optimasi secara modular.
 
@@ -70,12 +127,16 @@ def execute_single_run(
         Direktori target penyimpanan hasil.
     resume : bool
         Jika True, lewati run jika file hasil yang valid sudah ada.
+    config : Optional[Dict[str, Any]]
+        Konfigurasi params.yaml terparse. Jika None, dimuat via `load_config()`
+        (temuan S1, audit_ulang_2026-10-25.md).
 
     Returns
     -------
     Dict[str, Any]
         Hasil replikasi.
     """
+    cfg = config if config is not None else load_config()
     result_path = get_run_result_path(
         base_dir=output_dir,
         config_id=spec.config_id,
@@ -106,16 +167,24 @@ def execute_single_run(
     tau = float(limits_data[spec.cost_definition]["tau"])
     eta = float(limits_data[spec.cost_definition]["eta"])
 
-    # 2. Inisialisasi Evaluator dengan batas risiko
-    evaluator = PortfolioEvaluator(cost_matrix=cost_matrix, tau=tau, eta=eta)
+    # 2. Inisialisasi Evaluator dengan batas risiko dan parameter dari config
+    risk_cfg = cfg["risk"]
+    opt_cfg = cfg["optimization"]
+    evaluator = PortfolioEvaluator(
+        cost_matrix=cost_matrix,
+        alpha=float(risk_cfg["alpha"]),
+        delta=float(risk_cfg["delta"]),
+        tau=tau,
+        eta=eta,
+        rho_J=float(opt_cfg["penalty_rho_J"]),
+        rho_R=float(opt_cfg["penalty_rho_R"]),
+        eps_tol=float(opt_cfg["eps_tol"]),
+        zero_tol_mc=float(risk_cfg["zero_tolerance_mc"]),
+    )
 
-    # 3. Ambil batas proporsi & inisialisasi optimizer
+    # 3. Ambil batas proporsi & inisialisasi optimizer dari config
     lb, ub = get_bounds_for_constraint(spec.constraint_type)
-
-    if spec.algo_name not in ALGORITHM_REGISTRY:
-        raise ValueError(f"Algoritma {spec.algo_name} tidak terdaftar di ALGORITHM_REGISTRY.")
-    algo_cls = ALGORITHM_REGISTRY[spec.algo_name]
-    optimizer: BaseOptimizer = algo_cls()
+    optimizer: BaseOptimizer = build_optimizer(spec.algo_name, cfg)
 
     # 4. Jalankan optimasi
     t_start = time.perf_counter()
@@ -186,15 +255,18 @@ def execute_single_run(
     return payload
 
 
-def _worker_wrapper(args: Tuple[ExperimentSpec, Path, Path, Path, bool]) -> Dict[str, Any]:
+def _worker_wrapper(
+    args: Tuple[ExperimentSpec, Path, Path, Path, bool, Dict[str, Any]]
+) -> Dict[str, Any]:
     """Helper worker untuk eksekusi paralel multiprocessing."""
-    spec, bank_path, limits_path, output_dir, resume = args
+    spec, bank_path, limits_path, output_dir, resume, config = args
     return execute_single_run(
         spec=spec,
         bank_path=bank_path,
         limits_path=limits_path,
         output_dir=output_dir,
         resume=resume,
+        config=config,
     )
 
 
@@ -205,13 +277,20 @@ def run_experiment_batch(
     output_dir: Path,
     max_workers: int = 1,
     resume: bool = True,
+    config: Optional[Dict[str, Any]] = None,
 ) -> List[Dict[str, Any]]:
-    """Menjalankan kumpulan replikasi eksperimen secara sequential atau paralel."""
+    """Menjalankan kumpulan replikasi eksperimen secara sequential atau paralel.
+
+    `config` dimuat sekali di proses induk (jika tidak diberikan) lalu dikirim
+    identik ke setiap worker, supaya seluruh batch memakai satu snapshot
+    params.yaml yang konsisten (temuan S1).
+    """
+    cfg = config if config is not None else load_config()
     total_runs = len(specs)
     logger.info("Memulai batch eksperimen (%d run) dengan max_workers=%d", total_runs, max_workers)
 
     tasks_args = [
-        (spec, bank_path, limits_path, output_dir, resume)
+        (spec, bank_path, limits_path, output_dir, resume, cfg)
         for spec in specs
     ]
 

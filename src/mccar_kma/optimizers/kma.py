@@ -91,6 +91,12 @@ class KomodoMlipirOptimizer(BaseOptimizer):
         Toleransi perubahan fitness relatif untuk mendeteksi stagnasi (default: 1e-7, D4).
     delta_n : int
         Besar perubahan ukuran populasi saat adaptasi (default: 5, D4).
+    phase_2_mlipir_rate : float
+        Laju mlipir (d) pada Fase 2 (default: 0,5, D13 -- usulan agen, menunggu
+        konfirmasi Sultan: docs/decisions/0013-kma-phase2-mlipir-rate-d13.md).
+    population_adapt_floor : float
+        Lantai pembagi relatif saat menghitung delta_f1/delta_f2 pada adaptasi
+        ukuran populasi Fase 2, mencegah pembagian oleh nol (default: 1e-12, R11).
     check_interval : int
         Interval evaluasi untuk pencatatan konvergensi (default: 250).
     eps_tol : float
@@ -112,6 +118,8 @@ class KomodoMlipirOptimizer(BaseOptimizer):
         stagnation_patience: int = 2,
         stagnation_tol: float = 1e-7,
         delta_n: int = 5,
+        phase_2_mlipir_rate: float = 0.5,
+        population_adapt_floor: float = 1e-12,
         check_interval: int = 250,
         eps_tol: float = 1e-8,
     ) -> None:
@@ -129,6 +137,8 @@ class KomodoMlipirOptimizer(BaseOptimizer):
         self.stagnation_patience = int(stagnation_patience)
         self.stagnation_tol = float(stagnation_tol)
         self.delta_n = int(delta_n)
+        self.phase_2_mlipir_rate = float(phase_2_mlipir_rate)
+        self.population_adapt_floor = float(population_adapt_floor)
 
     def run(
         self,
@@ -184,7 +194,7 @@ class KomodoMlipirOptimizer(BaseOptimizer):
         # n_pop awal 200, rentang [20, 200], d = 0.5
         # =====================================================================
         if not self.budget.is_exhausted:
-            mlipir_rate_2 = 0.5
+            mlipir_rate_2 = self.phase_2_mlipir_rate
             rem_budget = self.budget.remaining
             init_n_pop_2 = min(self.phase_2_n_pop_init, max(self.phase_2_n_pop_min, rem_budget))
 
@@ -396,8 +406,8 @@ class KomodoMlipirOptimizer(BaseOptimizer):
         f_t1 = fitness_history[-2]
         f_t2 = fitness_history[-3]
 
-        denom1 = max(abs(f_t1), 1e-12)
-        denom2 = max(abs(f_t2), 1e-12)
+        denom1 = max(abs(f_t1), self.population_adapt_floor)
+        denom2 = max(abs(f_t2), self.population_adapt_floor)
         delta_f1 = abs(f_t1 - f_t) / denom1
         delta_f2 = abs(f_t2 - f_t1) / denom2
 

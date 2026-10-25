@@ -36,19 +36,13 @@ import yaml
 
 from mccar_kma.analysis.validation import validate_single_portfolio
 from mccar_kma.data.cleaning import ALL_MARKET_COLS
-from mccar_kma.experiments.runner import get_bounds_for_constraint
+from mccar_kma.experiments.runner import build_optimizer, get_bounds_for_constraint
 from mccar_kma.model.constraints import W0
-from mccar_kma.optimizers.ga import GeneticAlgorithmOptimizer
-from mccar_kma.optimizers.pso import ParticleSwarmOptimizer
 from mccar_kma.risk.evaluator import PortfolioEvaluator
 from mccar_kma.scenarios.cost import build_scenario_bank
 from mccar_kma.scenarios.estimation import INSTRUMENTS
 from mccar_kma.scenarios.gbm import generate_market_scenarios
 
-ALGORITHM_CLASSES = {
-    "pso": ParticleSwarmOptimizer,
-    "ga": GeneticAlgorithmOptimizer,
-}
 COST_DEFINITIONS = ("gross", "interest")
 N_INSTRUMENTS = 7
 WEIGHT_COLUMNS = [f"w_{i}" for i in range(1, N_INSTRUMENTS + 1)]
@@ -226,7 +220,7 @@ def optimize_task(task: Dict[str, Any]) -> Dict[str, Any]:
     cost_def, constraint = split_config_id(config_id)
     lb, ub = get_bounds_for_constraint(constraint)
     evaluator = make_evaluator(task["cost_matrix"], task["cfg"], tau=task["tau"], eta=task["eta"])
-    optimizer = ALGORITHM_CLASSES[task["algo"]]()
+    optimizer = build_optimizer(task["algo"], task["cfg"])
     res = optimizer.run(
         evaluator=evaluator,
         lb=lb,

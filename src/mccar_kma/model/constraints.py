@@ -13,24 +13,29 @@ Mengimplementasikan:
 from typing import Tuple, Union
 import numpy as np
 
-# Batas proporsi DJPPR (Tabel 2.1 & 2.2 spesifikasi)
-LB_DJPPR = np.array([0.425, 0.100, 0.130, 0.130, 0.015, 0.050, 0.030], dtype=float)
-UB_DJPPR = np.array([0.490, 0.125, 0.165, 0.155, 0.030, 0.085, 0.055], dtype=float)
+from mccar_kma.utils.config import load_config
 
-# Batas proporsi Free (0 <= w_i <= 1)
+
+def _load_instrument_arrays() -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Membaca lb, ub, w0 tiap instrumen dari configs/params.yaml (Tabel 2.1 & 2.2).
+
+    Dibaca sekali saat modul diimpor, supaya mengubah params.yaml benar-benar
+    mengubah batas yang dipakai eksperimen (temuan S1, audit_ulang_2026-10-25.md).
+    """
+    cfg = load_config()
+    items = cfg["instruments"]["items"]
+    lb = np.array([float(it["lb"]) for it in items], dtype=float)
+    ub = np.array([float(it["ub"]) for it in items], dtype=float)
+    w0 = np.array([float(it["w0"]) for it in items], dtype=float)
+    return lb, ub, w0
+
+
+# Batas proporsi DJPPR dan bobot eksisting 2024 (Tabel 2.1 & 2.2 spesifikasi, params.yaml)
+LB_DJPPR, UB_DJPPR, W0 = _load_instrument_arrays()
+
+# Batas proporsi Free (0 <= w_i <= 1) -- bukan parameter Tabel 3.1, tidak ada di params.yaml
 LB_FREE = np.zeros(7, dtype=float)
 UB_FREE = np.ones(7, dtype=float)
-
-# Bobot eksisting 2024 (w0) presisi penuh (Tabel 2.1 & 2.2)
-W0 = np.array([
-    0.459485835,
-    0.113620854,
-    0.147798763,
-    0.143927407,
-    0.024401992,
-    0.066688212,
-    0.044076937,
-], dtype=float)
 
 
 def project_weights(

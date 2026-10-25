@@ -205,6 +205,12 @@ algorithms:
       n_pop_max: 200       # Batas atas ukuran populasi
       budget: 20000        # Sisa anggaran 20.000 evaluasi
 
+      # D13 DIUSULKAN AGEN, MENUNGGU KONFIRMASI SULTAN (2026-10-25):
+      # Nilai = yang sudah dipakai di kode sebelum dicatat di sini (literal kma.py:187).
+      # Catatan keputusan: docs/decisions/0013-kma-phase2-mlipir-rate-d13.md
+      mlipir_rate: 0.5             # d fase 2 (T5)
+      population_adapt_floor: 1.0e-12  # lantai pembagi relatif adaptasi populasi (R11)
+
     # D4 DIPUTUSKAN (2026-10-18):
     p_bm: 0.5
     gamma: 0.1
