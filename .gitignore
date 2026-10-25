@@ -28,6 +28,10 @@ logs/*
 data/interim/*
 !data/interim/.gitkeep
 
+# Keluaran mentah per-run diagnosis KMA (Tahap 18); ringkasan CSV/figur tetap dilacak
+results/sensitivity/kma/runs_*/
+results/sensitivity/kma/smoke/
+
 # Format biner tidak terlacak
 *.npy
 *.parquet

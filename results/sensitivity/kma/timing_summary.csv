@@ -1,0 +1,13 @@
+config_id,algo,n,seconds_median,seconds_min,seconds_max
+gross_djppr,ga,5,7.3431,7.2419,7.8963
+gross_djppr,kma,5,27.1209,25.9839,27.7404
+gross_djppr,pso,5,7.3896,7.3133,7.6947
+gross_free,ga,5,7.3119,6.8776,7.4372
+gross_free,kma,5,24.5459,23.9868,25.2585
+gross_free,pso,5,6.969,6.8585,7.1233
+interest_djppr,ga,5,7.0346,6.9489,7.391
+interest_djppr,kma,5,25.8852,25.7125,26.5671
+interest_djppr,pso,5,6.884,6.8522,7.2166
+interest_free,ga,5,7.2083,7.161,7.5474
+interest_free,kma,5,25.078,24.1405,25.9087
+interest_free,pso,5,7.3277,7.0678,7.4843

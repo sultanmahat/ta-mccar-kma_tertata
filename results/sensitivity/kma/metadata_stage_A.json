@@ -1,0 +1,19 @@
+{
+ "date": "2026-10-24T21:22:55.456318+00:00",
+ "config_hash": "6360d66ead242fd37c47adf564ee0cdfc5b1e4fbc2f94e0467ad6238882459a8",
+ "data_version": "be88f1726319eda2",
+ "bank_path": "data\\processed\\bank_train_seed42_N5000.npz",
+ "stage": "A",
+ "steps": [
+  "main360",
+  "timing",
+  "profile",
+  "benchmark",
+  "instrument"
+ ],
+ "smoke": false,
+ "budget": 25000,
+ "workers": 10,
+ "elapsed_seconds": 1877.8,
+ "failures": []
+}

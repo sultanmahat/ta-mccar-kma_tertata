@@ -1,0 +1,16 @@
+{
+ "date": "2026-10-25T03:19:40.187054+00:00",
+ "config_hash": "6360d66ead242fd37c47adf564ee0cdfc5b1e4fbc2f94e0467ad6238882459a8",
+ "data_version": "be88f1726319eda2",
+ "bank_path": "data\\processed\\bank_train_seed42_N5000.npz",
+ "stage": "B",
+ "steps": [
+  "benchmark",
+  "ablation"
+ ],
+ "smoke": false,
+ "budget": 25000,
+ "workers": 10,
+ "elapsed_seconds": 21402.1,
+ "failures": []
+}

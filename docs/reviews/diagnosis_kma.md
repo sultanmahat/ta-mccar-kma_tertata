@@ -1,215 +1,219 @@
-# Laporan Diagnosis Metodologis: Komodo Mlipir Algorithm (KMA) vs GA & PSO
+# Diagnosis KMA v2 — Fidelitas, Ablasi, Kendala Aktif, Konvergensi
 
-- **Tanggal Pelaksanaan**: 2026-10-18
-- **Tujuan Dokumen**: **DIAGNOSIS ILMIAH OBJEKTIF** atas perilaku konvergensi, efisiensi komputasi, dan dinamika kendala KMA dibandingkan GA dan PSO pada masalah optimasi portofolio utang negara multivaluta (MCCaR) dan fungsi benchmark standar.
-- **Prinsip Utama**: Menjelaskan akar penyebab matematis dan algoritmik secara jujur dan transparan berdasarkan data empiris terukur, bukan untuk "membuat KMA menang secara artifisial".
-- **Status Kebijakan Tuning (D11)**: **Opsi A (Default Literatur / Status Quo Proposal)** telah dikonfirmasi oleh Sultan Bakri Baihaqi Mahat pada 2026-10-18 ([0011-fair-tuning-policy-d11.md](../decisions/0011-fair-tuning-policy-d11.md)).
+**Tahap**: 18 (`scripts/18_diagnose_kma_fidelity.py`)
+**Tanggal run**: 2026-10-25 (Tahap A selesai 04:22 WIB, 1.877,8 s setelah restart 10 worker; Tahap B selesai 10:19 WIB, 21.402,1 s; 0 tugas gagal di kedua tahap)
+**Config hash**: `6360d66ead242fd37c47adf564ee0cdfc5b1e4fbc2f94e0467ad6238882459a8`
+**Data mentah**: `results/sensitivity/kma/*.csv`, `runs_benchmark/`, `runs_instrument/`, `runs_ablation/`, `runs_timing/`
+**Verifikasi**: `pytest tests/test_kma_diagnosis.py` — 121 test lulus (termasuk seluruh suite, bukan hanya file ini). Hash SHA-256 dari 431 file `results/runs/`, `results/tables/`, `results/figures/` identik sebelum/sesudah run — **360 run eksperimen utama tidak diubah**.
 
----
-
-## 1. Ringkasan Eksekutif & Fakta Empiris yang Didiagnosis
-
-Evaluasi independen terhadap 360 berkas hasil eksperimen penuh (30 replikasi acak, seed 43–72) mencatat lima fakta kunci:
-1. **Selisih Biaya Portofolio Terhadap Pembanding**:
-   Pada anggaran penuh 25.000 evaluasi fungsi, KMA mencatat nilai objektif median terburuk di keempat konfigurasi. Selisih biaya KMA terhadap referensi terbaik adalah **+0,097%** pada `gross_free` dan **+1,48%** pada `interest_free`.
-2. **Efisiensi Anggaran Konvergensi**:
-   PSO pada anggaran **5.000 evaluasi** (~5,9–13,8 detik) sudah menghasilkan portofolio berbiaya lebih murah dibandingkan KMA pada **25.000 evaluasi** (~71,3–73,0 detik).
-3. **Anomali Slack Kendala Aktif ($J \le \eta$)**:
-   Solusi optimal biaya portofolio secara teoritis terletak persis di perbatasan aktif kendala risiko $J = \eta$. PSO dan GA mampu merapat hingga batas aktif dengan nilai slack median $|J - \eta| \le 10^{-9}$ hingga $10^{-5}$. Sebaliknya, KMA 2-fase berhenti jauh di dalam interior daerah layak dengan slack rata-rata **0,0012** (`gross_free`) dan **0,0021** (`interest_free`), mengindikasikan ketidakmampuan KMA untuk mengeksploitasi tepi daerah batas (*active boundary stagnation*).
-4. **Stagnasi Transisi Fase 2**:
-   Fase 2 KMA (evaluasi 5.001 s.d. 25.000) nyaris tidak memberikan perbaikan signifikan terhadap solusi terbaik yang diwarisi dari Fase 1. Pada `interest_free`, perbaikan median dari checkpoint 5.000 ke 10.000 evaluasi hanya sebesar **0,16%**.
-5. **Asimetri Waktu Komputasi**:
-   Waktu komputasi rata-rata KMA mencapai **~73–88 detik** per run (pada 6–8 worker paralel), sedangkan PSO hanya membutuhkan **~29–33 detik** dan GA **~32–37 detik**.
-
-Rangkaian investigasi diagnosis yang dilaporkan di bawah ini membuktikan bahwa fenomena di atas **bukan disebabkan oleh kesalahan ketik parameter** (karena parameter $p_{\text{bm}}=0{,}5$, $d_1=(D-1)/D$, dan $d_2=0{,}5$ telah terbukti 100% identik dengan literatur Suyanto dkk., 2022), melainkan akibat **tiga interaksi mekanistik inherent**:
-- **Ledakan Langkah Big Male (*Step Size Explosion*)** akibat ketiadaan normalisasi interaksi $1/q$ saat ukuran populasi membesar ke $n=200$.
-- **Dilusi Populasi & Kelaparan Generasi (*Generation Starvation*)** pada Fase 2 akibat menyuntikkan 199 individu acak yang hanya memiliki sisa 100 generasi.
-- **Asimetri Langkah Diskret vs Tebing Penalti Kuadratik (*Penalty Cliff*)** $\rho = 10^6$ yang menolak lompatan kasar KMA ke batas aktif, berbanding terbalik dengan vektor kecepatan kontinu teredam milik PSO.
+> **Cara baca**: laporan ini adalah diagnosis, bukan vonis. Status tiap hipotesis adalah salah satu dari **didukung**, **tidak didukung**, atau **inkonklusif**, berdasarkan data yang diukur di bawah. Tidak ada klaim "KMA buruk" atau "KMA baik" di luar angka yang ditunjukkan.
 
 ---
 
-## 2. Uji Fidelitas Benchmark Standar (Sphere, Rastrigin, Rosenbrock)
+## 1. Koreksi atas laporan 2026-10-18
 
-Untuk menguji apakah perilaku KMA pada repositori ini mereproduksi karakteristik yang dilaporkan dalam literatur penemu (*Suyanto, Ariyanto, & Ariyanto, 2022*), dilakukan pengujian fidelitas independen pada 3 fungsi kontinu standar dengan domain kotak murni (*unconstrained box-clipping*, tanpa proyeksi simpleks):
-- **Sphere** (Unimodal mulus, optimum $f(0)=0$, domain $[-100, 100]^D$)
-- **Rastrigin** (Multimodal ekstrem dengan banyak jebakan lokal, optimum $f(0)=0$, domain $[-5{,}12, 5{,}12]^D$)
-- **Rosenbrock** (Lembah non-konveks sempit melengkung, optimum $f(1)=0$, domain $[-30, 30]^D$)
-- **Dimensi**: $D=7$ (skala portofolio utang) dan $D=30$ (skala standar literatur Suyanto dkk., 2022).
-- **Protokol**: 30 replikasi acak independen (seed 101–130), anggaran 25.000 evaluasi.
+Laporan Tahap 15 lama (diarsip di `docs/reviews/archive/diagnosis_kma_2026-10-18.md`) punya tiga masalah yang diperbaiki di sini:
 
-### Tabel 1: Ringkasan Kinerja Uji Fidelitas Benchmark Standar (30 Replikasi)
-
-| Fungsi | Dimensi ($D$) | Algoritma | Fitness Median | Fitness Rata-rata | Simpangan Baku | Waktu Median (s) |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Sphere** | 7 | **PSO** | **$3{,}29 \times 10^{-47}$** | $8{,}13 \times 10^{-47}$ | $1{,}03 \times 10^{-46}$ | **0,74** |
-| | 7 | **GA** | $0{,}1468$ | $0{,}1613$ | $0{,}0906$ | 1,64 |
-| | 7 | **KMA** | $82{,}33$ | $87{,}34$ | $57{,}38$ | **45,98** |
-| | 30 | **PSO** | **$2{,}73 \times 10^{-4}$** | $1{,}96 \times 10^{-3}$ | $4{,}21 \times 10^{-3}$ | **0,80** |
-| | 30 | **GA** | $4{,}35$ | $4{,}46$ | $1{,}65$ | 3,73 |
-| | 30 | **KMA** | $3.550{,}76$ | $3.611{,}51$ | $870{,}30$ | **173,79** |
-| **Rastrigin** | 7 | **GA** | **$0{,}3612$** | $0{,}6013$ | $0{,}6353$ | 1,98 |
-| | 7 | **PSO** | $0{,}9950$ | $1{,}5256$ | $1{,}0364$ | **0,97** |
-| | 7 | **KMA** | $31{,}43$ | $30{,}34$ | $8{,}02$ | **47,93** |
-| | 30 | **GA** | **$18{,}69$** | $19{,}31$ | $4{,}25$ | 3,72 |
-| | 30 | **PSO** | $59{,}24$ | $59{,}77$ | $13{,}20$ | **0,96** |
-| | 30 | **KMA** | $274{,}59$ | $277{,}93$ | $27{,}65$ | **164,86** |
-| **Rosenbrock** | 7 | **PSO** | **$0{,}8680$** | $3{,}9454$ | $6{,}3055$ | **0,95** |
-| | 7 | **GA** | $6{,}5644$ | $9{,}5333$ | $11{,}1485$ | 1,92 |
-| | 7 | **KMA** | $2.994{,}41$ | $6.570{,}51$ | $8.722{,}27$ | **47,57** |
-| | 30 | **PSO** | **$83{,}50$** | $6.095{,}37$ | $22.829{,}05$ | **0,92** |
-| | 30 | **GA** | $128{,}31$ | $145{,}00$ | $68{,}17$ | 3,78 |
-| | 30 | **KMA** | $1.537.873{,}52$ | $1.754.885{,}46$ | $931.762{,}28$ | **170,05** |
-
-*Berkas data mentah:* [results/sensitivity/kma/benchmark_fidelity.csv](../../results/sensitivity/kma/benchmark_fidelity.csv)  
-*Visualisasi grafik:* [results/sensitivity/kma/fig_benchmark_fidelity.pdf](../../results/sensitivity/kma/fig_benchmark_fidelity.pdf)
-
-### Analisis Kritis Perilaku KMA pada Benchmark Standar
-
-1. **Konvergensi Sphere**:
-   - Pada fungsi convex termudah (Sphere), PSO konvergen hingga presisi numerik mesin ($10^{-47}$ pada $D=7$ dan $10^{-4}$ pada $D=30$).
-   - KMA mengalami stagnasi parah pada nilai $82{,}33$ ($D=7$) dan $3.550{,}76$ ($D=30$). Analisis riwayat konvergensi per generasi mengungkap bahwa solusi terbaik KMA dicapai pada **akhir Fase 1 (evaluasi 5.000)** dan **sama sekali tidak membaik selama 20.000 evaluasi di Fase 2**.
-2. **Kecepatan Komputasi (Wall-Clock Seconds)**:
-   - Evaluasi Sphere pada array numpy berlangsung dalam skala mikrodetik. Namun, KMA membutuhkan **45,98 detik** pada $D=7$ dan **173,79 detik** pada $D=30$. Sebagai perbandingan, PSO hanya butuh **0,74–0,80 detik** dan GA **1,64–3,73 detik**.
-   - Hal ini membuktikan bahwa kelambatan KMA **bukan disebabkan oleh fungsi evaluasi risiko portofolio**, melainkan oleh *overhead* komputasi internal KMA itu sendiri: loop bersarang Python (`for i in range(n_bm): for j in range(q): ... for l in range(dim):`) yang pada $n=200$ mengeksekusi puluhan juta iterasi dan pemanggilan generator acak `rng.uniform`.
+1. **Tidak dibandingkan dengan Tabel 2 Suyanto dkk. (2022).** Laporan ini membandingkan langsung (Bagian 4).
+2. **Slack salah label.** CSV lama `slack_distribution_analysis.csv` berisi slack **absolut**; angka evaluator 0,012/0,018 yang sering dikutip adalah slack **relatif** (η−J)/η. Direproduksi di `slack_360.csv` (Bagian 6): KMA `gross_free` slack relatif mean 0,01776 / median 0,01266 (absolut mean 0,00121); `interest_free` slack relatif mean 0,01207 / median 0,00432 (absolut mean 0,00210). Konsisten dengan angka lama, cuma beda satuan — bukan temuan baru, cuma koreksi notasi.
+3. **Mekanisme (ledakan langkah, dugaan "penguncian") ditulis sebagai terbukti tanpa data pendukung.** Di laporan ini, klaim yang sama (H3) diuji dengan instrumentasi nyata (Bagian 5) dan dilabeli status, bukan ditulis sebagai fakta.
+4. **Seed ablasi lama (43–52) tumpang tindih dengan 360 run utama, hanya 10 replikasi, parameter hardcode.** Ablasi Tahap 18 pakai seed 42000+ (portofolio) dan 40000+/41000+ (benchmark), 30 replikasi, seluruh parameter dari `configs/params.yaml`.
 
 ---
 
-## 3. Studi Ablasi KMA pada Masalah Portofolio Riil
+## 2. Deviasi implementasi kma.py vs Suyanto dkk. (2022) — K1–K5
 
-Untuk mengisolasi pengaruh masing-masing komponen arsitektur KMA, dijalankan studi ablasi komparatif pada portofolio `interest_free` dan `gross_free` (10 replikasi acak, bank skenario latih $N=5.000$, anggaran 25.000 evaluasi):
-1. **`kma_2phase_default`**: Desain proposal ($n_1=5$, budget 5k $\to$ $n_2=200$, budget 20k, $d_2=0{,}5$).
-2. **`kma_1phase_n50`**: Satu fase konstan dengan $n=50$ (500 generasi tanpa interupsi fase).
-3. **`kma_1phase_n20`**: Satu fase konstan dengan $n=20$ (1.250 generasi tanpa interupsi fase).
-4. **`kma_2phase_d2_high`**: Dua fase dengan laju mlipir Fase 2 tinggi ($d_2 = (D-1)/D = 6/7 \approx 0{,}857$).
-5. **`kma_2phase_d2_low`**: Dua fase dengan laju mlipir Fase 2 rendah ($d_2 = 1/D = 1/7 \approx 0{,}143$).
-6. **`kma_2phase_norm_q`**: Dua fase dengan normalisasi langkah Big Male ($w_{ij\text{\_sum}} / (q-1)$).
+Dibaca baris per baris terhadap Algorithm 1 dan Persamaan 1–10 paper. **Tidak ditemukan bug jelas** (salah ketik/rumus terbalik) — `kma.py` tidak diubah. Lima titik ambigu/berbeda interpretasi:
 
-### Tabel 2: Hasil Studi Ablasi KMA pada Portofolio Riil (10 Replikasi)
+| ID | Deviasi | Paper | Kode (`kma.py`) | Diuji sbg variant |
+|---|---|---|---|---|
+| K1 | Seleksi Big Male | Pool: gabung lama∪baru (2q), simpan q terbaik | Greedy per-indeks: baru vs posisi lamanya sendiri | `kma_paper_pool` |
+| K2 | Urutan update | Tersirat sinkron | Asinkron (Big Male ke-i pakai Big Male j<i yg sudah diupdate di generasi sama) | `kma_sync` |
+| K3 | Dimensi mlipir | Pilih 1..(m−1) dimensi (tidak 0, tidak semua) | Bernoulli(d) bebas per (j,l) → bisa 0 atau semua dimensi | `kma_paper_mlipir` |
+| K4 | Ukuran grup q | q = ⌊p·n⌋ (tercetak ⌊(p−1)n⌋, salah cetak jelas) | q = ⌊p(n−1)⌋ (n=200 → 99, bukan 100) | `kma_paper_q` |
+| K5 | Distribusi r1,r2 | "random... in the normal distribution" (ambigu) | Uniform [0,1] | Tidak diuji — ambigu di sumber |
 
-| Konfigurasi | Varian Arsitektur KMA | Biaya Median | Biaya Min (Terbaik) | Slack Kendala $J$ (Median) | Waktu Median (s) |
-|---|---|:---:|:---:|:---:|:---:|
-| **`interest_free`** | `kma_2phase_default` | $0{,}031314$ | $0{,}031133$ | $7{,}32 \times 10^{-4}$ | 57,92 |
-| | `kma_2phase_d2_high` | $0{,}031264$ | $0{,}031133$ | $1{,}47 \times 10^{-3}$ | 66,36 |
-| | `kma_2phase_d2_low` | $0{,}031263$ | $0{,}031133$ | $8{,}36 \times 10^{-4}$ | 49,99 |
-| | `kma_2phase_norm_q` | $0{,}031152$ | $0{,}031068$ | $2{,}18 \times 10^{-4}$ | 55,88 |
-| | `kma_1phase_n50` | $0{,}031091$ | $0{,}031054$ | $1{,}76 \times 10^{-4}$ | **28,98** |
-| | **`kma_1phase_n20`** | **$0{,}031030$** | **$0{,}031007$** | **$5{,}07 \times 10^{-8}$** | **18,51** |
-| **`gross_free`** | `kma_2phase_default` | $1{,}038167$ | $1{,}037179$ | $6{,}21 \times 10^{-4}$ | 58,42 |
-| | `kma_2phase_d2_high` | $1{,}037857$ | $1{,}037084$ | $7{,}02 \times 10^{-4}$ | 66,06 |
-| | `kma_2phase_d2_low` | $1{,}037346$ | $1{,}037119$ | $4{,}91 \times 10^{-4}$ | 47,43 |
-| | `kma_2phase_norm_q` | $1{,}038175$ | $1{,}037084$ | $1{,}14 \times 10^{-5}$ | 55,25 |
-| | `kma_1phase_n50` | $1{,}037057$ | $1{,}037056$ | $2{,}23 \times 10^{-6}$ | **29,21** |
-| | **`kma_1phase_n20`** | **$1{,}037056$** | **$1{,}037056$** | **$-6{,}81 \times 10^{-10}$** | **18,00** |
-
-*Berkas data mentah:* [results/sensitivity/kma/ablation_phase_and_mlipir.csv](../../results/sensitivity/kma/ablation_phase_and_mlipir.csv)
-
-### Temuan Kunci Studi Ablasi
-
-1. **Keberhasilan Superior KMA Satu Fase ($n=20$)**:
-   - Ketika KMA dijalankan dalam **satu fase dengan ukuran populasi proporsional ($n=20$)**, performa KMA melonjak drastis:
-     * Pada `interest_free`, nilai biaya turun dari $0{,}031314$ menjadi **$0{,}031030$** (bahkan melampaui median PSO eksisting $0{,}031038$!).
-     * Slack kendala $J$ yang tadinya berjarak $7{,}32 \times 10^{-4}$ menyusut hingga **$5{,}07 \times 10^{-8}$** (menempel sempurna di batas aktif!).
-     * Waktu komputasi terpangkas **3 kali lipat lebih cepat** dari 57,92 detik menjadi **18,51 detik**!
-2. **Mengapa Desain Dua Fase Proposal Mengalami Kegagalan**:
-   - Pada awal Fase 2, populasi diisi oleh 1 solusi terbaik Fase 1 dan **199 individu acak baru**.
-   - Dengan $n=200$, satu generasi menghabiskan 200 evaluasi fungsi. Dalam alokasi sisa anggaran 20.000 evaluasi, Fase 2 hanya menjalankan **100 generasi** (*generation starvation*). Sebaliknya, pada $n=20$, algoritma menjalankan **1.250 generasi**.
-   - Seratus generasi terbukti tidak cukup bagi KMA untuk memurnikan 199 individu acak berkualitas rendah tersebut.
+Status setelah Tahap 18: lihat **H1** di Bagian 4. Ringkasnya — **tidak satu pun variant K1–K4 (sendiri atau gabungan `kma_paper_all`) menutup selisih ke Tabel 2 Suyanto**; deviasi ini bukan penyebab utama gap fidelitas.
 
 ---
 
-## 4. Diagnosis Dinamika Kendala: Mengapa KMA Berhenti Jauh dari Batas $J$?
+## 3. Fidelitas vs Tabel 2 Suyanto dkk. (2022)
 
-Evaluator independen mencatat fenomena krusial: pada 360 run, slack kendala risiko $J$ pada KMA rata-rata bernilai $0{,}012$ (`interest_free`) dan $0{,}018$ (`gross_free`), sedangkan PSO menempel di batas ($slack \approx 0$).
+D=50, 25.000 evaluasi, 30 run, domain sama dengan paper. Sumber: `benchmark_vs_suyanto.csv`, `benchmark_fidelity.csv`.
 
-```mermaid
-graph TD
-    subgraph Dinamika Batas Aktif Kendala
-        A["Batas Aktif Kendala Risiko: J(w) = eta"]
-        B["Zona Interior Layak: J(w) < eta (Biaya Lebih Mahal)"]
-        C["Zona Tidak Layak: J(w) > eta (Tebing Penalti rho = 1e6)"]
-    end
+| Fungsi | Algo | Kami (mean ± std) | Paper (avg ± std) | Rasio |
+|---|---|---|---|---|
+| Sphere (F1) | KMA | 12.660,8 ± 3.240,6 | 0,0 ± 0,0 | — (paper = 0 eksak) |
+| Sphere (F1) | GA | 13,88 ± 2,61 | 43,80 ± 5,26 | GA kami **lebih baik** |
+| Rosenbrock (F5) | KMA | 14.905.728 ± 6.044.067 | 48,31 ± 0,182 | ≈ 308.000× lebih buruk |
+| Rosenbrock (F5) | GA | 340,8 ± 84,5 | 634,7 ± 130,0 | GA kami **lebih baik** |
+| Rastrigin (F9) | KMA | 527,2 ± 39,3 | 0,0 ± 0,0 | — (paper = 0 eksak) |
+| Rastrigin (F9) | GA | 42,57 ± 9,21 | 121,3 ± 15,09 | GA kami **lebih baik** |
 
-    subgraph Perilaku PSO vs KMA 2-Fase
-        D["PSO: Vektor Kecepatan Kontinu + Inersia Teredam"] -->|Merayap Halus| A
-        E["KMA 2-Fase: Langkah Diskret Raksasa (Sum 98 Vektor)"] -->|Melompat Kasar Menabrak Penalti| C
-        C -->|Ditolak oleh Seleksi Survivor| F["KMA Terpental Mundur & Terkunci di Interior"]
-        F --> B
-    end
-```
+Catatan: GA kami memakai parameter Tabel 3.1 proyek ini (n=50, turnamen 2, pc=0,9, mutasi Gaussian), **bukan** parameter GA paper (n=100, turnamen 10, pc=0,8, creep pm=0,05) — perbedaan ini sudah tercatat di `benchmark_vs_suyanto.csv` kolom `note`, bukan temuan baru.
 
-### Penjelasan Mekanistik Matematis:
+**Pola kunci**: KMA kami gagal total pada ketiga fungsi di D=50 (dan juga di D=7/D=30, lihat `benchmark_fidelity.csv`), sementara GA kami justru mengungguli GA paper. Ini bukan soal "mesin benchmark salah" (GA/PSO berjalan baik), melainkan spesifik pada KMA.
 
-1. **Topologi Tebing Penalti Kuadratik (*Penalty Cliff*)**:
-   Fungsi fitness yang diminimasi memuat suku penalti pelanggaran kendala:
-   $$f(w) = \bar{C}(w) + \rho \cdot \left[ v_J(w)^2 + v_R(w)^2 \right]$$
-   dengan faktor penalti $\rho = 10^6$. Pelanggaran kendala sebesar $10^{-3}$ saja menghasilkan penalti sebesar $10^6 \times (10^{-3})^2 = 1{,}0$ (yang setara dengan 30–100 kali lipat nilai biaya portofolio itu sendiri). Ini menciptakan dinding tebing curam tepat di perbatasan $J(w) = \eta$.
-2. **Dinamika Merayap PSO (*Effective Displacement Damping*)**:
-   PSO memperbarui posisi melalui vektor kecepatan kontinu $v_i^{(t+1)} = \omega v_i^{(t)} + \dots$. Menjelang akhir pencarian, inersia mengecil ($\omega \to 0{,}4$) dan kecepatan teredam oleh proyeksi perpindahan efektif (*effective displacement*). Hal ini memungkinkan partikel PSO mengambil langkah infinitesimal ($10^{-6}$ s.d. $10^{-8}$) untuk "merayap" persis di tepi jurang penalti tanpa pernah melompati batas aktif.
-3. **Ledakan Langkah Big Male KMA 2-Fase**:
-   Pada Fase 2 KMA, jumlah Big Males adalah $n_{\text{bm}} \approx 99$. Pergerakan Big Male ke-$i$ menjumlahkan interaksi terhadap seluruh $q-1 = 98$ Big Males lainnya:
-   $$k'_i = k_i + \sum_{j \neq i}^{q} w_{ij}$$
-   Karena $w_{ij}$ adalah vektor acak tak-berkorelasi berarah selisih antar-individu acak, norma euclid dari penjumlahan 98 vektor ini mencapai $\|\Delta\| \approx 1{,}14$ hingga $3{,}20$. Nilai ini **12 kali lebih lebar daripada rentang ruang alokasi $[lb, ub]^7$**.
-4. **Mekanisme Penguncian di Interior**:
-   Ketika Big Male terbaik berada di dekat batas aktif ($J \approx \eta$), setiap generasi Fase 2 melempar kandidat baru dengan lompatan raksasa. Kandidat tersebut hampir pasti mendarat di luar daerah layak, menghasilkan fitness jutaan rupiah akibat tebing penalti $\rho = 10^6$. Seleksi penyintas Big Males:
-   $$\text{if } f(k'_i) < f(k_i) \text{ then } k_i \leftarrow k'_i$$
-   secara mutlak menolak setiap langkah tersebut. Akibatnya, posisi terbaik **terkunci permanen di posisi interior yang ditemukan pada Fase 1** dan tidak pernah mampu merapat ke batas aktif.
+**D=7 dan D=30** (bukan dimensi paper, tapi menunjukkan tren): KMA sphere D=7 mean 92,1 (vs optimum 0), D=30 mean 3.659,7. `median_at_5000` == `median_at_10000` == nilai akhir untuk hampir semua baris D=30/D=50 — **Fase 2 (generasi 1.000–25.000 KMA) tidak memperbaiki solusi Fase 1 pada fungsi benchmark**, konsisten dengan temuan di 360 run portofolio.
 
 ---
 
-## 5. Analisis Multi-Anggaran (5k, 10k, 25k) & Skala Waktu Riil
+## 4. Hipotesis dan status
 
-Berdasarkan 30 replikasi acak per algoritma pada 4 konfigurasi, kurva konvergensi diekstraksi pada checkpoint evaluasi 5.000, 10.000, dan 25.000 serta diselaraskan dengan waktu komputasi riil (*wall-clock time*).
+### H1 — Implementasi menyimpang dari paper (K1–K4) → gagal benchmark
+**Uji**: varian `kma_paper_pool`, `kma_sync`, `kma_paper_mlipir`, `kma_paper_q`, `kma_paper_all` vs default pada Sphere/Rastrigin/Rosenbrock, D∈{7,30}. Sumber: `benchmark_fidelity.csv` (set=`variants`).
 
-### Tabel 3: Nilai Biaya Checkpoint Konvergensi (Median $\pm$ IQR) & Waktu Riil
+Contoh Rosenbrock D=7: default (median) 2.168,8; `kma_paper_all` 1.934,3; `kma_paper_pool` 3.672,1; `kma_sync` 2.435,1; `kma_paper_q` 2.168,8 (identik — q tidak berubah hasil pada D=7). Semua masih 40–75× lebih buruk dari 48,31 (target paper, meski beda dimensi).
 
-| Konfigurasi | Algoritma | Anggaran 5.000 Eval | Anggaran 10.000 Eval | Anggaran 25.000 Eval | Waktu Total (s) |
-|---|:---:|:---:|:---:|:---:|:---:|
-| **`interest_free`** | **PSO** | **$0{,}031040 \pm 1{,}75 \times 10^{-5}$** | **$0{,}031039 \pm 8{,}42 \times 10^{-6}$** | **$0{,}031038 \pm 8{,}30 \times 10^{-6}$** | **66,55** |
-| | **GA** | $0{,}031115 \pm 6{,}69 \times 10^{-5}$ | $0{,}031076 \pm 4{,}45 \times 10^{-5}$ | $0{,}031049 \pm 1{,}68 \times 10^{-5}$ | 76,94 |
-| | **KMA** | $0{,}032026 \pm 8{,}73 \times 10^{-4}$ | $0{,}031975 \pm 7{,}68 \times 10^{-4}$ | $0{,}031472 \pm 6{,}03 \times 10^{-4}$ | 71,33 |
-| **`gross_free`** | **PSO** | **$1{,}037056 \pm 4{,}74 \times 10^{-7}$** | **$1{,}037056 \pm 3{,}40 \times 10^{-12}$** | **$1{,}037056 \pm 1{,}00 \times 10^{-13}$** | **29,55** |
-| | **GA** | $1{,}037523 \pm 4{,}71 \times 10^{-4}$ | $1{,}037107 \pm 5{,}84 \times 10^{-5}$ | $1{,}037069 \pm 1{,}23 \times 10^{-5}$ | 32,34 |
-| | **KMA** | $1{,}039320 \pm 2{,}65 \times 10^{-3}$ | $1{,}038696 \pm 7{,}87 \times 10^{-4}$ | $1{,}038063 \pm 8{,}01 \times 10^{-4}$ | 71,47 |
+**Status: TIDAK DIDUKUNG.** Tidak ada variant K1–K4 (sendiri maupun gabungan) yang mendekati performa Tabel 2. Deviasi interpretasi bukan penyebab utama gap fidelitas benchmark.
 
-*Berkas data mentah:* [results/sensitivity/kma/convergence_checkpoints_5k_10k_25k.csv](../../results/sensitivity/kma/convergence_checkpoints_5k_10k_25k.csv)  
-*Visualisasi grafik skala ganda:*
-- [results/sensitivity/kma/fig_convergence_dual_scale_interest_free.pdf](../../results/sensitivity/kma/fig_convergence_dual_scale_interest_free.pdf)
-- [results/sensitivity/kma/fig_convergence_dual_scale_gross_free.pdf](../../results/sensitivity/kma/fig_convergence_dual_scale_gross_free.pdf)
+### H2 — Bias titik-asal (optimum paper di 0; KMA terlemah di Rosenbrock yang optimumnya di 1)
+**Uji**: fungsi tergeser (optimum di vektor acak ber-seed, shift_domain_fraction=0,8) untuk KMA, `kma_paper_all`, GA, PSO. Sumber: `benchmark_fidelity.csv` (set=`shifted`).
 
-### Konfirmasi Pernyataan Evaluator:
-Data empiris di atas mengonfirmasi 100% temuan evaluator independen:
-- Pada `gross_free`, PSO pada 5.000 evaluasi (biaya median **$1{,}037056$**, tercapai dalam ~5,9 detik) sudah **jauh melampaui** nilai biaya KMA pada 25.000 evaluasi (**$1{,}038063$**, dicapai dalam 71,5 detik).
-- Pada `interest_free`, PSO pada 5.000 evaluasi (**$0{,}031040$**, ~13,3 detik) dan GA pada 5.000 evaluasi (**$0{,}031115$**, ~15,4 detik) keduanya telah mengungguli KMA pada 25.000 evaluasi (**$0{,}031472$**, 71,3 detik).
+Sphere D=30: base KMA mean 3.659,7 vs tergeser 3.458,3 (≈ sama). Rosenbrock D=30: base KMA mean 2.102.946 vs tergeser 2.505.645 (≈ sama orde besaran, malah sedikit lebih buruk saat tergeser, bukan lebih baik). GA dan PSO juga relatif stabil terhadap pergeseran (tidak ada lonjakan degradasi yang drastis untuk GA/PSO dibanding KMA).
+
+**Status: TIDAK DIDUKUNG.** Performa KMA tidak berubah signifikan saat optimum dipindah dari titik asal. Bukan bias posisi optimum.
+
+### H3 — Ledakan langkah Big Male di Fase 2 → mayoritas kandidat ditolak
+**Uji**: instrumentasi per generasi (‖Δ‖ sebelum proyeksi relatif ke rentang domain, rasio penerimaan Big Male) pada portofolio, 4 konfigurasi. Sumber: `kma_phase_summary.csv`.
+
+| Config | Fase | Generasi/run | Penerimaan BM | Step norm median (rel. rentang) | Step norm p90 |
+|---|---|---|---|---|---|
+| gross_free | 1 | 908,5 | 0,2184 | 1,3×10⁻¹⁵ | 1,6×10⁻⁵ |
+| gross_free | 2 | 99,0 | **0,0123** | **2,105** | 2,626 |
+| interest_free | 1 | 908,5 | 0,1827 | 4,1×10⁻¹⁷ | 2,5×10⁻⁶ |
+| interest_free | 2 | 99,0 | **0,0123** | **2,863** | 3,458 |
+
+Step norm Fase 2 **> 1** berarti langkah Big Male lebih besar dari seluruh rentang domain [lb,ub] — bukan sekali-sekali, tapi median-nya. Penerimaan Big Male jatuh dari ~18–32% (Fase 1) ke ~1–2% (Fase 2) di keempat konfigurasi.
+
+**Status: DIDUKUNG.** Langkah Big Male di Fase 2 (populasi besar, Σ atas q−1≈98 vektor tanpa normalisasi skala) secara sistematis melebihi rentang domain, menyebabkan hampir seluruh kandidat ditolak.
+
+### H4 — Kelaparan generasi Fase 2 (hanya ~99 generasi)
+**Uji**: 360 run (perbaikan 5k→25k eval) + ablasi `kma_one_phase_n5` (skip Fase 2, populasi kecil sepanjang anggaran) dan `kma_one_phase_n200` (populasi besar sepanjang anggaran). Sumber: `phase_improvement_360.csv`, `ablation_tests.csv`.
+
+360 run: perbaikan biaya median eval 5.000→25.000 untuk KMA: `gross_free` 0,124% (83% run membaik), `interest_free` 0,516% (60% run membaik), `interest_djppr` 0,0049% (83%), `gross_djppr` ≈0 (50%). Sebagai pembanding, GA membaik di 93–100% run. Jadi Fase 2 KMA (80% anggaran) memberi perbaikan kecil dan tidak konsisten; 40% run `interest_free` dan 50% run `gross_djppr` sama sekali tidak membaik 5k→25k.
+
+Ablasi: `kma_one_phase_n5` signifikan **lebih baik** dari default pada `gross_djppr` (p=1,1×10⁻⁶, p_Holm=7,5×10⁻⁶, rank-biserial 0,73; gap median 0,0021% vs 0,0076%). Pada `interest_djppr` tidak signifikan (p=0,29). Pada `gross_free`, `kma_one_phase_n5` (gap 0,093%) ≈ default (0,099%, p=0,29). Pada `interest_free`, `kma_one_phase_n5` lebih baik (gap median 0,536% vs 1,553%, p=0,031) tetapi tidak signifikan setelah koreksi Holm (p_Holm=0,22).
+
+**Status: INKONKLUSIF, condong didukung sebagian.** Fase 2 secara konsisten memperburuk atau tidak membantu pada 3 dari 4 konfigurasi saat diuji formal (hanya `gross_djppr` signifikan setelah koreksi Holm), tapi arah efek konsisten: skip Fase 2 (`one_phase_n5`) tidak pernah secara signifikan lebih buruk dari default. Jumlah generasi Fase 2 (99) tidak sendirian menjelaskan — H3 (step explosion) adalah mekanisme yang lebih langsung didukung datanya.
+
+### H5 — Kendala aktif tidak didekati: proyeksi memetakan ke sudut (a), atau penalti menolak kandidat dekat batas (b)
+**Uji**: instrumentasi tiap kandidat (jarak raw→proyeksi, % v_J>0, % diterima), KMA/GA/PSO, 4 konfigurasi, dibagi jendela eval 1–5000 vs 5001–25000. Sumber: `instrumentation_summary.csv`.
+
+KMA `gross_free`, jendela 5001–25000: `frac_raw_out_box`=98,48%, `mean_proj_dist`=6,93 (jarak raw→proyeksi **jauh lebih besar** dari rentang [0,1] kotak bebas), `frac_feasible` turun dari 89,7% (Fase 1) ke 21,2% (Fase 2), `frac_vJ_pos` naik dari 8,4% ke 70,9%, `frac_vR_pos` naik dari 5,8% ke 77,7%. Pola serupa di `interest_free` (proj_dist 7,67; frac_feasible turun 95,5%→57,3%) dan `gross_djppr`/`interest_djppr` (proj_dist 0,54–0,79; magnitude lebih kecil karena domain DJPPR lebih sempit, tapi arah sama).
+
+Bandingkan GA: `frac_raw_out_box` naik moderat (22%→30% `gross_free`), `proj_dist` jauh lebih kecil (0,059→0,060), `frac_feasible` relatif stabil (68%→75%). PSO serupa GA, tidak menunjukkan lonjakan jarak proyeksi di Fase akhir.
+
+**Status: DIDUKUNG — opsi (a).** Penolakan KMA di Fase 2 didominasi oleh jarak proyeksi besar (kandidat mentah jatuh jauh di luar kotak, bukan sedikit melewati batas), konsisten dengan H3: Big Male melangkah lebih besar dari domain, diproyeksikan paksa ke sudut kotak, lalu banyak kandidat hasil proyeksi melanggar kendala (v_J>0 naik ke 65,7% `gross_djppr`, 70,9% `gross_free`, 42,6% `interest_free`; di `interest_djppr` hanya 8,1% karena batas J di konfigurasi itu longgar). Bukan kasus (b) "penalti menolak kandidat yang nyaris layak" — jarak proyeksi terlalu besar untuk itu.
+
+### H6 — Waktu KMA didominasi overhead loop Python, bukan evaluator
+**Uji**: cProfile 1 run/konfigurasi, 1 worker, budget penuh. Sumber: `profile_kma.csv`.
+
+| Config | Algo | Total (s) | Evaluator (s) | Proyeksi (s) | Lainnya/loop (s) | % "lainnya" |
+|---|---|---|---|---|---|---|
+| gross_free | kma | 27,70 | 6,56 | 0,73 | 20,42 | 73,7% |
+| gross_free | ga | 7,52 | 6,43 | 0,04 | 1,06 | 14,0% |
+| gross_free | pso | 10,70 | 9,09 | 0,84 | 0,77 | 7,2% |
+| interest_djppr | kma | 30,98 | 6,26 | 4,84 | 19,89 | 64,2% |
+| interest_djppr | ga | 7,42 | 6,16 | 0,23 | 1,03 | 13,8% |
+
+KMA ~3–4× lebih lambat dari GA/PSO meski evaluator (bagian yang sama untuk ketiga algoritma) memakan waktu hampir sama (6,2–9,1 s untuk ketiganya). Mayoritas waktu KMA (64–74%) ada di kategori "lainnya" — kontrol fase, adaptasi n_pop, sortir populasi, pembentukan kandidat — bukan evaluasi fungsi objektif maupun proyeksi.
+
+**Status: DIDUKUNG.** Waktu KMA didominasi overhead kontrol/loop Python (terutama adaptasi populasi dan manajemen generasi Fase 2 dengan n hingga 200), bukan oleh evaluator maupun proyeksi.
 
 ---
 
-## 6. Penetapan Kebijakan Penalaan Parameter yang Adil (D11)
+## 5. Ringkasan status hipotesis
 
-Untuk menjawab isu perbandingan adil (*fair comparison*):
-- **Opsi A (Default Literatur / Status Quo Proposal — DIKONFIRMASI OLEH SULTAN)**:
-  * Ketiga algoritma dievaluasi secara murni menggunakan konfigurasi default dari makalah penemu masing-masing sesuai komitmen Tabel 3.1 proposal.
-  * *Justifikasi:* Menjaga objektivitas peneliti murni, bebas dari bias intervensi *hyperparameter tuning* selektif, dan transparan apa adanya.
-- **Pencatatan Formal**: Keputusan telah didokumentasikan pada [0011-fair-tuning-policy-d11.md](../decisions/0011-fair-tuning-policy-d11.md) dan diregistrasi pada [docs/decisions/README.md](../decisions/README.md).
+| H | Deskripsi singkat | Status |
+|---|---|---|
+| H1 | Deviasi K1–K4 menyebabkan gagal fidelitas | **Tidak didukung** |
+| H2 | Bias titik-asal paper | **Tidak didukung** |
+| H3 | Ledakan langkah Big Male Fase 2 | **Didukung** |
+| H4 | Kelaparan generasi Fase 2 | **Inkonklusif** (condong: arah konsisten, signifikansi formal cuma 1/4 konfigurasi setelah koreksi) |
+| H5 | Penolakan kandidat = proyeksi ke sudut, bukan penalti dekat batas | **Didukung (opsi a)** |
+| H6 | Waktu KMA didominasi overhead loop, bukan evaluator | **Didukung** |
+
+**Rangkaian kausal yang konsisten dengan seluruh data**: parameter default Fase 2 (n_pop hingga 200, Σ atas q−1≈98 vektor tanpa normalisasi skala terhadap populasi) menghasilkan langkah Big Male yang secara median melebihi rentang domain (H3) → kandidat mentah jauh di luar kotak, diproyeksikan paksa ke sudut (H5) → sebagian besar kandidat hasil proyeksi melanggar batas J≤η → tingkat penerimaan Fase 2 jatuh ke ~1–2%, hampir tidak ada perbaikan setelah Fase 1 pada benchmark dan sebagian konfigurasi portofolio (H4, parsial) → overhead kontrol populasi besar + banyak kandidat ditolak membuat KMA 3–4× lebih lambat per evaluasi (H6). Deviasi interpretasi K1–K4 (H1) dan posisi optimum (H2) **bukan** bagian dari rangkaian ini.
 
 ---
 
-## 7. Rekomendasi Narasi Pembahasan untuk Bab 4 dan Bab 5 Naskah Skripsi
+## 6. Slack dan kendala aktif (360 run, read-only)
 
-Diagnosis ini memberikan dasar argumen ilmiah yang sangat kokoh bagi Sultan saat menyusun naskah dan menghadapi sidang komprehensif. Temuan ini **bukanlah kegagalan penelitian**, melainkan **kontribusi ilmiah yang bernilai tinggi** bagi literatur soft computing terapan:
+Sumber: `slack_360.csv`. Direproduksi persis dari CSV lama (koreksi notasi, bukan temuan baru):
 
-### A. Untuk Bab 4 (Hasil dan Pembahasan):
-1. **Transparansi Hasil Empiris**:
-   Sajikan hasil komparasi 360 run secara jujur: PSO menunjukkan konvergensi tercepat dan stabilitas tertinggi, diikuti GA, dan KMA. Jelaskan bahwa fenomena ini konsisten di seluruh 4 konfigurasi portofolio.
-2. **Pemaparan Mekanisme Penalti vs Karakteristik Algoritma**:
-   Gunakan temuan Subbab 4 diagnosis ini untuk menjelaskan *mengapa* KMA tertinggal: topologi masalah optimasi portofolio finansial dengan kendala risiko aktif menciptakan tebing penalti kuadratik yang sangat curam. PSO yang berbasis kalkulus vektor kontinu teredam (*velocity-displacement damping*) secara alami lebih adaptif untuk "merayap" di batas aktif dibanding metaheuristik berbasis lompatan diskret stokastik seperti KMA dua fase.
-3. **Penyajian Bukti Ablasi**:
-   Tampilkan grafik ablasi (`ablation_phase_and_mlipir.csv`) yang membuktikan bahwa algoritma KMA **mampu bekerja sangat baik jika dikonfigurasi dalam satu fase dengan ukuran populasi proporsional ($n=20$)**, menghasilkan biaya $0{,}031030$ dan menempel di batas kendala. Ini membuktikan bahwa kelemahan bukan pada filosofi KMA, melainkan pada rancangan hiperparameter dua fase ($n_1=5 \to n_2=200$) yang diusulkan proposal.
+| Config | Algo | Slack J absolut (median) | Slack J relatif (median) |
+|---|---|---|---|
+| gross_free | kma | 0,000863 | 0,01266 |
+| gross_free | pso | ≈0 (−6,8×10⁻¹⁰) | ≈0 |
+| interest_free | kma | 0,000752 | 0,00432 |
+| interest_free | pso | ≈0 | ≈0 |
+| interest_djppr | kma | 0,01426 | 0,08185 |
+| interest_djppr | pso | 0,01426 | 0,08186 |
 
-### B. Untuk Bab 5 (Kesimpulan, Keterbatasan, & Saran):
-1. **Kesimpulan**:
-   Pada konfigurasi default literatur (Opsi A), PSO terbukti paling efisien untuk optimasi portofolio utang multivaluta berdimensi rendah ($D=7$) dengan kendala MCCaR.
-2. **Keterbatasan**:
-   Desain KMA dua fase ($n=5 \to n=200$) yang diadopsi dari proposal menghadapi kendala *generation starvation* dan *step size explosion* saat diterapkan pada ruang berdimensi rendah dengan fungsi penalti ekor curam.
-3. **Saran Riset Lanjutan**:
-   - Menyarankan modifikasi formulasi langkah Big Male KMA dengan faktor normalisasi interaksi $\frac{1}{q-1} \sum w_{ij}$ untuk mencegah ledakan langkah pada populasi besar.
-   - Menyarankan penggunaan ukuran populasi yang proporsional ($n \in [20, 50]$) dalam satu fase berkesinambungan untuk masalah berdimensi $D \le 10$.
+Catatan `interest_djppr`: KMA dan PSO punya slack yang **hampir sama** (konfigurasi ini memang punya batas yang tidak ketat bagi ketiganya — lihat `gap_pct_25000` median KMA 0,0688% vs PSO 0,0000% pada config ini, keduanya kecil). Pola "KMA jauh dari limit, PSO di limit" paling jelas di `gross_free` (gap KMA 0,097% vs PSO 0,000%) dan `interest_free` (gap KMA 1,48% vs PSO 0,081%).
+
+---
+
+## 7. Konvergensi dan waktu (lintas evaluasi dan lintas detik)
+
+Grafik: `fig_kma_convergence_all.{pdf,png}` (sumbu-x evaluasi) dan `fig_kma_convergence_time_all.{pdf,png}` (sumbu-x detik, memakai peta waktu 1 worker dari `timing_single_worker.csv`, panel waktu di luar rentang terukur di-NaN-kan — lihat perbaikan `_time_grid`). Median (garis), rata-rata (putus-putus), pita IQR, titik 5k/10k/25k ditandai.
+
+Waktu median 25.000 eval, 1 worker (`timing_summary.csv`): KMA 24,5–27,1 s; GA 7,0–7,3 s; PSO 6,9–7,4 s di keempat konfigurasi. Rasio KMA/GA ≈ 3,4–3,7×, konsisten dengan H6.
+
+---
+
+## 8. Ablasi portofolio — ringkasan
+
+Sumber: `ablation_summary.csv`, `ablation_tests.csv` (Mann-Whitney vs `kma_default`, koreksi Holm, rank-biserial), 9 variant × 4 konfigurasi × 30 replikasi, seed 42000+, bank sama dengan 360 run (seed 42).
+
+Variant yang **signifikan lebih baik** dari default setelah koreksi Holm:
+- `kma_one_phase_n5` pada `gross_djppr` (p_Holm=7,5×10⁻⁶, rank-biserial 0,73): gap median turun dari 0,0076% ke 0,0021%.
+- `kma_paper_pool` pada `gross_djppr` (p_Holm=8,5×10⁻⁷, rank-biserial 0,80): gap median turun ke 0,0027%.
+- `kma_d2_low` pada `gross_free` (p_Holm=0,0031, rank-biserial 0,53): gap median turun dari 0,099% ke 0,044%.
+- `kma_norm_q` pada `interest_djppr` (p_Holm=8,3×10⁻⁴, rank-biserial 0,58): gap median turun dari 0,0014% ke 0,0000076%.
+- `kma_d2_low` pada `interest_free` (p_Holm=0,047, rank-biserial 0,42): gap median turun dari 1,553% ke 0,858%.
+
+Kolom `gap_pct` sudah dalam satuan persen terhadap biaya referensi terbaik per konfigurasi. Selisih absolut di konfigurasi DJPPR sangat kecil (orde 0,001%), jadi signifikan secara statistik belum tentu bermakna secara praktis.
+
+Tidak ada satu variant yang menang di keempat konfigurasi sekaligus — perbaikan bersifat spesifik-konfigurasi, bukan perbaikan universal. **Variant ini adalah analisis sensitivitas, bukan usulan ganti parameter default** (lihat Bagian 9, D11).
+
+---
+
+## 9. D11 — dibuka ulang, dikonfirmasi ulang Opsi A (2026-10-25)
+
+**Status**: setelah membaca hasil Tahap 18, pengguna menginstruksikan untuk mengikuti rekomendasi di bawah (Opsi A). Dicatat sebagai tinjauan ulang di `docs/decisions/0011-fair-tuning-policy-d11.md`. Opsi yang dipertimbangkan dipertahankan di bawah sebagai jejak alasan.
+
+Pertanyaan: apakah 360 run eksperimen utama memakai parameter KMA/GA/PSO default literatur (Tabel 3.1, status quo) atau hasil tuning setara anggaran?
+
+**Opsi A — Default literatur (status quo, Tabel 3.1).**
+(+) Tidak mengubah 360 run yang sudah ada dan tervalidasi; sesuai proposal; nol biaya tambahan; tidak ada derajat kebebasan peneliti yang bisa dipertanyakan.
+(−) KMA default (n2=200) dirancang untuk benchmark D≥50; pada masalah portofolio D=7 berkendala ketat, parameter ini menghasilkan Fase 2 yang sering merugikan (Bagian 4, H3–H5). Penguji bisa menilai perbandingan tidak adil bagi KMA.
+
+**Opsi B — Tuning ketiga algoritma, anggaran sama.**
+Protokol: random search 40 konfigurasi × 3 replikasi × 25k eval per algoritma per definisi biaya, pada bank tuning terpisah (seed baru, mis. 70000 — bukan 42/2026/43–72/10000+/20000+/40000+/41000+/42000+/43000+/44000+), ruang parameter dideklarasikan sebelum mulai, konfigurasi terbaik dibekukan, 360 run diulang ke `results/runs_tuned/` (360 lama **tetap**, tidak dihapus).
+(+) Adil terhadap potensi algoritma; menjawab kritik "KMA tidak di-tuning".
+(−) Biaya besar (≈720 run tuning + 360 run ulang, perkiraan 10–15 jam berdasar laju Tahap 18); mengubah Tabel 3.1 — butuh persetujuan eksplisit per AGENTS.md; memperbesar cakupan Bab 3–4 skripsi.
+
+**Temuan Tahap 18 yang relevan untuk keputusan ini**: ablasi Bagian 8 menunjukkan sebagian variant KMA (bukan tuning acak, tapi perubahan terarah seperti `one_phase_n5`, `paper_pool`, `d2_low`) memperbaiki gap secara signifikan pada beberapa konfigurasi — ini sinyal bahwa KMA default memang punya ruang perbaikan di masalah ini, tapi juga bukti bahwa perbaikannya tidak seragam di semua konfigurasi (jadi "tuning satu angka ajaib" tidak realistis; perlu ruang pencarian formal seperti Opsi B kalau mau ditempuh).
+
+**Rekomendasi (bukan keputusan)**: Opsi A untuk hasil utama Bab 3–4 (360 run tetap seperti sudah ada), dengan ablasi Tahap 18 (Bagian 8) dilaporkan sebagai **analisis sensitivitas** di bab diskusi — bukan tuning terpilih. Alasan: tidak mengubah desain yang sudah disetujui; ablasi formal (bukan trial-and-error) sudah menjawab "apakah KMA bisa lebih baik dengan setelan lain" tanpa memilih pemenang secara selektif. Rekomendasi ini yang diikuti (lihat status di atas).
+
+### Bug kma.py (klarifikasi)
+Tidak ditemukan bug jelas di `kma.py`. K1–K4 (Bagian 2) adalah deviasi interpretasi, bukan bug, dan Bagian 4 (H1) menunjukkan variant yang memperbaiki K1–K4 **tidak** menutup gap fidelitas ke paper. Mekanisme yang benar-benar didukung data (H3, H5: ledakan langkah Fase 2 + proyeksi ke sudut) adalah **karakteristik parameter default** (n2=200, Σ tanpa normalisasi — sesuai Persamaan 3–4 paper, bukan kesalahan transkripsi), bukan bug implementasi. Jika Sultan menilai salah satu variant ablasi (mis. `kma_paper_pool` atau `one_phase_n5`) layak jadi default baru, itu adalah usulan perubahan desain terpisah (D12) — belum dikerjakan di sini, dan bila disetujui berarti 120 run KMA di 360-run harus diulang.
+
+---
+
+## 10. Keterbatasan
+
+- Benchmark memakai penanganan batas *clipping* murni (`box_only_projection`), bukan simpleks — paper tidak menyebutkan penanganan batas untuk fungsi uji, jadi ini asumsi kami, dicatat bukan diverifikasi ke paper.
+- GA paper memakai parameter berbeda dari Tabel 3.1 proyek ini (dicatat di Bagian 3); perbandingan sphere/rosenbrock/rastrigin untuk GA bersifat indikatif, bukan replikasi presisi.
+- K5 (distribusi r1, r2) tidak diuji karena rumusan paper ambigu ("random dalam distribusi normal" tanpa parameter).
+- Ablasi Bagian 8 adalah sensitivitas pada bank seed 42 (bank yang sama dengan 360 run) — bukan validasi independen; kalau salah satu variant mau dipakai sebagai default baru (D12), perlu divalidasi di bank independen (seed 2026) sebelum diklaim generalisasi.
+- H4 (kelaparan generasi) diuji tidak langsung (lewat ablasi 1-fase, bukan lewat eksperimen varying jumlah generasi Fase 2 secara terkontrol) — status inkonklusif mencerminkan keterbatasan desain uji ini, bukan bukti kuat salah satu arah.
+
+## 11. Temuan di luar cakupan (dicatat, tidak dikerjakan)
+
+- `src/mccar_kma/analysis/limit_stability.py` (Tahap 17) belum punya test sendiri — tidak ada file di `tests/` yang mengimpornya. Dicatat sebagai gap, bukan diperbaiki di sini.
+- Bug ablasi Tahap 15 lama (seed tumpang tindih, bounds hardcode free untuk semua config) sudah diperbaiki secara desain di Tahap 18, tidak di skrip lama (`scripts/15_diagnose_kma.py` tidak diubah, sesuai batasan).
+- Selama proses run, laptop sempat masuk Modern Standby (~3 jam, 2026-10-25 00:39–03:35) yang membuat satu batch task tercatat `time_seconds` keliru tinggi (bukan bug algoritma — lihat `runs_benchmark/stage_a/sphere_D30_base_kma_rep07..12_*.json`, `time_seconds`≈10.678 s vs sebaris lainnya ≈130 s). Sleep dimatikan via `powercfg` untuk sisa run; angka `time_seconds` pada file-file itu **tidak dipakai** di ringkasan timing manapun pada laporan ini (timing resmi berasal dari `timing_single_worker.csv`, dijalankan sebelum insiden sleep terjadi).

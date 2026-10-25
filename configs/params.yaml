@@ -255,3 +255,67 @@ analysis:
   # KEPUTUSAN D7 (DIPUTUSKAN 2026-10-18):
   # Penanganan ties pada uji Dunn menggunakan faktor koreksi ties C_ties (Glantz, 2012)
   dunn_ties_correction: true
+
+# ------------------------------------------------------------------------------
+# 10. Diagnosis KMA v2 (Tahap 18; D11 ditinjau ulang 2026-10-25: Opsi A dipertahankan)
+# Parameter algoritma = blok `algorithms` (default kelas optimizer, sama dgn 360 run).
+# Bank latih & batas risiko = bank seed `scenarios.train_seed` (sama dgn 360 run).
+# Seed di sini terpisah dari 42, 2026, 43-72 (replikasi utama), 101-130 (diagnosis
+# lama), 10000-10019 / 20000-20039 / 30000 (Tahap 17).
+# ------------------------------------------------------------------------------
+kma_diagnosis:
+  output_dir: "results/sensitivity/kma"
+  n_workers: 6
+  budget: 25000
+  checkpoints: [5000, 10000, 25000]
+  projection_distance_tol: 1.0e-9   # jarak raw->proyeksi di atas ini = "terproyeksi"
+  bound_tol: 1.0e-12                # koordinat dianggap menempel di lb/ub
+  log_floor: 1.0e-12                # lantai sumbu log pada grafik
+  smoke:
+    budget: 500
+    replications: 2
+  benchmark:
+    functions: ["sphere", "rastrigin", "rosenbrock"]
+    domains:
+      sphere: [-100.0, 100.0]
+      rastrigin: [-5.12, 5.12]
+      rosenbrock: [-30.0, 30.0]
+    replications: 30
+    seed_base: 40000               # seed rep r = seed_base + r (sama utk semua algoritma)
+    algorithms: ["kma", "ga", "pso"]
+    dims_stage_a: [7, 30]
+    dims_stage_b: [50]             # dimensi Tabel 2 Suyanto dkk. (2022)
+    shifted_dims: [7, 30]
+    shifted_algorithms: ["kma", "kma_paper_all", "ga", "pso"]
+    shift_seed_base: 41000         # seed vektor geser = base + 100*indeks_fungsi + D
+    shift_domain_fraction: 0.8     # optimum tergeser di [0,8*lb, 0,8*ub]
+    variant_dims: [7, 30]
+    variants: ["paper_pool", "sync", "paper_mlipir", "paper_q", "paper_all"]
+  portfolio_ablation:
+    configurations: ["gross_free", "gross_djppr", "interest_free", "interest_djppr"]
+    replications: 30
+    seed_base: 42000
+    variants: ["default", "one_phase_n5", "one_phase_n200", "d2_low", "d2_high",
+               "paper_pool", "paper_mlipir", "deb_rules", "norm_q"]
+  instrumentation:
+    algorithms: ["kma", "ga", "pso"]
+    replications: 10
+    seed_base: 43000
+    block_size: 250
+    near_boundary_rel_slack: 1.0e-3
+  timing:
+    algorithms: ["kma", "ga", "pso"]
+    replications: 5
+    seed_base: 44000
+    profile_seed: 45001
+  # Tabel 2 Suyanto dkk. (2022): D=50, 25.000 evaluasi, 30 run (F1 Sphere, F5 Rosenbrock, F9 Rastrigin)
+  reference_suyanto_2022:
+    dim: 50
+    kma:
+      sphere: {avg: 0.0, std: 0.0}
+      rosenbrock: {avg: 48.31, std: 0.182}
+      rastrigin: {avg: 0.0, std: 0.0}
+    ga:
+      sphere: {avg: 43.80, std: 5.257}
+      rosenbrock: {avg: 634.7, std: 130.0}
+      rastrigin: {avg: 121.3, std: 15.09}

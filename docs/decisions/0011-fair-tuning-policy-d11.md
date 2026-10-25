@@ -32,3 +32,15 @@ Untuk menjamin perbandingan performa yang adil (*fair comparison*) antara **Komo
 1. Konfigurasi di `configs/params.yaml` tetap menggunakan parameter standar yang telah ditetapkan pada Keputusan D4 dan D6.
 2. Hasil komparasi 360 run dipertahankan sebagai representasi murni kinerja *out-of-the-box* literatur.
 3. Temuan sensitivitas parameter (pengaruh ukuran populasi $n$, laju mlipir $d_2$, dan skala interaksi $q$) disajikan sebagai bab diagnosis ilmiah (*Ablation Study*) pada `docs/reviews/diagnosis_kma.md` dan dilaporkan sebagai saran riset lanjutan pada Bab 5 naskah skripsi.
+
+---
+
+## Tinjauan Ulang 2026-10-25 (Tahap 18)
+
+- **Pemicu**: D11 dibuka ulang sebelum Diagnosis KMA v2 (Tahap 18) untuk diuji terhadap data baru.
+- **Hasil**: **Opsi A dipertahankan.** Pengguna menginstruksikan untuk mengikuti rekomendasi laporan `docs/reviews/diagnosis_kma.md` Bagian 9 pada 2026-10-25.
+- **Data yang dipertimbangkan** (`results/sensitivity/kma/`):
+  - Tidak ada bug jelas di `kma.py`; deviasi interpretasi K1–K4 tidak menutup selisih ke Tabel 2 Suyanto dkk. (2022) (H1 tidak didukung).
+  - Mekanisme yang didukung data: langkah Big Male Fase 2 melebihi rentang domain (median 2,1–7,3× rentang), penerimaan Big Male turun ke 1–2%, kandidat diproyeksikan jauh ke sudut kotak (H3, H5).
+  - Ablasi 9 varian × 4 konfigurasi × 30 replikasi: perbaikan signifikan (Holm) hanya spesifik per konfigurasi; tidak ada varian yang unggul di keempat konfigurasi.
+- **Implikasi**: 360 run dan `configs/params.yaml` blok `algorithms` tidak berubah. Ablasi Tahap 18 dilaporkan sebagai analisis sensitivitas, bukan hasil tuning. Penggantian default KMA dengan salah satu varian ablasi tetap di luar keputusan ini; bila diinginkan, diajukan sebagai keputusan baru (D12) dengan validasi di bank independen.
